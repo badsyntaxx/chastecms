@@ -1,0 +1,54 @@
+<?= $header; ?>
+<main class="main messages-page">
+    <div class="row pad-top-60 pad-bottom-60">
+        <div class="wrapper">
+            <div class="row messages-wrapper">
+                <div class="col message-controls">
+                    <a href="#" class="btn-inbox">Inbox</a>
+                    <a href="#" class="btn-sent">Sent</a>
+                    <a href="/messages/trash" class="btn-trash">Trash</a>
+                </div>
+                <div class="col message-pane">
+                    <div class="row">
+                        <table class="row messages-table">
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+getMessages('inbox');
+
+$('body').on('click', '.btn-inbox', function() {
+    getMessages('inbox');
+});
+
+$('body').on('click', '.btn-sent', function() {
+    getMessages('sent');
+});
+
+function getMessages(type) {
+    $('.messages-table').html('');
+    $.ajax({
+        url: '/messages/' + type,
+        type: 'GET',
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $(data).each(function(index, item) {
+                    $('.messages-table').append('<tr><td class="check-col"><input type="checkbox" name="pm-checkbox" value="1" class="pm-checkbox"></td><td><a href="/messages/' + item.chain_id + '/' + item.subject + '">' + item.subject + '</a> <span>' + item.preview_text + '</span></td></tr>');
+                });
+            } 
+        }, 
+        complete: function() {
+
+        }
+    });
+}
+
+</script>
+<?= $footer; ?>

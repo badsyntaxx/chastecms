@@ -1,0 +1,61 @@
+<?= $header; ?>
+<main class="main list-page">
+    <?= $nav; ?>
+    <div class="workarea <?= $main_nav; ?>">
+        <div class="row main-title">
+            <?= $breadcrumb; ?>
+            <?= $search; ?>
+        </div>
+        <div class="row main-controls"><?= $controls; ?></div>
+        <div class="row main-panel">
+            <div class="row alert-area"></div>
+            <div class="row pagination-controls no-select">
+                <div class="col">
+                    <label>Page:</label>
+                    <div class="pagination">
+                        <button type="button" class="btn-prev"><i class="fas fa-caret-left fa-fw"></i></button>
+                        <select id="pagination-select"></select>
+                        <button type="button" class="btn-next"><i class="fas fa-caret-right fa-fw"></i></button>
+                    </div>
+                </div>
+                <div class="col space-left-30">
+                    <label>Limit:</label>
+                    <select class="limit-per-page">
+                        <option class="limit10" value="10">10</option>
+                        <option class="limit15" value="15">15</option>
+                        <option class="limit25" value="25">25</option>
+                        <option class="limit50" value="50">50</option>
+                        <option class="limit100" value="100">100</option>
+                        <option class="limit500" value="500">500</option>
+                    </select>
+                </div>
+                <div class="col space-left-30">
+                    <?php if (isset($filters)): ?>
+                        <?= $filters; ?>
+                    <?php endif ?>
+                </div>
+                <div class="col total"></div>
+            </div>            
+            <div class="row panel-content space-top-15">
+                <input type="hidden" name="table" value="<?= $table; ?>" id="table">
+                <input type="hidden" name="orderby" value="<?= $orderby; ?>" id="orderby">
+                <input type="hidden" name="direction" value="<?= $direction; ?>" id="direction">
+                <input type="hidden" name="page" value="<?= $page; ?>" id="page">
+                <input type="hidden" name="start" value="<?= $start; ?>" id="start">
+                <input type="hidden" name="record_limit" value="<?= $record_limit; ?>" id="record-limit">
+                <input type="hidden" name="total_pages" value="<?= $total_pages; ?>" id="total-pages">
+                <input type="hidden" name="total_records" value="<?= $total_records; ?>" id="total-records">
+                <?= $list; ?>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+var inputs = $('input').serializeArray();
+
+Pagination.init(inputs);
+MainControls.init(); 
+
+</script>
+<?= $footer; ?>

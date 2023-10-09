@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><?= $title; ?></title>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="IE=edge, width=device-width initial-scale=1"
+            http-equiv="X-UA-Compatible"
+        />
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="/views/front/themes/<?= $theme; ?>/css/stylesheet.css?version<?= mt_rand(1, 99999) ?>"
+            media="all"
+        />
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="/views/admin/css/page-editor.css?version<?= mt_rand(1, 99999) ?>"
+            media="all"
+        />
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="/views/admin/css/filebrowser.css?version<?= mt_rand(1, 99999) ?>"
+            media="all"
+        />
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="/views/admin/css/dropzone.css?version<?= mt_rand(1, 99999) ?>"
+            media="all"
+        />
+        <link type="text/css" rel="stylesheet" href="/javascript/jquery-ui/jquery-ui.min.css" />
+        <script type="text/javascript" src="/javascript/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="/javascript/jquery-ui/jquery-ui.min.js"></script>
+        <?php if ($logged): ?>
+        <script type="text/javascript" src="/javascript/activity-checker.js"></script>
+        <?php endif ?>
+        <script type="text/javascript" src="/javascript/dropzone.js"></script>
+        <script type="text/javascript" src="/javascript/admin.js"></script>
+        <script type="text/javascript" src="/javascript/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/javascript/filebrowser.js"></script>
+    </head>
+
+    <body class="row chaste">
+        <div class="page-editor">
+            <span class="row panel-title text-center"
+                >Page Editor:
+                <?= $name; ?></span
+            >
+            <div class="row page-editor-btns">
+                <div class="wrapper">
+                    <button
+                        type="button"
+                        class="pe-btn pe-btn-go btn-save-page pull-left"
+                        title="Save"
+                    >
+                        <i class="fas fa-save fa-fw"></i> Save
+                    </button>
+                    <button
+                        type="button"
+                        class="pe-btn pe-btn-default btn-browse pull-left"
+                        title="Browse"
+                    >
+                        <i class="fas fa-folder-open fa-fw"></i> Browse
+                    </button>
+                    <a href="<?= $route; ?>" class="pe-btn pe-btn-basic pull-left" title="View"
+                        ><i class="fas fa-eye fa-fw"></i> View</a
+                    >
+                    <a href="/admin/pages" class="pe-btn pe-btn-basic pull-right" title="Close"
+                        ><i class="fas fa-times fa-fw"></i
+                    ></a>
+                    <a
+                        href="/admin/pages/<?= $name; ?>"
+                        class="pe-btn pe-btn-basic pull-right"
+                        title="Back"
+                        ><i class="fas fa-reply fa-fw fa-fw"></i
+                    ></a>
+                    <a href="" class="pe-btn pe-btn-basic pull-right" title="Refresh"
+                        ><i class="fas fa-sync-alt fa-fw"></i
+                    ></a>
+                    <div class="col alert-area"></div>
+                </div>
+            </div>
+            <form enctype="multipart/form-data" id="page-form" class="row form">
+                <input type="hidden" name="pages_id" value="<?= $pages_id; ?>" />
+                <div class="page-content">
+                    <textarea name="content" id="page-editor">
+                <?= $content; ?>
+            </textarea
+                    >
+                </div>
+            </form>
+        </div>
+        <script type="text/javascript">
+            CKEDITOR.inline('page-editor', {
+                customConfig: '/javascript/ckeditor/editableConfig.js',
+            }).on('blur', function (e) {
+                return false;
+            });
+
+            $(function () {
+                $('.cke_inner').draggable();
+            });
+            $(function () {
+                $('.filebrowser').draggable();
+            });
+            $('.page-editor').filebrowser({
+                dir: '/views/images/uploads/pages/',
+            });
+
+            $('.filebrowser').on('click', '.fb-file-link', function () {
+                var filename = $(this).text();
+                CKEDITOR.instances['page-editor'].insertHtml(
+                    '<img src="' +
+                        localStorage.current_path +
+                        filename +
+                        '" alt="' +
+                        filename +
+                        '">'
+                );
+                $('.slideshow p > img').unwrap();
+            });
+
+            Dropzone.options.dropzone = {
+                url: '/admin/pages/upload',
+                paramName: 'upload_image',
+                dictDefaultMessage: 'Drop files here',
+                success: function (file, response) {
+                    if ($.trim(response)) {
+                        var data = JSON.parse(response);
+                        $('.dropzone').prepend(
+                            '<div class="alert ' +
+                                data.alert +
+                                ' row" style="margin-top:15px;"><strong>' +
+                                data.alert +
+                                '!</strong> ' +
+                                data.message +
+                                ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>'
+                        );
+                    }
+                },
+            };
+
+            $('body').on('click', '.btn-save-page', function () {
+                var btn = $(this);
+                var btnhtml = btn.html();
+
+                for (instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+
+                $.post('/admin/pages/updateEdit', $('#page-form').serialize(), function (response) {
+                    if ($.trim(response)) {
+                        var json = JSON.parse(response);
+                        $('.alert-area').html(
+                            '<div class="alert ' +
+                                json.alert +
+                                '"><strong>' +
+                                json.alert +
+                                '!</strong> ' +
+                                json.message +
+                                ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>'
+                        );
+                    }
+                }).always(function () {
+                    $('html, body').animate(
+                        {
+                            scrollTop: 0,
+                        },
+                        300
+                    );
+
+                    setTimeout(function () {
+                        $('.alert').remove();
+                    }, 3000);
+                });
+            });
+            $('#page-form').keypress(function (e) {
+                if (e.which == 13) {
+                    return false;
+                }
+            });
+
+            $('.slideshow p > img').unwrap();
+        </script>
+    </body>
+    <script type="text/javascript">
+        Common.init();
+    </script>
+</html>

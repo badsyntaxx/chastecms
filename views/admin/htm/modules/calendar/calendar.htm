@@ -1,0 +1,49 @@
+<?= $header; ?>
+<main class="main calendar-page">
+    <?= $nav; ?>
+    <div class="workarea <?= $main_nav; ?>">
+        <div class="row main-title">
+            <?= $breadcrumb; ?>
+            <?= $search; ?>
+        </div>
+        <div class="row main-controls">
+            <a href="/admin/calendar" class="btn btn-basic pull-left" title="Back"><i class="fas fa-reply fa-fw"></i> Events</a>
+            <a href="/" class="btn btn-basic pull-right" title="Close"><i class="fas fa-times fa-fw"></i></a>
+            <a href="/admin/calendar" class="btn btn-basic pull-right" title="Back"><i class="fas fa-reply fa-fw"></i></a>
+            <a href="" class="btn btn-basic pull-right" title="Refresh"><i class="fas fa-sync-alt fa-fw"></i></a>
+        </div>
+        <div class="row alert-area"></div>
+        <div class="row main-panel space-top-15">
+            <div class="row panel-content">
+                <div class="calendar">
+                    <div class="row pad-bottom-15 calendar-head">
+                        <div class="col triple">
+                            <button type="button" class="btn-prev"><i class="fas fa-caret-left fa-fw"></i></button>
+                            <button type="button" class="btn btn-default btn-today"><i class="fas fa-calendar-day fa-fw"></i> Today</button>
+                            <button type="button" class="btn-next"><i class="fas fa-caret-right fa-fw"></i></button>
+                        </div>
+                        <div class="col triple text-center">
+                            <span class="this-month"></span>
+                        </div>
+                        <div class="col triple text-right">
+                            <button type="button" class="btn btn-default no-load btn-month"><i class="fas fa-calendar-alt fa-fw"></i> Month</button>
+                            <button type="button" class="btn btn-default no-load btn-week"><i class="fas fa-calendar-week fa-fw"></i> Week</button>
+                            <button type="button" class="btn btn-default no-load btn-day"><i class="fas fa-calendar-day fa-fw"></i> Day</button>
+                        </div>
+                    </div>
+                    <table id="calendar-table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+$('#calendar-table').calendar({
+    view : 'month',
+    post : '/test/getCalendarData',
+    controller : '/admin/calendar/getCalendar'
+});
+
+</script>
+<?= $footer; ?>

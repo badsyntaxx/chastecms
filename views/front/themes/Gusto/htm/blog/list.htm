@@ -1,0 +1,45 @@
+<?= $header; ?>
+<main class="main blog-page">
+    <div class="wrapper">
+        <div class="row pad-top-60 pad-bottom-60">
+            <h2>BLOG</h2>  
+            <hr class="row space-top-15 space-bottom-15">
+            <div class="blog-view">
+                <div class="row blog-previews"></div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+$('.blog-previews').append('<div class="loading"><div class="loading-spinner"><i class="fas fa-circle-notch fa-fw fa-spin"></i></div></div>');
+
+$.ajax({
+    url: '/blog/getBlogPosts/',
+    type: 'POST',
+    data: {limit: 3},
+    success: function(response, status, xhr) {
+        /* console.log(response);
+        $('body').prepend(response); */
+        if ($.trim(response) !== 'null') {
+            var data = JSON.parse(response);
+            $(data).each(function(index, item) {
+                if (item.preview_image == null) {
+                    item.preview_image = '<img src="/views/images/uploads/blog/blog_default.jpg" alt="Blog">';
+                }
+                $('.blog-previews').append('<div class="row blog-preview"><div class="blog-column-left"><a href="/blog/' + item.blog_id + '/' + item.blog_link + '"><div class="preview-image">' + item.preview_image + '</div></a></div><div class="blog-column-right"><div class="row blog-info"><span class="pull-left">By:<a href="/profile/' + item.author + '">' + item.author + '</a></span> <span class="pull-right">' + item.post_date + '</span></div><div class="row blog-body">' + item.body + '</div><div class="row blog-link"><a href="/blog/' + item.blog_id + '/' + item.blog_link + '" class="btn btn-default">Read More</a></div></div></div>');
+            });
+        } else {
+            $('.loading').remove();
+            $('.blog-previews').text('No blog posts yet.');
+        }
+    }, 
+    complete: function() {
+        $('h1').removeAttr('style');
+        $('h1').nextAll().remove();
+        $('.loading').remove();
+    }
+});
+
+</script>
+<?= $footer; ?>

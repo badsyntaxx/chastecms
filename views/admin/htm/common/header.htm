@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><?= $title; ?></title>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="IE=edge, width=device-width initial-scale=1"
+            http-equiv="X-UA-Compatible"
+        />
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="/views/admin/css/stylesheet.css?version<?= mt_rand(1, 99999) ?>"
+            media="all"
+        />
+        <link type="text/css" rel="stylesheet" href="/javascript/jquery-ui/jquery-ui.min.css" />
+        <script type="text/javascript" src="/javascript/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="/javascript/jquery-ui/jquery-ui.min.js"></script>
+        <?php if ($logged): ?>
+        <script type="text/javascript" src="/javascript/activity-checker.js"></script>
+        <?php endif ?>
+        <script type="text/javascript" src="/javascript/validator.js"></script>
+        <script type="text/javascript" src="/javascript/calendar.js"></script>
+        <script type="text/javascript" src="/javascript/pagination.js"></script>
+        <script type="text/javascript" src="/javascript/main-controls.js"></script>
+        <script type="text/javascript" src="/javascript/dropzone.js"></script>
+        <script type="text/javascript" src="/javascript/admin.js"></script>
+        <script type="text/javascript" src="/javascript/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/javascript/filebrowser.js"></script>
+    </head>
+    <body class="row chaste <?= $theme; ?>">
+        <header class="header">
+            <a href="/admin/" class="logo">GUSTO </a>
+            <div class="pull-right">
+                <?php if ($logged): ?>
+                <ul class="account-nav">
+                    <li>
+                        <button type="button" title="Theme" class="btn-theme">
+                            <i class="fas fa-sun fa-fw"></i>
+                            <?= $theme_text; ?>
+                        </button>
+                    </li>
+                    <li>
+                        <a href="/home" title="View page front"
+                            ><i class="fas fa-image fa-fw"></i>
+                            <?= $view_text; ?></a
+                        >
+                    </li>
+                    <li>
+                        <a href="/account" title="Account settings"
+                            ><i class="fas fa-user fa-fw"></i>
+                            <?= $account_text; ?></a
+                        >
+                    </li>
+                </ul>
+                <?php endif ?>
+            </div>
+        </header>
+    </body>
+</html>

@@ -1,0 +1,243 @@
+<?= $header; ?>
+<main class="main settings-page">
+    <?= $nav; ?>
+    <div class="workarea <?= $main_nav; ?>">
+        <div class="row main-title">
+            <?= $breadcrumb; ?>
+            <?= $search; ?>
+        </div>
+        <div class="row main-controls">
+            <button type="button" class="btn btn-go btn-save-settings"><i class="fas fa-save fa-fw"></i> Save</button>
+            <a href="/admin/" class="btn btn-basic pull-right" title="Close"><i class="fas fa-times fa-fw"></i></a>
+            <a href="" class="btn btn-basic pull-right" title="Refresh"><i class="fas fa-sync-alt fa-fw"></i></a>
+        </div>
+        <div class="row alert-area"></div>
+        <div class="row main-panel">
+            <div class="panel-content">
+                <form method="post" id="settings-form" class="row form">
+                    <div class="settings-area general">
+                        <strong>General</strong>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="sitename" style="width:170px;">Site Name:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="text" name="sitename" value="<?= $sitename; ?>" id="sitename" style="width:350px;">
+                            </div>
+                        </div>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="owner_email" style="width:170px;">Owners Email:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="email" name="owners_email" value="<?= $owners_email; ?>" id="owners-email" style="width:350px;">
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> Emails from the contact form will be sent to this address.
+                            </div>
+                        </div>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="pw_setting" style="width:170px;">Strong Passwords:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="checkbox" name="pw_setting" value="1" id="pw-setting">
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> Force users to create a strong password during sign up.
+                            </div>
+                        </div>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="inactivity_setting" style="width:170px;">Inactivity Limit:</label>
+                            </div>
+                            <div class="input-col">
+                                <select name="inactivity_setting">
+                                    <option value="5" id="limit-5">5</option>
+                                    <option value="10" id="limit-10">10</option>
+                                    <option value="15" id="limit-15">15</option>
+                                    <option value="20" id="limit-20">20</option>
+                                    <option value="30" id="limit-30">30</option>
+                                    <option value="60" id="limit-60">60</option>
+                                </select>
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> Amount of time before the user is logged out due to inactivity. Set to 0 for no limit.
+                            </div>
+                        </div>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="language_setting" style="width:170px;">Language:</label>
+                            </div>
+                            <div class="input-col">
+                                <select name="language_setting">
+                                    <?php foreach ($languages as $lang): ?>
+                                    <option value="<?= $lang['code']; ?>" id="<?= $lang['code']; ?>"><?= $lang['language']; ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> The websites language. (BETA. Language support is limited at this time.)
+                            </div>
+                        </div>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="theme_setting" style="width:170px;">Theme:</label>
+                            </div>
+                            <div class="input-col">
+                                <select name="theme_setting">
+                                    <?php foreach ($themes as $theme): ?>
+                                    <option value="<?= $theme; ?>" id="<?= $theme; ?>"><?= $theme; ?></option>    
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> The websites theme. Controls style for the front end.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-area mail">
+                        <strong>Mail</strong>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="mail_host" style="width:170px;">SMTP Host:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="text" name="mail_host" value="<?= $mail['host']; ?>" id="mail-host" style="width:350px;">
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> SMTP host for mail server.
+                            </div>
+                        </div>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="mail_port" style="width:170px;">SMTP Port:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="text" name="mail_port" value="<?= $mail['port']; ?>" id="mail-port" style="width:350px;">
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> SMTP port for mail server.
+                            </div>
+                        </div>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="mail_username" style="width:170px;">Username:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="text" name="mail_username" value="<?= $mail['username']; ?>" id="mail-username" style="width:350px;">
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> Username you use to login to the email account.
+                            </div>
+                        </div>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="mail_password" style="width:170px;">Password:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="password" name="mail_password" value="<?= $mail['password']; ?>" id="mail-password" style="width:350px;">
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> Password you use to login to the email account.
+                            </div>
+                        </div>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="mail_password" style="width:170px;">Test:</label>
+                            </div>
+                            <div class="input-col">
+                                <button type="button" class="btn btn-default btn-test">Test Email</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-area server">
+                        <strong>Server</strong>
+                        <div class="row settings-row">
+                            <div class="label-col">
+                                <label for="mode_setting" style="width:170px;">Maintenance Mode:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="checkbox" name="mode_setting" value="1" id="mode-setting">
+                            </div>
+                            <div class="info-col">
+                                <i class="fas fa-question-circle fa-fw"></i> Enabling maintenance mode shows the "Under Maintenance" message instead of the site.
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+$('body').on('click', '.btn-save-settings', function() {
+    $.ajax({
+        url: '/admin/settings/update',
+        type: 'POST',
+        data: $('#settings-form').serialize(),
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.alert-area').append('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+            } 
+        }, 
+        complete: function() {
+            Common.btn.prop('disabled', false).html(Common.btnhtml);
+        }
+    });
+});
+$('#settings-form').keypress(function(e) {
+    if (e.which == 13) {
+        $('.btn-save-settings').click();
+    }
+});
+
+$.ajax({
+    url: '/admin/settings/getDropdownSettings',
+    type: 'GET',
+    success: function(response, status, xhr) {
+        var data = JSON.parse(response);
+        var inactive_limit = '#limit-' + data.inactivity;
+        var language = '#' + data.language;
+        var theme = '#' + data.theme;
+        $(inactive_limit).prop('selected', true);
+        $(language).prop('selected', true);
+        $(theme).prop('selected', true);
+    }
+});
+
+$.ajax({
+    url: '/admin/settings/getCheckboxSettings',
+    type: 'GET',
+    success: function(response, status, xhr) {
+        var data = JSON.parse(response);
+        if (data.maintenance == 1) {
+            $('#mode-setting').prop('checked', true);
+        }
+
+        if (data.password == 1) {
+            $('#pw-setting').prop('checked', true);
+        }
+    }
+});
+
+$('body').on('click', '.btn-test', function() {
+    $.ajax({
+        url: '/admin/settings/testEmail',
+        type: 'GET',
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.btn-test').after('<div class="alert ' + data.alert + ' pull-right" style="margin:2px 0 0 15px;"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+            } 
+        },
+        complete: function() {
+            Common.btn.prop('disabled', false).html(Common.btnhtml);      
+        }
+    });
+});
+
+</script>
+<?= $footer; ?>

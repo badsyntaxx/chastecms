@@ -1,0 +1,17 @@
+<?= $header; ?>
+<main class="main sitemap-page">
+    <div class="row pad-top-60 pad-bottom-60 sitemap">
+        <div class="wrapper">
+            <h1 class="heading-large">Site Map</h1>
+            <hr class="row space-top-15 space-bottom-15">
+            <div class="row">
+                <ul class="list-unstyled">
+                    <?php foreach ($pages as $p): ?>
+                    <li><a href="<?= $p['route']; ?>"><?= $p['route_name']; ?></a></li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+<?= $footer; ?>

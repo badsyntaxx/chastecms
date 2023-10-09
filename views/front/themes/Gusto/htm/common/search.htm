@@ -1,0 +1,70 @@
+<?= $header; ?>
+<main class="main search-page">
+    <div class="row pad-top-60 pad-bottom-60">
+        <div class="wrapper">
+            <div class="row">
+                <div class="row pad-bottom-15 text-large">
+                    <?php if (!empty($string)): ?> 
+                    <span>You searched for <strong>"<?= $string; ?>"</strong>.</span>
+                    <?php if (empty($users) && empty($posts)): ?>
+                    <span>Nothing found.</span>
+                    <?php endif ?>
+                    <?php endif ?>
+                </div>
+                <div class="row">
+                    <?php if (!empty($users)): ?> 
+                    <strong class="row pad-bottom-15">Users matching "<?= $string; ?>"</strong>
+                    <div class="row">
+                        <?php foreach ($users as $user): ?> 
+                        <div class="col quad">
+                            <a href="/profile/<?= $user['username']; ?>" class="row found-user">
+                                <div class="found-user-left">
+                                    <img src="/views/images/uploads/account/<?= $user['avatar']; ?>" alt="Account Avatar">
+                                </div>
+                                <div class="found-user-right">
+                                    <p><?= $user['username']; ?></p>
+                                    <p><?= $user['country']; ?></p>
+                                </div>
+                            </a>
+                        </div>
+                        <?php endforeach ?> 
+                    </div>
+                    <?php endif ?> 
+                    <hr class="row space-top-30 space-bottom-30">
+                    <?php if (!empty($posts)): ?>
+                    <div class="row blog-previews">
+                        <strong class="row pad-bottom-15">Blog entries matching "<?= $string; ?>"</strong>
+                        <?php foreach ($posts as $post): ?> 
+                        <div class="row pad-bottom-30">
+                            <div class="blog-column-left">
+                                <a href="/blog/<?= $post['id']; ?>/<?= $post['blog_link']; ?>">
+                                    <div class="preview-image">
+                                        <?php if ($post['preview_image']): ?>
+                                        <?= $post['preview_image']; ?>
+                                        <?php else: ?>
+                                        <img src="/views/images/uploads/blog/blog_default.jpg" alt="Blog">
+                                        <?php endif ?>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="blog-column-right">
+                                <div class="row blog-info">
+                                    <span class="pull-left">By:<a href="/profile/<?= $post['author']; ?>"> <?= $post['author']; ?></a></span> <span class="pull-right"><strong><?= $post['post_date']; ?></strong></span>
+                                </div>
+                                <div class="row blog-body"> 
+                                    <?= $post['body']; ?> 
+                                </div>
+                                <div class="row blog-link">
+                                    <a href="/blog/<?= $post['id']; ?>/<?= $post['blog_link']; ?>" class="pull-left">Read more</a>
+                                </div>
+                            </div>
+                        </div> 
+                        <?php endforeach ?> 
+                    </div>
+                    <?php endif ?> 
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<?= $footer; ?>

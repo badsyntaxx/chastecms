@@ -1,0 +1,13 @@
+.fancy-form label {
+    position: absolute;
+    top: 4px;
+    left: 15px;
+    z-index: 100;
+    display: initial;
+    padding: 0;
+    color: #bbb;
+}
+
+.fancy-form label:hover {
+    cursor: text;
+}

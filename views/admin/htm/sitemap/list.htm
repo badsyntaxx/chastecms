@@ -1,0 +1,51 @@
+<div class="row sm-record-status">
+    <div class="col" style="margin-right:25px;">
+        <?php if ($sitemap_records): ?>
+        <strong class="pull-left">Sitemap Records: <p style="display:inline;color:green;"><i class="fas fa-check fa-fw"></i></p></strong>
+        <?php else: ?> 
+        <strong class="pull-left">Sitemap Records: <p style="display:inline;color:red;"><i class="fas fa-exclamation-circle fa-fw"></i></p></strong>
+        <?php endif ?> 
+    </div>
+    <div class="col">
+        <?php if ($sitemap_xml): ?>
+        <strong class="pull-left">Sitemap XML: <p style="display:inline;color:green;"><i class="fas fa-check fa-fw"></i></p></strong> 
+        <?php else: ?> 
+        <strong class="pull-left">Sitemap XML: <p style="display:inline;color:red;"><i class="fas fa-exclamation-circle fa-fw"></i></p></strong>
+        <?php endif ?> 
+    </div>
+</div>
+<form id="sitemap-form" class="row">
+    <table class="list-table">
+        <tr>
+            <th class="text-center number-col">#</th>
+            <th class="text-center check-cell"><input type="checkbox" id="check-all"></th>
+            <th class="text-center btn-sort id-col">ID</th>
+            <th class="btn-sort" style="width:300px">Name</th>
+            <th class="btn-sort">Order</th>
+            <th class="btn-sort">Visibility</th>
+        </tr>
+        <?php foreach ($pages as $page): ?>
+        <tr class="data-row">
+            <td class="text-center number-col"></td>
+            <td class="text-center check-cell">
+                <input type="checkbox" name="link_check<?= $page['sitemap_id']; ?>" value="<?= $page['sitemap_id']; ?>" class="checkbox">
+            </td>
+            <td class="text-center id-col"><?= $page['sitemap_id']; ?></td>
+            <td class="name-col" style="width:300px"><a href="<?= $page['route']; ?>"><?= $page['name']; ?> (<?= $page['sitemap_id']; ?>)</a></td>
+            <td><input type="text" name="<?= $page['name']; ?>" class="sort-order" value="<?= $page['sort_order']; ?>"></td>
+            <td class="visibility-text <?= $page['name']; ?>"><?= $page['visibility']; ?></td>
+        </tr>
+        <?php endforeach ?>
+    </table>
+</form>
+<script type="text/javascript">
+
+$('.visibility-text').each(function() {
+    if ($(this).text() == 'Hidden') {
+        $(this).prepend('<i class="far fa-eye-slash fa-fw"></i> ');
+    } else {
+        $(this).prepend('<i class="far fa-eye fa-fw"></i> ');
+    }
+});
+
+</script>

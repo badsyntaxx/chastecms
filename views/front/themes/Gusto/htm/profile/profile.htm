@@ -1,0 +1,131 @@
+<?= $header; ?>
+<main class="main profile-page">
+    <div class="row pad-top-60 pad-bottom-60">
+        <div class="wrapper">
+            <?php if ($profile_private): ?>
+            <div class="alert error"><strong>Private Profile:</strong> This user has marked their profile as private.</div>
+            <?php else: ?>
+            <div class="row profile">
+                <h1 class="heading-small pull-left"><?= $username; ?> / <?= $country; ?></h1>
+                <hr class="row space-top-15 space-bottom-15">
+                <div class="profile-left-panel">
+                    <div class="row pad-bottom-15">
+                        <div class="avatar">
+                            <img src="/views/images/uploads/account/<?= $avatar; ?>" alt="Default Avatar" class="row">
+                        </div>
+                    </div>
+                    <?php if ($logged): ?>
+                    <div class="row">
+                        <button type="button" class="pull-left btn btn-default btn-pm"><i class="fas fa-comment fa-fw"></i> Message</button>
+                    </div>
+                    <?php endif ?>
+                </div>
+                <div class="profile-right-panel">
+                    <div class="row">
+                        <div class="col-profile-left">
+                            Name:
+                        </div>
+                        <div class="col-profile-right">
+                            <div class="profile-info"><?= $firstname; ?> <?= $lastname; ?></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-profile-left">
+                            Email:
+                        </div>
+                        <div class="col-profile-right">
+                            <div class="profile-info"><?= $email; ?></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-profile-left">
+                            Birthday:
+                        </div>
+                        <div class="col-profile-right">
+                            <div class="profile-info"><?= $birthday; ?></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-profile-left">
+                            joined:
+                        </div>
+                        <div class="col-profile-right">
+                            <div class="profile-info"><?= $registered; ?> <em class="text-small">(<?= $sd_days_ago; ?>)</em></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-profile-left">
+                            Last Active:
+                        </div>
+                        <div class="col-profile-right">
+                            <div class="profile-info"><?= $last_active; ?> <em class="text-small">(<?= $la_days_ago; ?>)</em></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-profile-left">
+                            Gender:
+                        </div>
+                        <div class="col-profile-right">
+                            <div class="profile-info"><?= $gender; ?></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-profile-left">
+                            Website:
+                        </div>
+                        <div class="col-profile-right">
+                            <div class="profile-info"><?= $website; ?></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-profile-left">
+                            Bio:
+                        </div>
+                        <div class="col-profile-right">
+                            <div class="profile-info bio"><?= $bio; ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif ?>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+$('#pm-form').validator({
+    formButton : '.btn-send'
+});
+    
+$('body').on('click', '.btn-pm', function() {
+    $('.private-message').addClass('active');
+});
+
+$('#username').keydown(function(e) {
+   e.preventDefault();
+   return false;
+});
+
+$('body').on('click', '.btn-send', function() {
+    $.ajax({
+        url: '/messages/validate',
+        type: 'POST',
+        data: $('#pm-form').serialize(),
+        beforeSend: function() {
+            $('.btn-send').addClass('disabled').text(' Loading...').prepend('<i class="fas fa-spinner fa-pulse fa-fw"></i>');
+            $('.alert').remove();
+        },
+        success: function(response) {
+            $('.btn-send').addClass('disabled').text(' Send').prepend('<i class="fas fa-commenting fa-fw"></i>');
+            if ($.trim(response)) {
+                $('.profile').prepend(response);
+                $('.private-message').removeClass('active');
+                $('#subject').val('');
+                $('#message').val('');
+            }
+        }
+    });
+});
+
+</script>
+<?= $footer; ?>

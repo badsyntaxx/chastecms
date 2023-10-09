@@ -1,0 +1,48 @@
+.pagination-controls {
+    margin-top: 10px;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination i {
+    height: inherit;
+}
+
+.pagination button {
+    overflow: hidden;
+    color: #3561a3;
+}
+
+.dark-theme .pagination button {
+    color: #0099ff;
+}
+
+.pagination .btn-prev {
+    padding-right: 10px;
+    border-right: 1px solid #d9d9d9;
+}
+
+.pagination .btn-next {
+    padding-left: 10px;
+    border-left: 1px solid #d9d9d9;
+}
+
+#pagination-select {
+    display: inline-block;
+}
+
+.limit-per-page {
+    height: 27px;
+}
+
+.total {
+    margin: 2px 0 5px 25px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.list-page .action:hover {
+    cursor: initial;
+}

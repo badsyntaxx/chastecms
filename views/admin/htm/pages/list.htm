@@ -1,0 +1,33 @@
+<table class="list-table">
+    <tr>
+        <th class="text-center number-col">#</th>
+        <th class="text-center check-cell"><input type="checkbox" id="check-all"></th>
+        <th class="btn-sort text-center id-col">ID</th>
+        <th class="btn-sort">Name</th>
+        <th class="btn-sort">Title</th>
+        <th class="btn-sort">Views</th>
+        <th class="text-right action">Action</th>
+    </tr>
+    <?php foreach ($pages_list as $p): ?>
+    <tr class="data-row">
+        <td class="text-center number-col"></td>
+        <?php if (!$p['locked']): ?>
+        <td class="text-center check-cell">
+            <input type="checkbox" name="page_check<?= $p['pages_id']; ?>" value="<?= $p['pages_id']; ?>" class="checkbox">
+        </td>
+        <?php else: ?>
+        <td class="text-center check-cell"></td>
+        <?php endif ?>
+        <td class="text-center id-col"><?= $p['pages_id']; ?></td>
+        <td><a href="<?= $p['route']; ?>"><?= $p['name']; ?></a> (<?= $p['pages_id']; ?>)</td>
+        <td><?= $p['title']; ?></td>
+        <td><?= $p['views']; ?></td>
+        <td class="text-right">
+            <a href="/admin/pages/page/<?= $p['link']; ?>" class="btn btn-default btn-small pull-right"><i class="fas fa-pencil-alt fa-fw"></i> Edit</a>
+        </td>
+    </tr>
+    <?php endforeach ?>
+</table>
+<script type="text/javascript">
+
+</script>

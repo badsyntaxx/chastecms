@@ -1,0 +1,122 @@
+<?= $header; ?>
+<main class="main robots-page">
+    <?= $nav; ?>
+    <div class="workarea <?= $main_nav; ?>">
+        <div class="row main-title">
+            <?= $breadcrumb; ?>
+            <?= $search; ?>
+        </div>
+        <div class="row main-controls">
+            <a href="/admin/" class="btn btn-basic pull-right" title="Close"><i class="fas fa-times fa-fw"></i></a>
+            <a href="/admin/pages/" class="btn btn-basic pull-right" title="Back"><i class="fas fa-reply fa-fw"></i></a>
+            <a href="" class="btn btn-basic pull-right" title="Refresh"><i class="fas fa-sync-alt fa-fw"></i></a>
+        </div>
+        <div class="row alert-area"></div>
+        <div class="row main-panel">
+            <div class="panel-content">
+                <div class="row">
+                    <div class="label-col">
+                        <label style="width:120px;">Disallow Links:</label>
+                    </div>
+                </div>
+                <form id="robots-form">
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+getRobotsData();
+
+$('body').on('keydown keyup change', '.robot', function() {
+    var val = '/' + $(this).val();
+    var i = val.replace(/[^A-Za-z0-9/-]/g, '');
+    var e = i.replace(/\/\/+/g, '/');
+    var button = $(this).next();
+    $(this).val(e);
+    if (e.length > 1) {
+        $(button).removeAttr('disabled');
+    } else {
+        $(button).attr('disabled', true);
+    }
+});
+
+$('body').on('click', '.btn-add-robot', function() {
+    var val = $(this).prev('.robot').val();
+    $.ajax({
+        url: '/admin/robots/insertRobot',
+        type: 'POST',
+        data: {route: val},
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.alert-area').append('<div class="alert ' + data.alert + ' space-bottom-15"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+            } 
+        },
+        complete: function() {
+            getRobotsData();
+            $('html, body').animate({
+                scrollTop: $(document).height()
+            }, 300);
+        }
+    }); 
+});
+
+$('body').on('click', '.btn-remove-robot', function() {
+    var val = $(this).prev('.robot').val();
+    $.ajax({
+        url: '/admin/robots/removeRobot',
+        type: 'POST',
+        data: {route: val},
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.alert-area').append('<div class="alert ' + data.alert + ' space-bottom-15"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+            } 
+        },
+        complete: function() {
+            getRobotsData();
+            $('html, body').animate({
+                scrollTop: $(document).height()
+            }, 300);
+        }
+    }); 
+});
+
+function getRobotsData() {
+    $('#robots-form .settings-row').remove();
+    $.ajax({
+        url: '/admin/robots/getRobotsData',
+        type: 'GET',
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                if (data.length) {
+                    $(data).each(function(index, item) {
+                        removeRoute(data, index);
+                    });
+                }
+            } 
+        },
+        complete: function() {
+            addRoute();
+            $('html, body').animate({
+                scrollTop: $(document).height()
+            }, 300);
+        }
+    }); 
+}
+
+function addRoute() {
+    $('#robots-form').append('<div class="row settings-row"><input type="text" name="robot" class="col col-90 input-attached-right robot"><button type="button" class="btn btn-go btn-attached-left btn-add-robot col-10" disabled><i class="fas fa-plus fa-fw"></i> Add</button></div>');
+}
+
+function removeRoute(data, index) {
+    $('#robots-form').append('<div class="row settings-row"><input type="text" name="robot" class="col col-90 input-attached-right robot" readonly value="' + data[index].route + '" id="' + data[index].id + '"><button type="button" class="btn btn-stop btn-attached-left btn-remove-robot col-10"><i class="fas fa-minus fa-fw"></i> Remove</button></div>'); 
+}
+
+
+</script>
+<?= $footer; ?>

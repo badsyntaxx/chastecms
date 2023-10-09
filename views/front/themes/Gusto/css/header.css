@@ -1,0 +1,177 @@
+/**
+ * Header CSS
+ *
+ * This header.css file may also include css for the logo and navigation.
+*/
+.header {
+    padding: 0 30px;
+    z-index: 999;
+    background-color: #edf0f5;
+    border-bottom: 1px solid #d9d9d9;
+    color: #fff;
+    -webkit-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out
+}
+
+@media only screen and (max-width:414px) {
+    .header {
+        padding: 0 15px;
+    }
+}
+
+/* Logo */
+.logo, .logo:visited {
+    float: left;
+    margin: 12px 0 0 0;
+    font-size: 50px;
+    line-height: 50px;
+    color: #24476e;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+}
+
+.logo span {
+    font-size: 13px;
+}
+
+@media only screen and (max-width:414px) {
+    .logo {
+        margin: 10px 0;
+        font-size: 24px;
+        line-height: 24px;
+        font-weight: 700;
+    }
+}
+
+/* Navigation */
+@media only screen and (max-width:414px) {
+    .nav {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: -250px;
+        float: initial;
+        width: 250px;
+        height: 100%;
+        padding: 10px 0;
+        background-color: #edf0f5;
+        -webkit-transition: all .5s ease-in-out;
+        -ms-transition: all .5s ease-in-out;
+        transition: all .5s ease-in-out
+    }
+    .nav.active {
+        left: 0px;
+    }
+}
+
+.nav ul {
+    list-style: none;
+}
+
+.nav ul li {
+    position: relative;
+    float: left
+}
+
+@media only screen and (max-width:414px) {
+    .nav ul li {
+        width: 100%;
+    }
+}
+
+.nav ul li a, .nav ul li a:visited {
+    float: left;
+    width: 100%;
+    height: 40px;
+    padding: 0 20px;
+    color: #24476e;
+    ;
+    line-height: 40px;
+    text-align: left;
+    -webkit-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out
+}
+
+@media only screen and (max-width:414px) {
+    .nav ul li a, .nav ul li a:visited {
+        height: 70px;
+        padding: 0 20px;
+        line-height: 70px;
+    }
+}
+
+.nav ul li a:hover, .nav ul li a:focus, .nav ul li a:active {
+    background-color: #e7e7e7;
+}
+
+.nav ul li a.current {
+    color: #688fba
+}
+
+.dropdown-button i {
+    padding-right: 5px;
+    font-family: "Font Awesome 5 Free"
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 40px;
+    right: 0px;
+    z-index: 999;
+    overflow: hidden;
+    visibility: hidden;
+    min-width: 175px;
+    max-height: 0px;
+    padding: 0;
+    border: 1px solid #446386;
+    background-color: #edf0f5;
+    -webkit-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out
+}
+
+@media only screen and (max-width:414px) {
+    .dropdown-menu {
+        position: relative;
+        top: 0px;
+        right: auto;
+        min-width: 150px;
+        padding: 0;
+    }
+}
+
+.dropdown-menu.active {
+    visibility: visible;
+    max-height: 300px;
+    padding: 5px 0;
+}
+
+@media only screen and (max-width:414px) {
+    .dropdown-menu.active {
+        border: none;
+    }
+}
+
+.dropdown-menu li {
+    width: 100%
+}
+
+.menu-button {
+    display: none;
+    float: right;
+    padding: 4px 0 0 0;
+    color: #fff;
+    font-size: 24px;
+}
+
+@media only screen and (max-width:414px) {
+    .menu-button {
+        display: block;
+    }
+}
+
+.nav-main {
+    margin: 25px 0 0 0;
+}

@@ -1,0 +1,11 @@
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.version-build {
+    font-size: 12px;
+}

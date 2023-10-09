@@ -1,0 +1,29 @@
+<table class="list-table">
+    <tr>
+        <th class="text-center check-cell"><input type="checkbox" id="check-all"></th>
+    </tr>
+    <?php foreach ($messages as $message): ?>
+    <tr class="data-row">
+        <td class="text-center check-cell">
+            <input type="checkbox" name="page_check<?= $message['id']; ?>" value="<?= $message['id']; ?>" class="checkbox">
+        </td>
+        <td><?= $message['subject']; ?></td>
+        <td><?= $message['sender']; ?></td>
+        <td><?= $message['receiver']; ?></td>
+        <td><?= $message['message']; ?></td>
+        <td><?= $message['timestamp']; ?></td>
+    </tr>
+    <?php endforeach ?>
+</table>
+<script type="text/javascript">
+
+$('.is-online').each(function() {
+    if ($(this).text() == 'Online') {
+        $(this).find('i').addClass('text-green').removeClass('text-red');
+    }
+    if ($(this).text() == 'Offline') {
+        $(this).find('i').addClass('text-red').removeClass('text-green');
+    }
+});
+
+</script>

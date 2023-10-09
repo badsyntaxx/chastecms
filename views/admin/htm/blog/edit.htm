@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><?= $title; ?></title>
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="IE=edge, width=device-width initial-scale=1"
+            http-equiv="X-UA-Compatible"
+        />
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="/views/themes/<?= $theme; ?>/css/stylesheet.css?version<?= mt_rand(1, 99999) ?>"
+            media="all"
+        />
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="/views/themes/admin/css/page-editor.css?version<?= mt_rand(1, 99999) ?>"
+            media="all"
+        />
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="/views/themes/admin/css/filebrowser.css?version<?= mt_rand(1, 99999) ?>"
+            media="all"
+        />
+        <link
+            type="text/css"
+            rel="stylesheet"
+            href="/views/themes/admin/css/dropzone.css?version<?= mt_rand(1, 99999) ?>"
+            media="all"
+        />
+        <link type="text/css" rel="stylesheet" href="/javascript/jquery-ui/jquery-ui.min.css" />
+        <script type="text/javascript" src="/javascript/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="/javascript/jquery-ui/jquery-ui.min.js"></script>
+        <?php if ($logged): ?>
+        <script type="text/javascript" src="/javascript/activity-checker.js"></script>
+        <?php endif ?>
+        <script type="text/javascript" src="/javascript/dropzone.js"></script>
+        <script type="text/javascript" src="/javascript/chaste.js"></script>
+        <script type="text/javascript" src="/javascript/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/javascript/filebrowser.js"></script>
+    </head>
+    <body class="row chaste">
+        <div class="page-editor">
+            <span class="row panel-title text-center"
+                >Blog Editor:
+                <?= $title; ?></span
+            >
+            <div class="row page-editor-btns">
+                <div class="wrapper">
+                    <button
+                        type="button"
+                        class="pe-btn pe-btn-go btn-update-blog pull-left"
+                        title="Save"
+                    >
+                        <i class="fas fa-save fa-fw"></i> Update
+                    </button>
+                    <button
+                        type="button"
+                        class="pe-btn pe-btn-default btn-browse pull-left"
+                        title="Browse"
+                    >
+                        <i class="fas fa-folder-open fa-fw"></i> Browse
+                    </button>
+                    <a href="/admin/" class="pe-btn pe-btn-basic pull-right" title="Close"
+                        ><i class="fas fa-times fa-fw"></i
+                    ></a>
+                    <a href="/admin/blog" class="pe-btn pe-btn-basic pull-right" title="Back"
+                        ><i class="fas fa-reply fa-fw fa-fw"></i
+                    ></a>
+                    <a href="" class="pe-btn pe-btn-basic pull-right" title="Refresh"
+                        ><i class="fas fa-sync-alt fa-fw"></i
+                    ></a>
+                    <div class="col alert-area"></div>
+                </div>
+            </div>
+            <form method="post" enctype="multipart/form-data" id="blog-form" class="row form">
+                <div class="page-content pad-bottom-60">
+                    <div class="wrapper">
+                        <input type="hidden" name="blog_id" value="<?= $blog_id; ?>" />
+                        <textarea name="body" id="blog-editor">
+                    <?= $body; ?>    
+                </textarea
+                        >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script type="text/javascript">
+            CKEDITOR.inline('blog-editor', {
+                customConfig: '/javascript/ckeditor/editableConfig.js',
+            }).on('blur', function (e) {
+                return false;
+            });
+
+            $(function () {
+                $('.filebrowser').draggable();
+            });
+            $('.page-editor').filebrowser({
+                dir: '/views/images/uploads/blog/',
+            });
+            $('.filebrowser').on('click', '.fb-file-link', function () {
+                var filename = $(this).text();
+                CKEDITOR.instances['blog-editor'].insertHtml(
+                    '<img src="' +
+                        localStorage.current_path +
+                        filename +
+                        '" alt="' +
+                        filename +
+                        '">'
+                );
+                $('.slideshow p > img').unwrap();
+            });
+
+            Dropzone.options.dropzone = {
+                url: '/admin/blog/upload',
+                paramName: 'upload_image',
+                dictDefaultMessage: 'Drop files here',
+                success: function (file, response) {
+                    if ($.trim(response)) {
+                        var data = JSON.parse(response);
+                        $('.dropzone').prepend(
+                            '<div class="alert ' +
+                                data.alert +
+                                ' row" style="margin-top:15px;"><strong>' +
+                                data.alert +
+                                '!</strong> ' +
+                                data.message +
+                                ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>'
+                        );
+                    }
+                },
+            };
+
+            $('body').on('click', '.btn-update-blog', function () {
+                var btn = $(this);
+                var btnhtml = btn.html();
+
+                for (instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+
+                $.ajax({
+                    url: '/admin/blog/update',
+                    type: 'POST',
+                    data: $('#blog-form').serialize(),
+                    success: function (response, status, xhr) {
+                        if ($.trim(response)) {
+                            var data = JSON.parse(response);
+                            $('.alert-area').html(
+                                '<div class="alert ' +
+                                    data.alert +
+                                    '"><strong>' +
+                                    data.alert +
+                                    '!</strong> ' +
+                                    data.message +
+                                    ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>'
+                            );
+                        }
+                    },
+                    complete: function () {
+                        btn.prop('disabled', false).html(btnhtml);
+                    },
+                });
+            });
+        </script>
+    </body>
+    <script type="text/javascript">
+        Common.init();
+    </script>
+</html>
