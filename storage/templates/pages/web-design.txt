@@ -1,0 +1,94 @@
+<div class="web-design-content">
+    <div class="row pad-ver-120 bkg-grey page-welcome">
+        <div class="wrapper">
+            <h1 class="heading-large text-blue space-bottom-30">More basic web design stuff for you to look at</h1>
+            <p class="text-large">The really interesting stuff is in the backend. You can <a href="/login">login</a> or if you're already logged in you can visit the <a href="/admin">admin</a> area.</p>
+        </div>
+    </div>
+    <div class="row space-top-60">
+        <div class="wrapper">
+            <div class="col col-30 responsive-design">
+                <img src="/views/images/responsive.png" alt="Responsive design" class="row space-bottom-60">
+                <div class="row">
+                    <hr class="mini space-ver-30">
+                </div>
+                <p class="row text-large space-top-60">RESPONSIVE DESIGN DISPLAYS BEAUTIFULLY ON ALL DEVICES AND SCREEN SIZES</p>
+            </div>
+            <div class="col col-70 service-highlights">
+                <div class="col dual space-bottom-60">
+                    <div class="col small-col">
+                        <i class="fas fa-palette fa-fw"></i>
+                    </div>
+                    <div class="col big-col">
+                        <h2 class="heading-small space-bottom-15"> Responsive Design</h2>
+                        <p>More and more, people are shifting away from standard desktop computers. To reach your target audience, it is imperative that your website displays optimally for all screen sizes including tablets and smartphones.</p>
+                    </div>
+                </div>
+                <div class="col dual space-bottom-60">
+                    <div class="col small-col">
+                        <i class="fas fa-check fa-fw"></i>
+                    </div>
+                    <div class="col big-col">
+                        <h2 class="heading-small space-bottom-15"> Easy Content Management</h2>
+                        <p>All our sites are built with a customized easy-to-use content management system. A CMS allows you to update your own site without needing to call up a programmer, which results in substantial savings down the road.</p>
+                    </div>
+                </div>
+                <div class="col dual">
+                    <div class="col small-col">
+                        <i class="fas fa-search fa-fw"></i>
+                    </div>
+                    <div class="col big-col">
+                        <h2 class="heading-small space-bottom-15"> Search Engine Optimized</h2>
+                        <p>We create search engine friendly markup, all-in-one SEO tools built right into your site, making it easy for people to find your website when they search for services like yours. This service is provided regardless of what level of site you purchase.</p>
+                    </div>
+                </div>
+                <div class="col dual">
+                    <div class="col small-col">
+                        <i class="fas fa-trophy fa-fw"></i>
+                    </div>
+                    <div class="col big-col">
+                        <h2 class="heading-small space-bottom-15"> Attentive Customer Service</h2>
+                        <p>We want your website to succeed, and believe that clear, concise communication with your web designer is the key. Take a look for yourself what my clients are saying. You’ll see that I strive to give you my best, each and every day.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pad-ver-30 space-top-60 have-questions bkg-blue text-white text-center">
+        <span>Have more questions? Need additional web services?</span> <a href="/contact" class="btn btn-alt">Contact us</a>
+    </div>
+    <div class="row space-top-60 space-bottom-120 our-process text-center">
+        <div class="wrapper">
+            <div class="row">
+                <h4 class="heading-xl space-bottom-30">My Process</h4>
+                <p class="text-large">The design and development of your site doesn’t need to be difficult or time-consuming. I strive my best to make the process as painless as possible and I will always keep you up to date on the progress.</p>
+            </div>
+            <div class="row space-top-60 process-parts">
+                <div class="col quad">
+                    <i class="fas fa-lightbulb fa-fw"></i>
+                    <hr class="mini-blue">
+                    <h5 class="heading-medium space-ver-30">1.Research</h5>
+                    <p class="text-large">I will gather input from you, and research your competition / industry and devise a solid development plan for your site.</p>
+                </div>
+                <div class="col quad">
+                    <i class="fas fa-paint-brush fa-fw"></i>
+                    <hr class="mini-blue">
+                    <h5 class="heading-medium space-ver-30">2.Design</h5>
+                    <p class="text-large">Based on our discussions during the research phase, I will then begin to design your site accordingly.</p>
+                </div>  
+                <div class="col quad">
+                    <i class="fas fa-laptop fa-fw"></i>
+                    <hr class="mini-blue">
+                    <h5 class="heading-medium space-ver-30">3.Develop</h5>
+                    <p class="text-large">After the design has been approved. I will gather hosting & domain information and begin to code and develop your site.</p>
+                </div>  
+                <div class="col quad">
+                    <i class="fas fa-rocket fa-fw"></i>
+                    <hr class="mini-blue">
+                    <h5 class="heading-medium space-ver-30">4.Launch</h5>
+                    <p class="text-large">Your site is ready to go and will be live to the public so you can begin your online journey.</p>
+                </div>   
+            </div>
+        </div>
+    </div>
+</div>  

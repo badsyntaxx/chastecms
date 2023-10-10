@@ -1,3 +1,5 @@
+
+RewriteOptions inherit
 Options -MultiViews -Indexes
 
 # Turn mod_rewrite on

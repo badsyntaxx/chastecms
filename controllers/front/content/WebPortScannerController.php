@@ -1,0 +1,29 @@
+<?php 
+ 
+/**
+ * WebPortScannerController Controller Class
+ */
+class WebPortScannerController extends Controller
+{
+    /**
+     * Init method
+     *
+     * The init method is the default for controller classes. Whenever a controller
+     * class is instantiated the init method will be called.
+     */
+    public function init()
+    {
+        $page = $this->load->model('pages')->getPage('name', 'web-port-scanner');
+ 
+        $data['title'] = $page['title'];
+        $data['description'] = $page['description'];
+ 
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();
+        $view['content'] = $this->load->model('pages')->getPageContent('web-port-scanner');
+ 
+        $this->load->model('pages')->updatePageStatistics('web-port-scanner');
+ 
+        exit($this->load->view('common/content', $view));
+    }
+}

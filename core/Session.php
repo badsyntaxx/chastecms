@@ -1,27 +1,26 @@
 <?php
 
 /**
- * Sessions Core Class
+ * Sessions Library Class
  *
- * The session class logs user data based on the session user id and 
+ * The session library logs user data based on the session user id and 
  * handles session related data.
  */ 
 class Session
 {
     /**
      * Users id number
+     * 
      * @var int
      */
     public $id;
 
     /**
-     * Log a user session.
-     * 
      * Check if the user id session is set. If the session is set access
      * the user model user the session user id and get the user data 
      * related to the session.
      * 
-     * @return array
+     * @return bool - True if a session is set, false if not.
      */
     public function isLogged()
     {
@@ -37,47 +36,40 @@ class Session
     /**
      * Create a session.
      * 
-     * @param string $session_name 
-     * @param mixed $session_value 
+     * @param string - $session_name - A name for the session var.
+     * @param mixed - $session_value - A mixed value depending on what's needed.
      */
-    public function createSession($session_name, $session_value, $override = false)
+    public function createSession($session_name, $session_value)
     {
-        if (!isset($_SESSION[$session_name]) || $override) {
+        if (!isset($_SESSION[$session_name])) {
             $_SESSION[$session_name] = $session_value;
         }
-    }
-
-    public function getSession($session_name)
-    {
-        $session = isset($_SESSION[$session_name]) ? $_SESSION[$session_name] : false;
-        return $session;
-    }
-
-    public function deleteSession($session_name)
-    {
-        unset($_SESSION[$session_name]);
     }
 
     /**
      * Create a cookie.
      * 
-     * @param string $name
-     * @param mixed $value
-     * @param int $expire 
+     * @param string - $name - A name for the cookie.
+     * @param mixed - $value - A mixed value depending on what's needed.
+     * @param int - $expire - How long before the cookie expires. 
      */
-    public function createCookie($name, $value, $expire)
+    public function createCookie($name, $value = null, $expire = null, $path = '/', $domain = null, $secure = null, $httponly = null)
     {
-        setcookie($name, $value, $expire, '/');
+        setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
     }
 
-    public function getCookie($cookie_name)
+    /**
+     * Cookie exists
+     * 
+     * @param string - Name of the cookie.
+     * @return bool - True if cookie is set, false if not.
+     */
+    public function cookieExists($name)
     {
-        $cookie = isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : false;
-        return $cookie;
-    }
-
-    public function deleteCookie($cookie_name)
-    {
-        unset($_COOKIE[$cookie_name]);
+        if (isset($_COOKIE[$name])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

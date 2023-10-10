@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Fancy Form</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- This is to prevent an annoying 404 error when browsers cant find a favicon -->
+    <link rel="stylesheet" href="stylesheet.css">
+    <script type="text/javascript" src="FancyForm.js"></script>
+    <style>
+        *,
+        *:before,
+        *:after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            padding: 100px 0;
+            background-color: #f8f8f8;
+            color: rgba(51, 51, 51, .8);
+            text-align: center;
+            font-family: Arial;
+        }
+
+        main {
+            width: 700px;
+            margin: auto;
+        }
+
+        strong {
+            float: left;
+            width: 100%;
+        }
+
+        hr {
+            float: left;
+            width: 100%;
+            margin: 40px 0 45px 0;
+        }
+
+        pre {
+            display: inline;
+            text-align: left;
+            background-color: #272822;
+            color: #fff;
+        }
+
+        code {
+            padding: 2px 3px 3px 3px;
+        }
+
+        .string {
+            color: #CE9178
+        }
+
+        .var {
+            color: #9CDCFE
+        }
+
+        .constdec {
+            color: #569cd6
+        }
+
+        .const {
+            color: #4FC1FF;
+        }
+
+        .func {
+            color: #DCDCAA
+        }
+
+        .type {
+            color: #4EC9B0;
+        }
+
+        .bkg {
+            background-color: #272822;
+        }
+
+        strong {
+            float: left;
+            width: 100%;
+            text-align: left;
+            font-size: 28px;
+            line-height: 28px;
+            margin-bottom: 25px;
+        }
+
+        div {
+            position: relative;
+            float: left;
+            width: 100%;
+        }
+
+        div > div {
+            position: relative;
+            float: left;
+            width: 49%;
+            margin-right: 2%;
+        }
+
+        div > div:nth-child(2) {
+            margin: 0;
+        }
+
+        p {
+            float: left;
+            width: 100%;
+            line-height: 21px;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .row {
+            float: left;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        /* Forms */
+        form {
+            float: left;
+            text-align: left;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0 15px;
+            background-color: #1261d8;
+            border: none;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <strong style="float: left;">Fancy Form</strong>
+        <p>Stylize your forms.</p>
+        <a href="FancyForm.zip">Download</a>
+        <hr>
+        <!-- FORM 1 -->
+        <form id="form1">
+            <strong>Example:</strong>
+            <div class="row">
+                <div>
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name">
+                </div>
+                <div>
+                    <label for="species">Species</label>
+                    <select name="species">
+                        <option value=""></option>
+                        <option value="Man">Man</option>
+                        <option value="Elf">Elf</option>
+                        <option value="Dwarf">Dwarf</option>
+                        <option value="Hobbit">Hobbit</option>
+                        <option value="Orc">Orc</option>
+                        <option value="Ent">Ent</option>
+                        <option value="Troll">Troll</option>
+                        <option value="Goblin">Goblin</option>
+                        <option value="Maiar">Maiar</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="exclude1">Exclude 1</label>
+                    <input type="text" name="exclude1" id="exclude1">
+                </div>
+                <div>
+                    <label for="exclude2">Exclude 2</label>
+                    <input type="text" name="exclude2" class="exclude2">
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="date">Date</label>
+                    <input type="date" name="date">
+                </div>
+                <div>
+                    <label for="time">Time</label>
+                    <input type="time" name="time">
+                </div>
+            </div>
+            <div class="row">
+                <label for="have_leaf">Have any hobbits leaf?</label><input type="checkbox" name="have_leaf">
+            </div>
+            <div class="row">
+                <div>
+                    <input type="file" name="file">
+                    <label for="file">Upload</label>
+                </div>
+                <div>
+                    <label for="number">Number</label>
+                    <input type="number" name="number">
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="range">Range</label>
+                    <input type="range" name="range" min="0" max="10" class="foo">
+                </div>
+                <div>
+                    <label for="color">Color</label>
+                    <input type="color" name="color">
+                </div>
+            </div>
+            <div class="row">
+                <label for="password">Password</label>
+                <input type="password" name="password">
+            </div>
+            <div class="row">
+                <label for="gender">Gender:</label>
+                <input type="radio" name="gender" value="Male" class="foo"><label>Male</label>
+                <input type="radio" name="gender" value="Female" class="foo"><label>Female</label>
+                <input type="radio" name="gender" value="Wormself" class="foo"><label>Wormself</label>
+            </div>
+            <div class="row">
+                <label for="bio">Bio</label>
+                <textarea name="bio"></textarea>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn">Submit Button</button>
+                <button type="button" class="btn">Button Button</button>
+                <a href="#" class="btn">a Button</a>
+            </div>
+        </form>
+        <pre style="display:block;float:left;width:100%;padding:0 20px;margin-bottom: 200px;">
+            <code style="float:left;">
+<span class="constdec">const</span> <span class="const">fancyform</span> = <span class="constdec">new</span> <span class="type">FancyForm</span>();
+
+<span class="var">fancyform</span>.<span class="func">fancyfy</span>({
+    <span class="var">form:</span> <span class="string">'#form1'</span>,
+    <span class="var">exclude:</span> [<span class="string">'#exclude1'</span>, <span class="string">'.exclude2'</span>],
+    <span class="var">buttons:</span> [<span class="string">'.btn'</span>],
+});
+            </code>
+        </pre>
+    </main>
+</body>
+<script type="text/javascript">   
+
+    fancyform.fancyfy({
+        form: '#form1',
+        exclude: ['#exclude1', '.exclude2'],
+        buttons: ['.btn']
+    });
+
+</script>
+</html>

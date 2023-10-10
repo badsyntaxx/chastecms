@@ -1,6 +1,6 @@
 <?php 
 
-$_['nav_text_dashboard'] = 'Dashboard';
+$_['nav_text_overview'] = 'Overview';
 $_['nav_text_users'] = 'Users';
 $_['nav_text_pages'] = 'Pages';
 $_['nav_text_sitemap'] = 'Sitemap';

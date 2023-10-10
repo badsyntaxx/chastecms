@@ -1,7 +1,7 @@
 <?php 
 
 /**
- * Mail Core Class
+ * Mail Library
  *
  * Mail library requires the phpmailer library and is used to send emails
  * from the site.
@@ -11,8 +11,8 @@ class Mail
     /**
      * Send email using phpmailer.
      * 
-     * @param string $mail  
-     * @return array             
+     * @param array - $email - To and from data to send the email.
+     * @return bool - Return true if email is sent and false if not.             
      */
     public function sendMail($email)
     {
@@ -21,7 +21,7 @@ class Mail
         $settings = new SettingsModel();
         $mail = $settings->getMailSettings();
 
-        // $phpmailer->SMTPDebug = 2;                       // Enable verbose debug output
+        $phpmailer->SMTPDebug = 2;                       // Enable verbose debug output
         $phpmailer->isSMTP();                            // Set mailer to use SMTP
         $phpmailer->Host = $mail['host'];                // Specify main and backup SMTP servers
         $phpmailer->SMTPAuth = true;                     // Enable SMTP authentication
@@ -50,5 +50,21 @@ class Mail
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get a template file to use when sending email.
+     * 
+     * @param string - $file - The name of the template file to get.
+     * @return string - The text from the template file.
+     */
+    public function getTemplate($file)
+    {
+        $file = ROOT_DIR . '/storage/templates/email/' . $file . '.txt';
+        ob_start();
+        require ($file);
+        $output = ob_get_contents();
+        ob_end_clean();
+        return $output;
     }
 }

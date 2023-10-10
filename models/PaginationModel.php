@@ -6,44 +6,28 @@
 class PaginationModel extends Model
 {
     /**
-     * Paginate records.
-     *
-     * @param string $table
-     * @param string $orderby
-     * @param string $direction
-     * @param int $start
-     * @param int $limit
-     * @param string $where
-     * @return array
+     * Paginate records
      */
-    public function paginate($table = null, $orderby = null, $direction = null, $start = null, $limit = null, $column = null, $is = null)
+    public function paginate($table = null, $orderby = null, $direction = null, $page = null, $limit = null)
     {
-        if (isset($start) && isset($limit)) {
-            $orderby = $this->checkOrderby($orderby, $table);
-            $total = $this->getTotalRecordsNumber($table, $column, $is);
-            $total = $total ? $total : 0;
-            $pages = ceil($total / $limit);
-            $start = ($start-1) * $limit;
-            $records = $this->getRecords($table, $orderby, $direction, $start, $limit, $column, $is);
-            $records = $records ? $records : [];
-            $output = ['pages' => $pages, 'start' => $start, 'records' => $records, 'total' => $total];
+        if (isset($page) && isset($limit)) {
+            $orderby = $this->checkOrderby($orderby);
+            $total = $this->getTotalRecordsNumber($table);
+            $pages = ceil($total/$limit);
+            $start = ($page-1) * $limit;
+            $records = $this->getRecords($table, $orderby, $direction, $start, $limit);
+            $output = ['pages' => $pages, 'start' => $start, 'records' => $records];
             return $output;
         }
     }
 
     /** 
-     * Get total number of records from a given table.
-     *
-     * @param string $table
-     * @return mixed
-     */
-    public function getTotalRecordsNumber($table, $column, $is)
+     * Get total number or records from a given table.
+     */ 
+    public function getTotalRecordsNumber($table)
     {
-        if ($column && $is) {
-            $select = $this->table($table)->count()->where($column, $is)->get('string');
-        } else {
-            $select = $this->table($table)->count()->get('string');
-        }
+        // SELECT * FROM `pages`
+        $select = $this->table($table)->select('*')->getTotal();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -58,13 +42,10 @@ class PaginationModel extends Model
      *
      * @return array
      */
-    public function getRecords($table, $orderby, $direction, $start, $limit, $column, $is)
+    public function getRecords($table, $orderby, $direction, $start, $limit)
     {
-        if (isset($column) && isset($is)) {
-            $select = $this->table($table)->select('*')->where($column, $is)->orderBy($orderby, $direction)->limitBetween($start, $limit)->get();
-        } else {
-            $select = $this->table($table)->select('*')->orderBy($orderby, $direction)->limitBetween($start, $limit)->get();
-        }
+        // SELECT * FROM `users` ORDER BY `id` ASC LIMIT 5, 10
+        $select = $this->table($table)->select('*')->orderBy($orderby, $direction)->limitBetween($start, $limit)->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? [] : $select['response'];
@@ -74,25 +55,21 @@ class PaginationModel extends Model
         }
     }
 
-    public function checkOrderby($orderby, $table)
+    public function checkOrderby($orderby)
     {
         switch ($orderby) {
             case 'status':
-                if ($table == 'users') {
-                    return 'last_active';
-                } else {
-                    return $orderby;
-                }
+                return 'last_active';
                 break;
-            case 'request_id':
-                return 'requests_id';
-                break; 
-            case 'cable_id':
-                return 'cable_num';
-                break; 
-            case 'name':
-                return 'firstname';
+            case 'last_viewed':
+                return 'last_view';
                 break;
+            case 'posted':
+                return 'post_date';
+                break; 
+            case 'order':
+                return 'sort_order';
+                break;  
             default:
                 return $orderby;
                 break;

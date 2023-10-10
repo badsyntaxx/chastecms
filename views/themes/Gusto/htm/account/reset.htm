@@ -1,0 +1,54 @@
+<?= $header; ?>
+<main class="main forgot-page">
+    <div class="row pad-top-60 pad-bottom-60">
+        <div class="wrapper">
+            <div class="col user-form text-center">
+                <div class="row reset-form">
+                    <h1 class="pad-bottom-15 heading-medium text-center">Reset Your Password</h1>
+                    <div class="alert-area"></div>
+                    <form id="save-form" class="row fancy-form change-pw">
+                        <div class="row fancy-row space-bottom-15 password">
+                            <input type="hidden" name="id" value="<?= $id; ?>">
+                            <label for="password">New password</label>
+                            <input type="password" name="password" required id="password" class="row">
+                            <div class="show-pw"><i class="fas fa-eye fa-fw"></i></div>
+                        </div>
+                        <div class="row fancy-row space-bottom-15 confirm">
+                            <label for="confirm">Repeat password</label>
+                            <input type="password" name="confirm" required id="confirm" class="row">
+                        </div>
+                        <div class="row form-row">
+                            <button type="button" class="btn btn-default btn-save row"><i class="fas fa-save fa-fw"></i> Save</button>
+                        </div>  
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+$('#save-form').validator({
+    formButton : '.btn-save',
+    checkEmailTaken : false
+});
+
+$('body').on('click', '.btn-save', function() {
+    $.ajax({
+        url: '/account/saveResetPassword',
+        type: 'POST',
+        data: $('#save-form').serialize(),
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.alert-area').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+            }
+        }, 
+        complete: function() {
+            Common.btn.prop('disabled', false).html(Common.btnhtml);      
+        }
+    });
+});
+
+</script>
+<?= $footer; ?>

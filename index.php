@@ -3,41 +3,28 @@
 // Start a new session.
 if (!isset($_SESSION)) { session_start(); }
 
-// Define Chaste version.
-define('BUILD', '19.9.18-07.46.13');
+// Define Gusto version.
+define('VERSION', '1.0.0');
+define('BUILD', '19.2.14-10.05.28');
 
-// Include Chaste config.
+// Include Gusto config.
 require_once str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']) . '/config/config.php';
 
 // Run install script if present.
 if (is_file(ROOT_DIR . '/install/startup.php')) {
-
     require_once ROOT_DIR . '/install/startup.php';
-
 } else {
-
     // Include start files.
     require_once ROOT_DIR . '/autoload.php';
+    require_once ROOT_DIR . '/startup.php';
+    require_once ROOT_DIR . '/fallback.php';
 
-    Framework::getInstance();
-}
+    // Autoload.
+    spl_autoload_register('autoloadCores');
+    spl_autoload_register('autoloadControllers');
+    spl_autoload_register('autoloadModels');
+    spl_autoload_register('autoloadLibraries');
 
-/**
- * This function will check if the first index in the url_arrayd URL array is the string admin.
- * 
- * @return boolean - Simple true or false.
- */
-function isAdmin()
-{
-    if (isset($_GET['url'])) {
-        $url_array = explode('/', filter_var(trim($_GET['url'], '/'), FILTER_SANITIZE_URL));
-    }
-
-    if (isset($url_array[0])) {
-        if ($url_array[0] == 'admin') {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    // Start Gusto.
+    startup();
 }

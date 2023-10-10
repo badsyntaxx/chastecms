@@ -1,0 +1,44 @@
+<table class="list-table">
+    <tr>
+        <th class="text-center number-col">#</th>
+        <th class="text-center check-cell"><input type="checkbox" id="check-all"></th>
+        <th class="btn-sort text-center id-col">ID</th>
+        <th class="btn-sort">Username</th>
+        <th class="btn-sort">Email</th>
+        <th class="btn-sort">Status</th>
+        <th class="btn-sort">Group</th>
+        <th class="text-right action">Action</th>
+    </tr>
+    <?php foreach ($users as $user): ?>
+    <tr class="data-row">
+        <td class="text-center number-col"></td>
+        <?php if ($user['users_id'] != 1): ?>
+        <td class="text-center check-cell">
+            <input type="checkbox" name="user_check<?= $user['users_id']; ?>" value="<?= $user['users_id']; ?>" class="checkbox">
+        </td>
+        <?php else: ?>
+        <td class="text-center check-cell"></td>
+        <?php endif ?>
+        <td class="text-center id-col"><?= $user['users_id']; ?></td>
+        <td><a href="/profile/<?= $user['username']; ?>" title="Go to user profile"><?= $user['username']; ?> (<?= $user['users_id']; ?>)</a></td>
+        <td><?= $user['email']; ?></td>
+        <td class="is-online"><i class="fas fa-circle fa-fw"></i><?= $user['status']; ?></td>
+        <td class="user-group"><?= $user['group']; ?></td>
+        <td class="text-right">
+            <a href="/admin/users/<?= $user['username']; ?>" class="btn btn-default btn-small pull-right" title="Edit this user"><i class="fas fa-pencil-alt fa-fw"></i> Edit</a>
+        </td>
+    </tr>
+    <?php endforeach ?>
+</table>
+<script type="text/javascript">
+
+$('.is-online').each(function() {
+    if ($(this).text() == 'Online') {
+        $(this).find('i').addClass('text-green').removeClass('text-red');
+    }
+    if ($(this).text() == 'Offline') {
+        $(this).find('i').addClass('text-red').removeClass('text-green');
+    }
+});
+
+</script>

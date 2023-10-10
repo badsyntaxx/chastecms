@@ -1,0 +1,166 @@
+/* Buttons */
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'Titillium Web';
+    font-size: inherit;
+    font-weight: inherit;
+    -webkit-appearance: none;
+}
+
+button:disabled, button[disabled], a:disabled, a[disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+    font-family: 'Titillium Web';
+}
+
+.btn {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 10px 0 10px;
+    border: none;
+    border-radius: 3px;
+    font-family: 'Titillium Web';
+    font-size: 12px;
+    font-weight: inherit;
+    line-height: 20px;
+    text-align: center;
+    -webkit-appearance: none;
+    -webkit-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out
+}
+
+.btn i {
+    font-size: 10px;
+    line-height: 20px;
+    letter-spacing: initial;
+}
+
+.btn:focus, .btn:active {
+    outline: none
+}
+
+.btn::-moz-focus-inner {
+    border: 0
+}
+
+.btn-default, .btn-default:visited {
+    color: rgba(255, 255, 255, 1) !important
+}
+
+.light-theme .btn-default {
+    background-color: #408fdf;
+    box-shadow: inset 0 0 1px 1px #6f95be;
+    border: 1px solid #2671bd;
+}
+
+.dark-theme .btn-default {
+    box-shadow: inset 0 0 1px 1px #ffb626;
+    border: 1px solid #976400;
+    background-color: #f0a20a;
+}
+
+.light-theme .btn-default:hover {
+    background-color: #1e5fa1;
+    color: rgba(255, 255, 255, 1)
+}
+
+.dark-theme .btn-default:hover {
+    background-color: #e39702;
+    color: rgba(255, 255, 255, 1)
+}
+
+.btn-default:active {
+    box-shadow: inset 0 0 0 1px #727272, inset 0 2px 7px #505050
+}
+
+.btn-go, .btn-go:visited {
+    background-color: #5eb24a;
+    border: 1px solid rgba(56, 142, 35, 0.3);
+    box-shadow: inset 0 0 1px 1px #7dc86b;
+    color: rgba(255, 255, 255, 1) !important
+}
+
+.btn-go:hover {
+    background-color: #58c83d;
+    color: rgba(255, 255, 255, 1)
+}
+
+.btn-go:active {
+    box-shadow: inset 0 0 0 1px #727272, inset 0 2px 7px #505050
+}
+
+.btn-stop, .btn-stop:visited {
+    background-color: #e75858;
+    border: 1px solid #c04d4d;
+    box-shadow: inset 0 0 1px 1px #f78686;
+    color: rgba(255, 255, 255, 1) !important
+}
+
+.btn-stop:hover {
+    background-color: #d33838;
+    color: rgba(255, 255, 255, 1)
+}
+
+.btn-stop:active {
+    box-shadow: inset 0 0 0 1px #727272, inset 0 2px 7px #505050
+}
+
+.light-theme .btn-basic {
+    background-color: #ececec;
+    border: 1px solid #bfbfbf;
+    box-shadow: inset 0 0 1px 1px #fafafa;
+    color: #555 !important
+}
+
+.dark-theme .btn-basic {
+    background-color: #c1c1c1;
+    border: 1px solid #2e2e2e;
+    box-shadow: inset 0 0 1px 1px #dadada;
+    color: #444 !important
+}
+
+.btn-basic:hover {
+    background-color: #fefefe;
+    color: #555
+}
+
+.btn-basic:active {
+    box-shadow: inset 0 0 0 1px #727272, inset 0 2px 7px #505050
+}
+
+.btn-small {
+    height: 25px;
+    padding: 0 5px;
+    font-size: 11px;
+    line-height: 22px;
+}
+
+.btn-small i {
+    line-height: 22px;
+}
+
+.btn.pull-right {
+    margin-left: 5px !important;
+    margin-right: 0 !important;
+}
+
+.btn.pull-left {
+    margin-right: 5px !important;
+    margin-left: 0 !important;
+}
+
+.btn-attached-left {
+    line-height: 28px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.btn-attached-right {
+    line-height: 28px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}

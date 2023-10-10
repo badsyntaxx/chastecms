@@ -26,10 +26,8 @@ class AdminFilebrowserController extends Controller
 
     public function delete() 
     {
-        $dir = trim($_POST['dir']);
-        $file = trim($_POST['file']);
         $filebrowser = $this->load->library('filebrowser');
-        $result = $filebrowser->delete($dir, $file);
+        $result = $filebrowser->delete();
         switch ($result) {
             case 'file_deleted':
                 exit($this->language->get('filebrowser/file_deleted'));

@@ -1,6 +1,6 @@
 <?php 
 
-$_['nav_text_dashboard'] = '概要';
+$_['nav_text_overview'] = '概要';
 $_['nav_text_users'] = 'ユーザー';
 $_['nav_text_pages'] = 'ページ';
 $_['nav_text_sitemap'] = 'サイトマップ';

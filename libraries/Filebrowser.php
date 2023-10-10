@@ -31,7 +31,7 @@ class FileBrowser
         natcasesort($dirs);
         natcasesort($files);
         $dirs = array_values($dirs);
-        $files = array_values(array_diff($files, ['index.htm', '.htaccess']));
+        $files = array_values(array_diff($files, ['index.htm']));
         $things = ['dirs' => $dirs, 'files' => $files];
 
         return $things;
@@ -54,35 +54,33 @@ class FileBrowser
         }
     }
 
-    public function delete($dir, $file) 
+    public function delete() 
     {
-        if (!empty($dir)) {
-            $dir = ROOT_DIR . $_POST['dir'];
-            $file = trim($_POST['file']);
+        $dir = ROOT_DIR . $_POST['dir'];
+        $file = trim($_POST['file']);
 
-            if ($file === 'default_blog.jpg' || $file === 'index.htm') {
-                return 'system_file';
-            }
-            if (is_file($dir . $file)) {
-                unlink($dir . $file);
-                return 'file_deleted';
-            } else {
-                $dir = $dir . $file;
-                $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
-                $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+        if ($file === 'default_blog.jpg' || $file === 'index.htm') {
+            return 'system_file';
+        }
+        if (is_file($dir . $file)) {
+            unlink($dir . $file);
+            return 'file_deleted';
+        } else {
+            $dir = $dir . $file;
+            $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+            $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
 
-                foreach ($files as $file) {
-                    if ($file->isDir()){
-                        rmdir($file->getRealPath());
-                    } else {
-                        unlink($file->getRealPath());
-                    }
+            foreach ($files as $file) {
+                if ($file->isDir()){
+                    rmdir($file->getRealPath());
+                } else {
+                    unlink($file->getRealPath());
                 }
-
-                rmdir($dir);
-                
-                return 'folder_deleted';
             }
+
+            rmdir($dir);
+            
+            return 'folder_deleted';
         }
     }
 }

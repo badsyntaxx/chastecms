@@ -1,0 +1,44 @@
+<?= $header; ?>
+<main class="main blog-page">
+    <div class="wrapper">
+        <div class="row pad-top-60 pad-bottom-60">
+            <h1>BLOG</h1>  
+            <hr class="row space-top-15 space-bottom-15">
+            <div class="blog-view">
+                <div class="row blog-previews">
+                    <?php if (empty($posts)): ?>
+                    <p>There are no blog posts right now.</p>
+                    <?php else: ?>
+                    <?php foreach ($posts as $post): ?>
+                    <div class="row pad-bottom-30">
+                        <div class="blog-column-left">
+                            <a href="/blog/<?= $post['id']; ?>/<?= $post['blog_link']; ?>">
+                                <div class="preview-image">
+                                    <?php if ($post['preview_image']): ?>
+                                    <?= $post['preview_image']; ?>
+                                    <?php else: ?>
+                                    <img src="/public/images/uploads/blog/blog_default.jpg" alt="Blog">
+                                    <?php endif ?>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="blog-column-right">
+                            <div class="row blog-info">
+                                <span class="pull-left">By:<a href="/profile/<?= $post['author']; ?>"> <?= $post['author']; ?></a></span> <span class="pull-right"><strong><?= $post['post_date']; ?></strong></span>
+                            </div>
+                            <div class="row blog-body"> 
+                                <?= $post['body']; ?> 
+                            </div>
+                            <div class="row blog-link">
+                                <a href="/blog/<?= $post['id']; ?>/<?= $post['blog_link']; ?>" class="pull-left">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach ?>
+                    <?php endif ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<?= $footer; ?>

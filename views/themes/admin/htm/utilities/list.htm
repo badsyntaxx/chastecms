@@ -1,0 +1,40 @@
+<?= $header; ?>
+<main class="main list-page">
+    <?= $nav; ?>
+    <div class="workarea">
+        <div class="row main-title">
+            <?= $breadcrumb; ?>
+            <?= $search; ?>
+        </div>
+        <div class="row main-controls"><?= $controls; ?></div>
+        <div class="row main-panel">
+            <div class="loading"><div class="loading-spinner"><i class="fas fa-circle-notch fa-fw fa-spin"></i></div></div>
+            <div class="row alert-area"></div>
+            <div class="row panel-content"></div>
+            <div class="row pagination-controls form">
+                <div class="col">
+                    <label>Limit</label>
+                    <select class="limit-per-page">
+                        <option class="limit10" value="10">10</option>
+                        <option class="limit15" value="15">15</option>
+                        <option class="limit25" value="25">25</option>
+                        <option class="limit50" value="50">50</option>o
+                        <option class="limit100" value="100">100</option>
+                    </select>
+                </div>
+                <div class="col total"></div>
+            </div>
+            <div class="pagination space-top-15"></div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+var url = window.location.pathname.split('/');
+var view = url[2];
+
+Pagination.init(view);
+MainControls.init();
+
+</script>
+<?= $footer; ?>

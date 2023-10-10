@@ -1,0 +1,72 @@
+<?= $header; ?>
+<main class="main messages-page">
+    <div class="row pad-top-60 pad-bottom-60">
+        <div class="wrapper">
+            <div class="row messages-wrapper">
+                <div class="col message-controls">
+                    <a href="/messages/inbox" class="btn-inbox">Inbox</a>
+                    <a href="/messages/sent" class="btn-sent">Sent</a>
+                    <a href="/messages/trash" class="btn-trash">Trash</a>
+                </div>
+                <div class="col message-pane">
+                    <div class="row">
+                        <table class="row">
+                            <?php if ($messages): ?>
+                            <?php foreach ($messages as $m): ?>
+                            <tr>
+                                <td class="check-col"><input type="checkbox" name="pm-checkbox" value="1" class="pm-checkbox"></td>
+                                <td><a href="/messages/<?= $type; ?>/<?= $m['chain_id']; ?>/<?= $m['subject']; ?>"><?= $m['subject']; ?></a> <span><?= $m['preview_text']; ?></span></td>
+                            </tr>
+                            <?php endforeach ?>    
+                            <?php endif ?>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <?php if ($message): ?>
+                        <?php foreach ($message as $m): ?>
+                        <div class="row message-bubble">
+                            <div class="row">
+                                
+                            </div>
+                            <div class="row message-body">
+                                <?= $m['message']; ?>
+                            </div>
+                        </div>
+                        <?php endforeach ?>    
+                        <?php endif ?>                        
+                    </div>
+                </div>
+            </div>
+            <div class="private-message">
+                <div class="private-message-titlebar">
+                    <span>Private Message</span>
+                </div>
+                <div class="private-message-formarea">
+                    <form id="pm-form" class="fancy-form">
+                        <div class="row fancy-row space-bottom-15">
+                            <label for="receiver">To: </label>
+                            <input type="text" name="receiver" value="{{receiver}}" readonly="readonly" id="username" class="row required">
+                        </div>
+                        <div class="row fancy-row space-bottom-15">
+                            <label for="subject">Subject: </label>
+                            <input type="text" name="subject" id="subject" class="row required">
+                        </div>
+                        <div class="row fancy-row space-bottom-15">
+                            <label for="message">Message: </label>
+                            <textarea name="message" id="message" class="row required"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="private-message-btnarea">
+                    <button type="button" class="pull-right btn btn-default btn-send disabled"><i class="fas fa-commenting fa-fw"></i> Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+
+
+</script>
+<?= $footer; ?>

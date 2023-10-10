@@ -21,15 +21,15 @@ class SitemapController extends Controller
      *
      * This method gets sitelinks from the database for display in the sitemap view.
      */
-    public function index()
+    public function init()
     {  
         $sitelinks = $this->load->model('sitemap')->getVisibleSiteLinks();
 
         $data['title'] = $this->language->get('sitemap/title');
         $data['description'] = $this->language->get('sitemap/description');
 
-        $view['header'] = $this->load->controller('header')->index($data);
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();
         $view['pages'] = $sitelinks ? $sitelinks : [];
 
         exit($this->load->view('information/sitemap', $view));

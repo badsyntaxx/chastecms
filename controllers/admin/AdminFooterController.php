@@ -5,7 +5,7 @@
  */
 class AdminFooterController extends Controller
 {
-    public function index()
+    public function init()
     {     
         return $this->load->view('common/footer', null);
     }

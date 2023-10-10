@@ -12,12 +12,7 @@ class NavigationModel extends Model
     public function getNavLinks()
     {
         // SELECT * FROM `navigation` ORDER BY `sort_order` ASC
-        $select = $this->table('pages')
-        ->select('navigation_id, name, nav_name, route, sort_order, parent, children, top, bottom')
-        ->innerJoin('navigation', 'pages_id', 'nav_anchor')
-        ->innerJoin('routes', 'pages_id', 'route_anchor')
-        ->orderBy('sort_order', 'asc')
-        ->get();
+        $select = $this->table('navigation')->select('*')->orderBy('sort_order', 'asc')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? [] : $select['response'];
@@ -43,7 +38,7 @@ class NavigationModel extends Model
     public function getTopNavLinks($param)
     {
 
-        $select = $this->table('navigation')->select('*')->where('top', 1)->andWhereNot('nav_anchor', $param)->get();
+        $select = $this->table('navigation')->select('*')->where('top', 1)->andWhereNot('route', $param)->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? [] : $select['response'];
@@ -56,7 +51,7 @@ class NavigationModel extends Model
     public function getNavLinkName($param, $data)
     {
         // SELECT * FROM `navigation` WHERE `name` = "home" LIMIT 1
-        $select = $this->table('navigation')->select('nav_name')->where($param, $data)->limit(1)->get('string');
+        $select = $this->table('navigation')->select('name')->where($param, $data)->limit(1)->getOne();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -109,7 +104,7 @@ class NavigationModel extends Model
 
     public function getHighestSortNumber()
     {
-        $select = $this->table('navigation')->select('sort_order')->orderBy('sort_order', 'desc')->limit(1)->get('string');
+        $select = $this->table('navigation')->select('sort_order')->orderBy('sort_order', 'desc')->limit(1)->getOne();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];

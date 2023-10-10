@@ -16,7 +16,7 @@ class UsersModel extends Model
     public function getUsers()
     {
         // SELECT * FROM `users`
-        $select = $this->table('users')->select('*')->get();
+        $select = $this->table('users')->select('*')->getAll();
         if ($select && $select['status'] == 'success') {
             return empty($select['response']) ? false : $select['response'];
         } else {
@@ -32,10 +32,10 @@ class UsersModel extends Model
      * @param $data  
      * @return array
      */
-    public function getUser($column, $is)
+    public function getUser($param, $data)
     {
         // SELECT * FROM `users` WHERE `id` = "2"
-        $select = $this->table('users')->select('*')->where($column, $is)->limit(1)->get();
+        $select = $this->table('users')->select('*')->where($param, $data)->get();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -138,7 +138,7 @@ class UsersModel extends Model
     public function getCountries()
     {
         // SELECT * FROM `countries`
-        $select = $this->table('countries')->select('*')->get();
+        $select = $this->table('countries')->select('*')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? true : $select['response'];
@@ -151,7 +151,7 @@ class UsersModel extends Model
     public function getLoginAttempts($data)
     {
         // SELECT * FROM `logins` WHERE `ip` = "192.168.1.1"
-        $select = $this->table('logins')->select('*')->where('ip', $data)->limit(1)->get();
+        $select = $this->table('logins')->select('*')->where('ip', $data)->get();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -206,7 +206,7 @@ class UsersModel extends Model
     public function getTotalUsersNumber()
     {
         // SELECT * FROM `users`
-        $select = $this->table('users')->select('*')->count()->get('string');
+        $select = $this->table('users')->select('*')->getTotal();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -219,7 +219,7 @@ class UsersModel extends Model
     public function getUsersByGroup($data)
     {
         // SELECT * FROM `users` WHERE `id` = ?
-        $select = $this->table('users')->select('*')->count()->where('group', $data)->get('string');
+        $select = $this->table('users')->select('*')->where('group', $data)->getTotal();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -250,63 +250,6 @@ class UsersModel extends Model
             return true;
         } else {
             return false;
-        }
-    }
-
-    public function getUserMenuSetting($is)
-    {
-        // SELECT * FROM `users` WHERE `id` = "2"
-        $select = $this->table('menus')->select('main_menu')->where('menu_anchor', $is)->limit(1)->get('string');   
-        if ($select) {
-            if ($select['status'] == 'success') {
-                return empty($select['response']) ? false : $select['response'];
-            } else {
-                return false;
-            }
-        }
-    }
-
-    /**
-     * Update a user record
-     *
-     * @param mixed $data   
-     * @return mixed         
-     */
-    public function updateUserMenuSetting($data)
-    {
-        // UPDATE `users` SET `username` = ? WHERE `id` = ?
-        $update = $this->table('menus')->update($data)->where('menu_anchor')->execute();
-        if ($update) {
-            if ($update['status'] == 'success') {
-                if ($update['affected_rows'] > 0) {
-                    return empty($update['response']) ? true : $update['response'];
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-    }
-
-    /**
-     * Insert user into database
-     *
-     * Insert a new user record into the database.
-     * @param array $post      
-     * @return bool   
-     */
-    public function createUserMenuSetting($users_id)
-    {
-        $data['menu_anchor'] = $users_id;
-        $data['main_menu'] = 0;
-        $insert = $this->table('menus')->insert($data)->execute();
-        if ($insert) {
-            if ($insert['status'] == 'success') {
-                return empty($insert['response']) ? true : $insert['response'];
-            } else {
-                return false;
-            }
         }
     }
 }

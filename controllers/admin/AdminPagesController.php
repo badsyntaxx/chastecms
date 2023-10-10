@@ -20,115 +20,55 @@ class AdminPagesController extends Controller
      *
      * This method loads the pages list table, the new page maker and the page editor.
      */
-    public function index($new = null)
+    public function init($view = null, $edit = false)
     {
-        if ($new == 'new') {
-            $this->drawPageMaker();
+        if ($view) {
+            if ($view == 'new') {
+                $this->drawPageMaker();
+            }
+            if ($edit) {
+                $this->drawPageEditor($view);
+            }
+            $this->drawPage($view);
         }
 
-        $data = $this->prepareTable();
-
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['main_nav'] = $this->session->getSession('main_nav');
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
-        $view['controls'] = $this->load->view('pages/controls');
-        $view['filters'] = $this->prepareFilters();
-        $view['list'] = $data['list'];
-        $view['table'] = $data['table'];
-        $view['orderby'] = $data['orderby'];
-        $view['direction'] = $data['direction'];
-        $view['page'] = $data['page'];
-        $view['start'] = $data['start'];
-        $view['record_limit'] = $data['record_limit'];
-        $view['total_pages'] = $data['total_pages'];
-        $view['total_records'] = $data['total_records'];
-
-        exit($this->load->view('utilities/list', $view));
+        exit($this->load->controller('admin/pagination')->drawPagination('pages'));
     }
 
-    public function prepareTable($table = 'pages', $orderby = 'pages_id', $direction = 'asc', $page = 1, $record_limit = 15, $column = null, $is = null)
+    public function setPaginationParams()
     {
-        $paginated = $this->load->model('pagination')->paginate($table, $orderby, $direction, $page, $record_limit, $column, $is);
+        $params = ['table' => 'pages', 'orderby' => 'pages_id', 'direction' => 'asc', 'page' => 1, 'limit' => 15];
+        $this->output->json($params);
+    }
 
-        $view['pages_list'] = [];
+    public function drawTable() 
+    {
+        $paginated = $this->load->model('pagination')->paginate('pages', $_POST['orderby'], $_POST['direction'], $_POST['page'], $_POST['limit']);
 
-        foreach ($paginated['records'] as $p) {
-            $views = $p['views'] ? $p['views'] : 0;
-            $locked = $p['locked'] == 0 ? null : true;
-            $route = $this->load->model('pages')->getRoute('routes_id', $p['pages_id']);
+        foreach ($paginated['records'] as $page) {
+            $views = $page['views'] ? $page['views'] : 0;
+            $locked = $page['locked'] == 0 ? null : true;
+            $route = $this->load->model('pages')->getRoute('routes_id', $page['pages_id']);
 
             $view['pages_list'][] = [
-                'pages_id' => $p['pages_id'],
-                'name' => $p['name'],
-                'title' => $p['title'],
+                'pages_id' => $page['pages_id'],
+                'name' => $page['name'],
+                'title' => $page['title'],
                 'route' => $route['route'],
-                'content' => $p['content'],
+                'content' => $page['content'],
                 'views' => $views,
-                'link' => $p['name'],
+                'link' => $page['name'],
                 'locked' => $locked
             ];
         }
 
         $view['url'] = HOST;
 
-        $output = [
-            'list' => $this->load->view('pages/list', $view),
-            'table' => $table,
-            'orderby' => $orderby,
-            'direction' => $direction,
-            'record_limit' => $record_limit,
-            'page' => $page,
-            'start' => $paginated['start'],
-            'total_pages' => $paginated['pages'],
-            'total_records' => $paginated['total']
-        ];
-
-        return $output;
-    }
-
-    public function getTable() 
-    {
-        $orderby = empty($_POST['orderby']) ? null : $_POST['orderby'];
-        $direction = empty($_POST['direction']) ? null : $_POST['direction'];
-        $page = empty($_POST['page']) ? null : $_POST['page'];
-        $record_limit = empty($_POST['record_limit']) ? null : $_POST['record_limit'];
-        $column = empty($_POST['column']) ? null : $_POST['column'];
-        $is = empty($_POST['is']) ? null : $_POST['is'];
-        $data = $this->prepareTable('pages', $orderby, $direction, $page, $record_limit, $column, $is);
-        
-        $output = [
-            'list' => $data['list'], 
-            'page' => $data['page'], 
-            'start' => $data['start'],
-            'total_pages' => $data['total_pages'],
-            'total_records' => $data['total_records']
-        ];
-
+        $output = ['table' => $this->load->view('pages/list', $view), 'start' => $paginated['start']];
         $this->output->json($output, 'exit');
     }
 
-    private function prepareFilters() 
-    {
-        $names = $this->load->model('pages')->getSpecificPageData('name');
-        $views = $this->load->model('pages')->getSpecificPageData('views');
-
-        if ($names) {
-            $view['names'] = array_unique($names);
-            sort($view['names']);
-        }
-
-        if ($views) {
-            $view['views'] = array_unique($views);
-            sort($view['views']);
-        }
-
-        return $this->load->view('pages/filters', $view);
-    }
-
-    public function page($page_name)
+    public function drawPage($page_name)
     {
         if (!$page_name) {
             $this->load->route('/admin/pages/');
@@ -139,10 +79,10 @@ class AdminPagesController extends Controller
         $page = $pages_model->getPage('name', $page_name);
         $route = $pages_model->getRoute('route_anchor', $page['pages_id']);
         $link = $nav_model->getNavLink('nav_anchor', $page['pages_id']);
-        $links = $nav_model->getTopNavLinks($route['route_anchor']);
-        $c_days_ago = $this->helper->getDaysAgo($page['creation_date']);
-        $le_days_ago = $this->helper->getDaysAgo($page['last_edit']);
-        $lv_days_ago = $this->helper->getDaysAgo($page['last_view']);
+        $links = $nav_model->getTopNavLinks($route['route']);
+        $c_days_ago = getDaysAgo($page['creation_date']);
+        $le_days_ago = getDaysAgo($page['last_edit']);
+        $lv_days_ago = getDaysAgo($page['last_view']);
 
         switch ($page_name) {
             case 'signup':
@@ -156,12 +96,11 @@ class AdminPagesController extends Controller
                 break;
         }
 
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['main_nav'] = $this->session->getSession('main_nav');
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
+        $view['header'] = $this->load->controller('admin/header')->init();
+        $view['footer'] = $this->load->controller('admin/footer')->init();
+        $view['search'] = $this->load->controller('admin/search')->init();
+        $view['nav'] = $this->load->controller('admin/navigation')->init();
+        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->init();
         $view['content'] = $page['content'];
         $view['title'] = $page['title'];
         $view['description'] = $page['description'];
@@ -199,17 +138,16 @@ class AdminPagesController extends Controller
 
     private function drawPageMaker()
     {
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['main_nav'] = $this->session->getSession('main_nav');
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
+        $view['header'] = $this->load->controller('admin/header')->init();
+        $view['footer'] = $this->load->controller('admin/footer')->init();
+        $view['search'] = $this->load->controller('admin/search')->init();
+        $view['nav'] = $this->load->controller('admin/navigation')->init();
+        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->init();
 
         exit($this->load->view('pages/new', $view));
     }
 
-    public function edit($page_name)
+    private function drawPageEditor($page_name)
     {
         $pages_model = $this->load->model('pages');
         $page = $pages_model->getPage('name', $page_name);
@@ -219,7 +157,7 @@ class AdminPagesController extends Controller
         $view['logged'] = $this->logged_user;
         $view['theme'] = $this->load->model('settings')->getSetting('theme');
         $view['pages_id'] = $page['pages_id'];
-        $view['name'] = $page['name'];
+        $view['name'] = ucfirst($page['name']);
         $view['route'] = $route['route'];
         $view['content'] = $page['content'];
 
@@ -260,7 +198,7 @@ class AdminPagesController extends Controller
                 $this->output->json($output, 'exit');
             }
 
-            $this->log('Admin "' . $this->logged_user['username'] . '" created a new page, "' . $post['name'] . '".');
+            $this->gusto->log('Admin "' . $this->logged_user['username'] . '" created a new page, "' . $post['name'] . '".');
             $output = ['alert' => 'success', 'message' => $this->language->get('pages/page_created')];
             $this->output->json($output, 'exit');
         }
@@ -287,15 +225,15 @@ class AdminPagesController extends Controller
             fwrite($controller, '     * The init method is the default for controller classes. Whenever a controller' . PHP_EOL);
             fwrite($controller, '     * class is instantiated the init method will be called.' . PHP_EOL);
             fwrite($controller, '     */' . PHP_EOL);
-            fwrite($controller, '    public function index()' . PHP_EOL);
+            fwrite($controller, '    public function init()' . PHP_EOL);
             fwrite($controller, '    {' . PHP_EOL);
             fwrite($controller, '        $page = $this->load->model(\'pages\')->getPage(\'name\', \'' . $name . '\');' . PHP_EOL);
             fwrite($controller, ' ' . PHP_EOL);
             fwrite($controller, '        $data[\'title\'] = $page[\'title\'];' . PHP_EOL);
             fwrite($controller, '        $data[\'description\'] = $page[\'description\'];' . PHP_EOL);
             fwrite($controller, ' ' . PHP_EOL);
-            fwrite($controller, '        $view[\'header\'] = $this->load->controller(\'header\')->index($data);' . PHP_EOL);
-            fwrite($controller, '        $view[\'footer\'] = $this->load->controller(\'footer\')->index();' . PHP_EOL);
+            fwrite($controller, '        $view[\'header\'] = $this->load->controller(\'header\')->init($data);' . PHP_EOL);
+            fwrite($controller, '        $view[\'footer\'] = $this->load->controller(\'footer\')->init();' . PHP_EOL);
             fwrite($controller, '        $view[\'content\'] = $this->load->model(\'pages\')->getPageContent(\'' . $name . '\');' . PHP_EOL);
             fwrite($controller, ' ' . PHP_EOL);
             fwrite($controller, '        $this->load->model(\'pages\')->updatePageStatistics(\'' . $name . '\');' . PHP_EOL);
@@ -340,7 +278,7 @@ class AdminPagesController extends Controller
         }
         
         $data['nav_anchor'] = $page['pages_id'];
-        $data['nav_name'] = $post['nav_name'];
+        $data['name'] = $post['nav_name'];
         $data['route'] = $post['route'];
         $data['sort_order'] = $sort_order;
         $data['parent'] = 0;
@@ -383,7 +321,8 @@ class AdminPagesController extends Controller
             $pages_model->updateRoute('route_anchor', $route_data);
         }
 
-        $nav_data['nav_name'] = $_POST['nav_name'];
+        $nav_data['route'] = $_POST['route'];
+        $nav_data['name'] = $_POST['nav_name'];
         $nav_data['top'] = isset($_POST['top']) ? $_POST['top'] : 0;
         $nav_data['bottom'] = isset($_POST['bottom']) ? $_POST['bottom'] : 0;
         $nav_data['parent'] = !empty($_POST['parent']) ? $_POST['parent'] : 0;
@@ -393,7 +332,7 @@ class AdminPagesController extends Controller
         $this->load->model('navigation')->updateNavLink('nav_anchor', $nav_data);
         $this->updateChildren();
 
-        $this->log('Admin "' . $this->logged_user['username'] . '" updated information for "' . $_POST['name'] . '" page.');
+        $this->gusto->log('Admin "' . $this->logged_user['username'] . '" updated information for "' . $_POST['name'] . '" page.');
         $output = ['alert' => 'success', 'message' => $this->language->get('pages/page_updated')];
         $this->output->json($output, 'exit');
     }
@@ -425,7 +364,7 @@ class AdminPagesController extends Controller
         }
     }
 
-    public function updateEdit()
+    public function edit()
     {
         $data['pages_id'] = $_POST['pages_id'];
         $data['last_edit'] = date('c');
@@ -435,33 +374,29 @@ class AdminPagesController extends Controller
         $page = $pages_model->getPage('pages_id', $data['pages_id']);
         $pages_model->updatePage($data);
 
-        $this->log('Admin "' . $this->logged_user['username'] . '" made design edits to "' . $page['name'] . '" page.');
+        $this->gusto->log('Admin "' . $this->logged_user['username'] . '" made design edits to "' . $page['name'] . '" page.');
         $output = ['alert' => 'success', 'message' => $this->language->get('pages/page_updated')];
         $this->output->json($output, 'exit');
     }
 
     public function upload()
     {
+        $user = $this->load->model('users')->getUser('users_id', $this->session->id);
         $upload_dir = $_POST['upload_dir'];
         $upload_library = $this->load->library('Upload');
         
         $upload_library->uploadImage($_FILES['upload_image'], $upload_dir);
 
         if ($upload_library->file_invalid) {
-            $output = ['alert' => 'error', 'message' => $this->language->get('upload/file_invalid')];
-            $this->output->json($output, 'exit');
+            exit($this->language->get('account/file_invalid'));
         }
-        if ($upload_library->file_big) {
-            $search = ['{{filesize}}', '{{maxFilesize}}'];
-            $replace = [$upload_library->file_big['size'], $upload_library->file_big['max']];
-            $output = ['alert' => 'error', 'message' => str_replace($search, $replace, $this->language->get('upload/file_big'))];
-            $this->output->json($output, 'exit');
+        if ($upload_library->filebig) {
+            exit($this->language->get('account/file_big'));
         }
 
         if ($upload_library->upload_success) {
-            $this->log('Admin "' . $this->logged_user['username'] . '" uploaded images "' . $_FILES['upload_image']['name'] . '".');
-            $output = ['alert' => 'success', 'message' => $this->language->get('upload/success')];
-            $this->output->json($output, 'exit');
+            $this->gusto->log('Admin "' . $this->logged_user['username'] . '" uploaded images "' . $_FILES['upload_image']['name'] . '".');
+            exit($this->language->get('pages/file_uploaded')); 
         }
     }
 
@@ -487,7 +422,7 @@ class AdminPagesController extends Controller
             $this->deleteRoute($id);
             $this->deleteNavLink($id);
             $this->updateChildren();
-            $this->log('Admin "' . $this->logged_user['username'] . '" deleted the "' . $page['name'] . '" page.');
+            $this->gusto->log('Admin "' . $this->logged_user['username'] . '" deleted the "' . $page['name'] . '" page.');
         }
 
         $output = ['alert' => 'success', 'message' => $this->language->get('pages/pages_deleted')];

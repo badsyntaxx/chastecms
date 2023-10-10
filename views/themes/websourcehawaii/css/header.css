@@ -1,0 +1,252 @@
+/**
+ * Header CSS
+ *
+ * This header.css file may also include css for the logo and navigation.
+*/
+
+.header {
+    position: relative;
+    float: left;
+    z-index: 100;
+    width: 100%;
+    background-color: transparent;
+    box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.2);
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.header.home {
+    box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+@media only screen and (max-width: 768px) and (orientation: portrait) {
+    .header {
+        text-align: center;
+    }
+}
+
+/* Logo */
+.logo {
+    float: left;
+    width: 280px;
+    height: 70px;
+    margin: 10px 0;
+    background: url(../../../images/logo.png) no-repeat 50% 50%;
+    background-size: 280px 70px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+@media only screen and (max-width: 768px) and (orientation: portrait) {
+    .logo {
+        display: block;
+        float: none;
+        margin: auto;
+        margin-top: 15px;
+    }
+}
+
+@media only screen and (max-width: 736px) {
+    .logo {
+        float: left;
+        width: 160px;
+        height: 40px;
+        background-size: 160px 40px;
+        margin: 15px 0;
+    }
+}
+
+.logo.home {
+    background: url(../../../images/logoAlt.png) no-repeat 50% 50%;
+    background-size: 280px 70px;
+}
+
+@media only screen and (max-width: 736px) {
+    .logo.home {
+        float: left;
+        width: 160px;
+        height: 40px;
+        background-size: 160px 40px;
+        margin: 15px 0;
+    }
+}
+
+/* Navigation */
+.nav {
+    float: right;
+}
+
+@media only screen and (max-width: 768px) and (orientation: portrait) {
+    .nav {
+        display: inline-block;
+        float: none;
+        margin: auto;
+    }
+}
+
+@media only screen and (max-width: 768px) and (orientation: portrait) {
+    .nav-main {
+        float: left;
+    }
+}
+
+@media only screen and (max-width: 736px) {
+    .nav {
+        position: absolute;
+        overflow: hidden;
+        float: none;
+        top: 70px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-height: 0;
+        padding: 0;
+        background-color: #fff;
+        -webkit-transition: all 0.3s ease-in-out;
+        -ms-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .nav.active {
+        max-height: 500px;
+        padding: 10px 0;
+    }
+}
+
+.nav ul {
+    list-style: none;
+}
+
+.nav ul li {
+    position: relative;
+    float: left;
+}
+
+@media only screen and (max-width: 736px) {
+    .nav ul li {
+        width: 100%;
+    }
+}
+
+.nav ul li a,
+.nav ul li a:visited {
+    float: left;
+    width: 100%;
+    height: 40px;
+    padding: 0 15px;
+    margin: 25px 0;
+    border-radius: 4px;
+    color: #555;
+    font-weight: 700;
+    line-height: 40px;
+    text-align: left;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav.home ul li a,
+.nav.home ul li a:visited {
+    color: #fff;
+}
+
+@media only screen and (max-width: 736px) {
+    .nav.home ul li a,
+    .nav.home ul li a:visited {
+        height: 50px;
+        padding: 0 50px;
+        line-height: 50px;
+        color: #555;
+    }
+}
+
+@media only screen and (max-width: 768px) and (orientation: portrait) {
+    .nav ul li a,
+    .nav ul li a:visited {
+        margin: 15px 0;
+    }
+}
+
+@media only screen and (max-width: 736px) and (orientation: portrait) {
+    .nav ul li a,
+    .nav ul li a:visited {
+        height: 50px;
+        padding: 0 50px;
+        line-height: 50px;
+        color: #555;
+    }
+}
+
+.nav ul li a.current {
+    font-weight: 500;
+}
+
+.dropdown-button i {
+    padding-right: 5px;
+    /* font-family: 'Font Awesome 5 Pro'; */
+    font-weight: 900;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 90px;
+    right: 0px;
+    z-index: 999;
+    overflow: hidden;
+    visibility: hidden;
+    min-width: 150px;
+    max-height: 0px;
+    padding: 0;
+    border: 1px solid #446386;
+    background-color: #5892d45e;
+    -webkit-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+@media only screen and (max-width: 414px) {
+    .dropdown-menu {
+        position: relative;
+        top: 0px;
+        right: auto;
+        min-width: 150px;
+        padding: 0;
+    }
+}
+
+.dropdown-menu.active {
+    visibility: visible;
+    max-height: 300px;
+    padding: 5px 0;
+}
+
+@media only screen and (max-width: 414px) {
+    .dropdown-menu.active {
+        border: none;
+    }
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+.menu-button {
+    position: absolute;
+    top: 21px;
+    right: 20px;
+    display: none;
+    color: #333;
+    font-size: 24px;
+}
+
+.menu-button.home {
+    color: #fff;
+}
+
+@media only screen and (max-width: 736px) {
+    .menu-button {
+        display: block;
+    }
+}

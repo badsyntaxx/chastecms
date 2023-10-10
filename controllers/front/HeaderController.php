@@ -18,15 +18,17 @@ class HeaderController extends Controller
      * Assuming that the HeaderController should be loaded in every controller 
      * this init method should run in every controller too.
      */
-    public function index($params = null)
+    public function init($params = null)
     {   
-        $sitename = $this->load->model('settings')->getSetting('sitename');
+        $settings_model = $this->load->model('settings');
+        $analytics = $settings_model->getAnalyticsCode();
+        $sitename = $settings_model->getSetting('sitename');
 
         $view['links'] = $this->navigation();
         $view['logged'] = $this->session->isLogged();
-        $view['theme'] = $this->load->model('settings')->getSetting('theme');
-        $view['sitename'] = $sitename;
-        $view['analytics'] = $this->load->model('analytics')->getAnalyticsCode();
+        $view['theme'] = $settings_model->getSetting('theme');
+        $view['sitename'] = $settings_model->getSetting('sitename');
+        $view['analytics'] = $analytics;
         $view['title'] = isset($params['title']) ? $params['title'] : $sitename;
         $view['description'] = isset($params['description']) ? $params['description'] : $sitename;
 
@@ -53,7 +55,6 @@ class HeaderController extends Controller
             $link = [
                 'navigation_id' => $link['navigation_id'],
                 'name' => $link['name'],
-                'nav_name' => $link['nav_name'],
                 'class' => strtolower($class),
                 'route' => $link['route'],
                 'sort_order' => $link['sort_order'],

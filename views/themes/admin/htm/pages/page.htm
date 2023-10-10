@@ -1,0 +1,216 @@
+<?= $header; ?>
+<main class="main pages-page">
+    <?= $nav; ?>
+    <div class="workarea">
+        <div class="row main-title">
+            <?= $breadcrumb; ?>
+            <?= $search; ?>
+        </div>
+        <div class="row main-controls">
+            <button type="button" class="btn btn-go btn-save-page" title="Save"><i class="fas fa-save fa-fw"></i> Save</button>
+            <hr>
+            <?php if (!$edit_lock): ?>
+            <a href="/admin/pages/<?= $name; ?>/edit" class="btn btn-default" title="Page Editor"><i class="fas fa-eye fa-fw"></i> Page Editor</a>    
+            <hr>
+            <?php endif ?>
+            <a href="<?= $route; ?>" class="btn btn-basic" title="View"><i class="fas fa-eye fa-fw"></i> View</a>
+            <a href="/admin/" class="btn btn-basic pull-right" title="Close"><i class="fas fa-times fa-fw"></i></a>
+            <a href="/admin/pages/" class="btn btn-basic pull-right" title="Back"><i class="fas fa-reply fa-fw"></i></a>
+            <a href="" class="btn btn-basic pull-right" title="Refresh"><i class="fas fa-sync-alt fa-fw"></i></a>
+        </div>
+        <div class="row page-update-area alert-area"></div>
+        <div class="row main-panel">
+            <div class="row">
+                <div class="col quad">
+                    <p class="row" style="margin-right:15px;"><span style="font-size:13px;font-weight:bold">Date Created: <br>
+                    </span> <?= $created; ?> <em class="text-small">(<?= $c_days_ago; ?>)</em></p>
+                </div>
+                <div class="col quad">
+                    <p class="row" style="margin-right:15px;"><span style="font-size:13px;font-weight:bold">Last Edit: <br>
+                    </span> <?= $last_edit; ?> <em class="text-small">(<?= $le_days_ago; ?>)</em></p>
+                </div>
+                <div class="col quad">
+                    <p class="row" style="margin-right:15px;"><span style="font-size:13px;font-weight:bold">Total Views: <br>
+                    </span> <?= $views; ?></p>
+                </div>
+                <div class="col quad">
+                    <p class="row" style="margin-right:15px;"><span style="font-size:13px;font-weight:bold">Last View: <br>
+                    </span> <?= $last_view; ?> <em class="text-small">(<?= $lv_days_ago; ?>)</em></p>
+                </div>
+            </div>
+            <form id="page-form" class="row form space-bottom-60">
+                <div class="row settings-row">
+                    <div class="label-col">
+                        <label for="title" style="width:120px;">Title:</label>
+                    </div>
+                    <div class="input-col">
+                        <input type="text" name="title" maxlength="70" id="title" value="<?= $title; ?>" style="width:450px">
+                        <input type="hidden" name="pages_id" value="<?= $pages_id; ?>" id="page-id">
+                        <input type="hidden" name="name" value="<?= $name; ?>" id="name">
+                        <div class="title-characters"></div>
+                    </div>
+                </div>
+                <?php if (!$edit_lock): ?>
+                <div class="row settings-row">
+                    <div class="label-col">
+                        <label for="route" style="width:120px;">Route:</label>
+                    </div>
+                    <div class="input-col">
+                        <input type="text" name="route" id="route" value="<?= $route; ?>" style="width:450px">
+                    </div>
+                </div>
+                <div class="row settings-row">
+                    <div class="label-col">
+                        <label for="nav_name" style="width:120px;">Nav Name:</label>
+                    </div>
+                    <div class="input-col">
+                        <input type="text" name="nav_name" id="nav_name" value="<?= $nav_name; ?>" style="width:450px">
+                    </div>
+                </div>
+                <?php endif ?>
+                <div class="row settings-row">
+                    <div class="label-col">
+                        <label for="description" class="pull-left">Description: </label>
+                        <div class="info-col">
+                            <i class="fas fa-question-circle fa-fw"></i> Descriptions should be about 200 characters for SEO.
+                        </div>
+                    </div>
+                    <div class="description-characters"></div>
+                    <textarea name="description" maxlength="200" id="description" style="width:100%"><?= $description; ?></textarea>
+                </div>
+                <?php if (!$edit_lock): ?>
+                <div class="row settings-row">
+                    <div class="label-col">
+                        <label for="sort_order" style="width:120px;">Sort Order:</label>
+                    </div>
+                    <div class="input-col">
+                        <input type="text" name="sort_order" value="<?= $sort_order; ?>" class="text-center" style="width:40px; padding:0;">
+                    </div>
+                    <div class="info-col">
+                        <i class="fas fa-question-circle fa-fw"></i> Sort order of the navigation link.
+                    </div>
+                </div>
+                <div class="row settings-row" id="top-link-row">
+                    <div class="label-col">
+                        <label for="top" style="width:120px;">Top Link:</label>
+                    </div>
+                    <div class="input-col">
+                        <input type="checkbox" name="top" value="1" id="top-link">
+                    </div>
+                    <div class="info-col">
+                        <i class="fas fa-question-circle fa-fw"></i> Check if you want this page to appear in the header navigation.
+                    </div>
+                </div>
+                <div class="row settings-row" id="parent-row">
+                    <div class="label-col">
+                        <label for="parent" style="width:120px;">Parent:</label>
+                    </div>
+                    <div class="input-col">
+                        <select name="parent" required>
+                            <option value="">Choose...</option>
+                            <?php foreach ($links as $link): ?>
+                            <option value="<?= $link['navigation_id']; ?>" id="nav-id<?= $link['navigation_id']; ?>"><?= $link['name']; ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="row settings-row" id="bottom-link-row">
+                    <div class="label-col">
+                        <label for="bottom" style="width:120px;">Bottom Link:</label>
+                    </div>
+                    <div class="input-col">
+                        <input type="checkbox" name="bottom" value="1" id="bottom-link">
+                    </div>
+                    <div class="info-col">
+                        <i class="fas fa-question-circle fa-fw"></i> Check if you want this page to appear in the footer navigation.
+                    </div>
+                </div>
+                <?php endif ?>
+            </form>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+var parent_row = $('#parent-row').html();
+var pages_id = $('#page-id').val();
+
+$.ajax({
+    url: '/admin/pages/getNavlinkData',
+    type: 'POST',
+    data: {pages_id: pages_id},
+    success: function(response, status, xhr) {
+        // $('body').prepend(response);
+        if ($.trim(response)) {
+            var data = JSON.parse(response);
+            if (data.status == 1) {
+                $('#status-link').prop('checked', true);
+            }
+            if (data.top == 1) {
+                $('#top-link').prop('checked', true);
+                $($('#parent-row')).remove();
+            }
+            $('#nav-id' + data.parent).prop('selected', true);
+            if (data.bottom == 1) {
+                $('#bottom-link').prop('checked', true);
+            }
+            
+        } 
+    },
+    complete: function() {
+
+    }
+});
+    
+$('body').on('click', '.btn-save-page', function() {
+    $.ajax({
+        url: '/admin/pages/update',
+        type: 'POST',
+        data: $('#page-form').serialize(),
+        success: function(response, status, xhr) {
+            // $('body').prepend(response);
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.page-update-area').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+            } 
+        },
+        complete: function() {
+            Common.btn.prop('disabled', false).html(Common.btnhtml);
+            $('html, body').animate({
+                scrollTop: 0
+            }, 300);
+        }
+    });
+});
+
+$('#page-form').on('keydown keyup change', '#description', function() {
+    var count = $('#description').val().length;
+    var val = $('#description').val().replace(/[^A-Za-z0-9.,;-?|' ]/g, '');
+    $('#description').val(val);
+    $('.description-characters').html('(Characters ' + count + ' | Max:200)');
+});
+
+$('#page-form').on('keydown keyup change', '#title', function() {
+    var count = $('#title').val().length;
+    var val = $('#title').val().replace(/[^A-Za-z0-9.,;&-?|' ]/g, '');
+    $('#title').val(val);
+    $('.title-characters').html('(Characters ' + count + ' | Max:70)');
+});
+
+$('#page-form').on('change', '#top-link', function() {
+    if ($(this).prop('checked') == true) {
+        $($('#parent-row')).remove();
+    } else {
+        $('#top-link-row').after('<div class="row settings-row text-left" id="parent-row">' + parent_row + '</div>');
+    }
+});
+
+$('#page-form').on('keydown keyup', '#route', function() {
+    var val = '/' + $(this).val();
+    var str = val.replace(/[^A-Za-z0-9/-]/g, '');
+    var route = str.replace(/\/\/+/g, '/');
+    $(this).val(route);
+});
+
+</script>
+<?= $footer; ?>

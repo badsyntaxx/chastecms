@@ -31,80 +31,116 @@ MainControls.init = function() {
 MainControls.deleteRecords = function() {
     $('body').on('click', '.btn-mass-delete', function() {
         var ids = $('.checkbox').serializeArray();
-        $.post('/admin/' + MainControls.view + '/delete', ids, function(response) {
-            if (isJson(response)) {
-                var json = JSON.parse(response);
-                $('.alert-area').append('<div class="alert ' + json.alert + '"><strong>' + json.alert + '!</strong> ' + json.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
-                Pagination.refreshTable();
+        var btn = $(this);
+        var btnhtml = btn.html();
+        $.ajax({
+            url: '/admin/' + MainControls.view + '/delete',
+            type: 'POST',
+            data: ids,
+            success: function(response, status, xhr) {
+                if ($.trim(response)) {
+                    var data = JSON.parse(response);
+                    $('.alert-area').append('<div class="alert ' + data.alert + ' space-bottom-15"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+                    Pagination.drawTable();
+                } 
+            },
+            complete: function() {
+                btn.prop('disabled', false).html(btnhtml);
             }
         });
     });
 }
 
 MainControls.userControls = function() {
+    // Promote user
     $('#user-group').on('change', function() {
         var ids = $('.checkbox').serializeArray();
         MainControls.editUser(ids, $(this).val());
     });
 }
 
-MainControls.editUser = function(ids, group) {
-    var data = {ids: ids, group: group};
-    $.post('/admin/users/edit', data, function(response) {
-        $('.alert').remove();
-        $('#group-none').prop('selected', true);
-        if (isJson(response)) {
-            var json = JSON.parse(response);
-            $('.alert-area').append('<div class="alert ' + json.alert + '"><strong>' + json.alert + '!</strong> ' + json.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
-            Pagination.refreshTable();
-        }
-    }).always(function() {
-        ids = [];
-        $('.btn-list-control').prop('disabled', true);
-    });
-}
-
 MainControls.sitemapControls = function() {
+    // Save Sitemap
     $('body').on('click', '.btn-save', function() {
         var post = $('.sort-order').serialize();
-        $.post('/admin/sitemap/save', post, function(response) {  
-            if (isJson(response)) {
-                var json = JSON.parse(response);
-                $('.alert-area').html('<div class="alert ' + json.alert + ' space-bottom-15"><strong>' + json.alert + '!</strong> ' + json.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
-                Pagination.refreshTable();
-            } 
+        var btn = $(this);
+        var btnhtml = btn.html();
+        $.ajax({
+            url: '/admin/sitemap/save',
+            type: 'POST',
+            data: post,
+            success: function(response, status, xhr) {
+                if ($.trim(response)) {
+                    var data = JSON.parse(response);
+                    $('.alert-area').html('<div class="alert ' + data.alert + ' space-bottom-15"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+                    Pagination.drawTable();
+                }
+            },
+            complete: function() {
+                btn.prop('disabled', false).html(btnhtml);
+            }
         });
     });
 
     $('body').on('click', '.btn-hide', function() {
         var ids = $('.checkbox').serializeArray();
-        $.post('/admin/sitemap/hide/true', ids, function(response) {  
-            if (isJson(response)) {
-                var json = JSON.parse(response);
-                $('.alert-area').html('<div class="alert ' + json.alert + ' space-bottom-15"><strong>' + json.alert + '!</strong> ' + json.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
-                Pagination.refreshTable();
+        var btn = $(this);
+        var btnhtml = btn.html();
+        $.ajax({
+            url: '/admin/sitemap/hide/true',
+            type: 'POST',
+            data: ids,
+            success: function(response, status, xhr) {
+                if ($.trim(response)) {
+                    var data = JSON.parse(response);
+                    $('.alert-area').html('<div class="alert ' + data.alert + ' space-bottom-15"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+                    Pagination.drawTable();
+                }
+            },
+            complete: function() {
+                btn.prop('disabled', false).html(btnhtml);
             }
         });
     });
 
     $('body').on('click', '.btn-show', function() {
         var ids = $('.checkbox').serializeArray();
-        $.post('/admin/sitemap/hide/false', ids, function(response) {  
-            if (isJson(response)) {
-                var json = JSON.parse(response);
-                $('.alert-area').html('<div class="alert ' + json.alert + ' space-bottom-15"><strong>' + json.alert + '!</strong> ' + json.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
-                Pagination.refreshTable();
+        var btn = $(this);
+        var btnhtml = btn.html();
+        $.ajax({
+            url: '/admin/sitemap/hide/false',
+            type: 'POST',
+            data: ids,
+            success: function(response, status, xhr) {
+                if ($.trim(response)) {
+                    var data = JSON.parse(response);
+                    $('.alert-area').html('<div class="alert ' + data.alert + ' space-bottom-15"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+                    Pagination.drawTable();
+                }
+            },
+            complete: function() {
+                btn.prop('disabled', false).html(btnhtml);
             }
         });
     });
+}
 
-    $('body').on('click', '.btn-refresh', function() {
-        $.get('/admin/sitemap/generate', function(response) {       
-            if (isJson(response)) {
-                var json = JSON.parse(response);
-                $('.alert-area').html('<div class="alert ' + json.alert + ' space-bottom-15"><strong>' + json.alert + '!</strong> ' + json.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
-                Pagination.refreshTable();
+MainControls.editUser = function(ids, group) {
+    $.ajax({
+        url: '/admin/users/edit',
+        type: 'POST',
+        data: {ids: ids, group: group},
+        success: function(response, status, xhr) {
+            $('#group-none').prop('selected', true);
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.alert-area').html('<div class="alert ' + data.alert + ' space-bottom-15"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+                Pagination.drawTable();
             }
-        });
+        },
+        complete: function() {
+            ids = [];
+            $('.btn-list-control').prop('disabled', true);
+        }
     });
 }

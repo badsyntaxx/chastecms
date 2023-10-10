@@ -19,15 +19,15 @@ class HomeController extends Controller
      * - /root/home
      * - /root/home/init
      */
-    public function index()
+    public function init()
     {      
         $page = $this->load->model('pages')->getPage('name', 'home');
 
         $data['title'] = $page['title'];
         $data['description'] = $page['description'];
 
-        $view['header'] = $this->load->controller('header')->index($data);
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();
         $view['content'] = $this->load->model('pages')->getPageContent('home');
 
         $this->load->model('pages')->updatePageStatistics('home');

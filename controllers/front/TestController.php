@@ -14,7 +14,7 @@ class TestController extends Controller
         $model->testQuery();
     }
 
-    public function index()
+    public function init()
     {   
         $time = new DateTime('NOW');
 

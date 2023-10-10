@@ -19,15 +19,15 @@ class ContactController extends Controller
      *  - http://root/contact
      *  - http://root/contact/init
      */
-    public function index()
+    public function init()
     {   
         $page = $this->load->model('pages')->getPage('name', 'contact');
 
         $data['title'] = $page['title'];
         $data['description'] = $page['description'];
 
-        $view['header'] = $this->load->controller('header')->index($data);
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();
         $view['content'] = $this->load->model('pages')->getPageContent('contact');
 
         $this->load->model('pages')->updatePageStatistics('contact');
@@ -43,8 +43,8 @@ class ContactController extends Controller
      * and send a contact email to the site owner.
      */
     public function validate()
-    {
-        $this->helper->botTest($_POST['red_herring']);
+    {       
+        botTest($_POST['red_herring']);
 
         $sitename = $this->load->model('settings')->getSetting('sitename');
         $owners_email = $this->load->model('settings')->getSetting('owners_email');
@@ -98,7 +98,7 @@ class ContactController extends Controller
             array_push($replace, $value);
         }
 
-        $text = '<h1 class="null">' . $sitename . ' Contact Form</h1>';
+        $text = '<h1 class="null">' . $sitename . '</h1>';
 
         if (isset($p['name'])) {
             $text .= '<strong>Name:</strong> {{name}}<br>';
@@ -141,7 +141,7 @@ class ContactController extends Controller
         }
 
         $output = str_replace($search, $replace, $text);
-        $body = str_replace('{{main_text}}', $output, $this->helper->getTemplate('email/contact'));
+        $body = str_replace('{{main_text}}', $output, $this->mail->getTemplate('contact'));
 
         $mail['to'] = $owners_email;
         $mail['from'] = '';
@@ -151,11 +151,11 @@ class ContactController extends Controller
 
         // Send the contact mail and exit with failure or success message.
         if ($this->mail->sendMail($mail)) {
-            $this->log('A user used the contact form with the email address (' . $p['email'] . ').');
+            $this->gusto->log('A user used the contact form with the email address (' . $p['email'] . ').');
             $output = ['alert' => 'success', 'message' => str_replace('{{sitename}}', $sitename, $this->language->get('contact/contact_success'))];
             $this->output->json($output);
         } else {
-            $this->log('A user attempted to use the contact form with the email address (' . $p['email'] . ').');
+            $this->gusto->log('A user attempted to use the contact form with the email address (' . $email . ').');
             $output = ['alert' => 'error', 'message' => $this->language->get('contact/contact_fail')];
             $this->output->json($output);
         }

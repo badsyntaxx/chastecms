@@ -17,14 +17,13 @@ class AdminRobotsController extends Controller
      * - http://root/admin/robots
      * - http://root/admin/robots/init
      */
-    public function index()
+    public function init()
     {
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['main_nav'] = $this->session->getSession('main_nav');
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
+        $view['header'] = $this->load->controller('admin/header')->init();
+        $view['footer'] = $this->load->controller('admin/footer')->init();
+        $view['search'] = $this->load->controller('admin/search')->init();
+        $view['nav'] = $this->load->controller('admin/navigation')->init();
+        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->init();
         
         exit($this->load->view('robots/robots', $view));
     }

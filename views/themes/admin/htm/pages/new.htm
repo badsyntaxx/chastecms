@@ -1,0 +1,114 @@
+<?= $header; ?>
+<main class="main new-page">
+    <?= $nav; ?>
+    <div class="workarea">
+        <div class="row main-title">
+            <?= $breadcrumb; ?>
+            <?= $search; ?>
+        </div>
+        <div class="row main-controls">
+            <button type="button" class="btn btn-go btn-save-page" title="Save"><i class="fas fa-save fa-fw"></i> Save</button>
+            <a href="/admin/" class="btn btn-basic pull-right" title="Close"><i class="fas fa-times fa-fw"></i></a>
+            <a href="/admin/pages/" class="btn btn-basic pull-right" title="Back"><i class="fas fa-reply fa-fw"></i></a>
+            <a href="" class="btn btn-basic pull-right" title="Refresh"><i class="fas fa-sync-alt fa-fw"></i></a>
+        </div>
+        <div class="row alert-area"></div>
+        <div class="row main-panel">
+            <div class="panel-content pad-top-15 pad-bottom-15 pad-left-15 pad-right-15">
+                <div class="panel-form-pane text-left">
+                    <div class="row space-bottom-30 text-left">
+                        <strong class="row space-bottom-15">Set Page Info</strong>
+                        <hr class="row basic space-bottom-15">
+                        <form action="" method="post" enctype="multipart/form-data" id="new-page-form">
+                            <div class="row space-bottom-15">
+                                <div class="label-col">
+                                    <label for="page_title">Title</label>
+                                </div>
+                                <div class="input-col">
+                                    <input type="text" name="page_title" id="page-title" style="width:100%">
+                                </div>
+                            </div>
+                            <input type="hidden" name="page_name" id="page-name">
+                            <input type="hidden" name="page_controller" id="page-controller">
+                            <input type="hidden" name="page_route" id="page-route">
+                            <input type="hidden" name="nav_name" id="nav-name">
+                        </form>
+                    </div>
+                    <div class="row space-top-15 text-left">
+                        <strong class="row space-bottom-15">Page Info</strong>
+                        <hr class="row basic space-bottom-15">
+                        <table class="page-info-table">
+                            <tr>
+                                <td style="width:100px;">Name</td>
+                                <td class="name"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:100px;">Route</td>
+                                <td class="route"></td>
+                            </tr>
+                            <tr>
+                                <td style="width:100px;">Controller</td>
+                                <td class="controller"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+$('#new-page-form').on('keyup change', '#page-title', function() {
+    var host = window.location.origin;
+    var title = $('#page-title').val().replace(/[^A-Za-z0-9 ]/g, '');
+    var name = title.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/[^a-z0-9]/g, '-');
+    var route = '/' + name;
+    var view = name.replace(/[^a-z0-9-]/g, '-').toLowerCase();
+    var pieces = name.split('-');
+    var string;
+    var controller = [];
+
+    $.each(pieces, function(index, value) {
+        string = value.toLowerCase().replace(/\b[a-z]/g, function(letter) { return letter.toUpperCase(); });
+        controller.push(string);
+    });
+
+    controller = controller.join();
+    controller = controller.replace(/[^a-zA-Z0-9]/g, '');
+
+    $('#page-title').val(title);
+    $('.title').html(title);
+    $('.name').html(name);
+    $('#page-name').val(name);
+    $('.route').html(host + route);
+    $('#page-route').val(route);
+    $('.view').html(view + '.htm');
+    $('#page-view').val(view + '.htm');
+    $('.controller').html(controller + 'Controller.php');
+    $('#page-controller').val(controller + 'Controller.php');
+    $('#nav-name').val(title);
+});
+
+$('body').on('click', '.btn-save-page', function() {
+    var btn = $(this);
+    var btnhtml = btn.html();
+    $.ajax({
+        url: '/admin/pages/insertPageData',
+        type: 'POST',
+        data: $('#new-page-form').serialize(),
+        success: function(response, status, xhr) {
+            // $('main').prepend(response);
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.alert-area').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+            } 
+        },
+        complete: function() {
+            btn.prop('disabled', false).html(btnhtml);
+        }
+    });
+});
+
+</script>
+<?= $footer; ?>

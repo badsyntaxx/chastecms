@@ -17,16 +17,15 @@ class AdminSettingsController extends Controller
      *
      * This method will load settings view.
      */
-    public function index()
+    public function init()
     {
         $settings_model = $this->load->model('settings');
         
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['main_nav'] = $this->session->getSession('main_nav');
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
+        $view['header'] = $this->load->controller('admin/header')->init();
+        $view['footer'] = $this->load->controller('admin/footer')->init();
+        $view['search'] = $this->load->controller('admin/search')->init();
+        $view['nav'] = $this->load->controller('admin/navigation')->init();
+        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->init();
         $view['sitename'] = $settings_model->getSetting('sitename');
         $view['owners_email'] = $settings_model->getSetting('owners_email');
         $view['pw_setting'] = $settings_model->getSetting('strong_pw');
@@ -58,7 +57,7 @@ class AdminSettingsController extends Controller
         $this->updateMailSettings();
         $this->updateMaintenanceSetting();
         
-        $this->log('Admin "' . $this->logged_user['username'] . '" updated the site settings.');
+        $this->gusto->log('Admin "' . $this->logged_user['username'] . '" updated the site settings.');
         $output = ['alert' => 'success', 'message' => $this->language->get('settings/setting_updated')];
         $this->output->json($output, 'exit');
     }
@@ -140,7 +139,7 @@ class AdminSettingsController extends Controller
         $data['port'] = $mail_port;
         $data['username'] = $mail_username;
         $data['password'] = $mail_password;
-        $data['mail_id'] = 1;
+        $data['settings_id'] = 1;
         
         if (!$this->settings_model->updateMailSettings($data)) {
             $output = ['alert' => 'error', 'message' => 'Could not update mail settings.'];
@@ -161,11 +160,15 @@ class AdminSettingsController extends Controller
 
     public function getThemeSetting()
     {
+        $this->gusto->authenticate(3);
+
         $this->output->text($this->logged_user['theme']);
     }
 
     public function changeAdminThemeSetting() 
-    {      
+    {
+        $this->gusto->authenticate(3);
+        
         $user_model = $this->load->model('users');
         $user = $user_model->getUser('users_id', $this->session->id);
         $theme = $user['theme'];
@@ -182,27 +185,28 @@ class AdminSettingsController extends Controller
 
     public function getMenuSetting()
     {
-        $menu = (int)$this->load->model('users')->getUserMenuSetting($this->logged_user['users_id']);
-
-        $this->output->json($menu);
+        $user = $this->load->model('users')->getUser('users_id', $this->session->id);
+        $this->output->text($user['menu']);
     }
 
     public function changeMenuSetting() 
-    {       
+    {
+        $this->gusto->authenticate(3);
+        
         $user_model = $this->load->model('users');
-        $menu = $user_model->getUserMenuSetting($this->logged_user['users_id']);
-        $data['main_menu'] = (int)$menu;
-        $data['menu_anchor'] = $this->logged_user['users_id'];
+        $user = $user_model->getUser('users_id', $this->session->id);
+        $data['menu'] = $user['menu'];
+        $data['users_id'] = $this->logged_user['users_id'];
 
-        if ($data['main_menu'] == 0) {
-            $data['main_menu'] = 1;
-            $user_model->updateUserMenuSetting($data);
-        } elseif ($data['main_menu'] == 1) {
-            $data['main_menu'] = 0;
-            $user_model->updateUserMenuSetting($data);
+        if ($data['menu'] == 0) {
+            $data['menu'] = 1;
+            $user_model->updateUser($data, 'users_id');
+        } elseif ($data['menu'] == 1) {
+            $data['menu'] = 0;
+            $user_model->updateUser($data, 'users_id');
         }
 
-        $this->output->text($data['main_menu']);
+        $this->output->text($data['menu']);
     }
 
     public function getDropdownSettings()
@@ -228,7 +232,7 @@ class AdminSettingsController extends Controller
 
     public function getThemes()
     {
-        $path = VIEWS_DIR . '/front/themes';
+        $path = VIEWS_DIR . '/themes';
         $dir = new DirectoryIterator($path);
         foreach ($dir as $fileinfo) {
             if ($fileinfo->isDir() && !$fileinfo->isDot()) {

@@ -10,7 +10,7 @@ class PagesModel extends Model
     public function getPages()
     {
         // SELECT * FROM `pages` WHERE `name` = "home"
-        $select = $this->table('pages')->select('*')->get();
+        $select = $this->table('pages')->select('*')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? [] : $select['response'];
@@ -36,7 +36,7 @@ class PagesModel extends Model
     public function getPageContent($data)
     {
         // SELECT `content` FROM `pages` WHERE `name` = "home" LIMIT 1
-        $select = $this->table('pages')->select('content')->where('name', $data)->limit(1)->get('string');
+        $select = $this->table('pages')->select('content')->where('name', $data)->limit(1)->getOne();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -49,7 +49,7 @@ class PagesModel extends Model
     public function updatePageStatistics($name)
     {
         // SELECT `views` FROM `pages` WHERE `name` = "thing" LIMIT 1
-        $select = $this->table('pages')->select('views')->where('name', $name)->limit(1)->get('string');
+        $select = $this->table('pages')->select('views')->where('name', $name)->limit(1)->getOne();
         if ($select) {
             if ($select['status'] == 'success') {
                 $data['views'] = ++$select['response'];
@@ -130,7 +130,7 @@ class PagesModel extends Model
     public function getTotalPageNumber()
     {
         // SELECT * FROM `pages`
-        $select = $this->table('pages')->select('*')->count()->get('string');
+        $select = $this->table('pages')->select('*')->getTotal();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -143,7 +143,7 @@ class PagesModel extends Model
     public function getMostViewed()
     {
         // SELECT * FROM `pages` WHERE `views` = (SELECT max(views) FROM `pages`)
-        $select = $this->table('pages')->select('*')->highest('views')->limit(1)->get();
+        $select = $this->table('pages')->select('*')->whereHighest('views')->get();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -156,7 +156,7 @@ class PagesModel extends Model
     public function getTotalPageViews()
     {
         // SELECT * FROM `pages`
-        $select = $this->table('pages')->select('views')->get();
+        $select = $this->table('pages')->select('*')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 if (!empty($select['response'])) {
@@ -216,7 +216,7 @@ class PagesModel extends Model
     public function getRoutes($param, $data)
     {
         // SELECT * FROM `routes` WHERE `route` = "/home"
-        $select = $this->table('routes')->select('*')->where($param, $data)->orderBy('routes_id', 'asc')->get();
+        $select = $this->table('routes')->select('*')->where($param, $data)->orderBy('routes_id', 'asc')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -250,27 +250,6 @@ class PagesModel extends Model
                 } else {
                     return false;
                 }
-            } else {
-                return false;
-            }
-        }
-    }
-
-    public function getSpecificPageData($select)
-    {
-        $select = $this->table('pages')->select($select)->get();
-        $array = [];
-        if ($select) {
-            if ($select['status'] == 'success') {
-                if (!empty($select['response'])) {
-                    foreach ($select['response'] as $r) {
-                        array_push($array, implode($r));
-                    }
-                    return $array;
-                } else {
-                    return false;
-                }
-                return empty($select['response']) ? false : $select['response'];
             } else {
                 return false;
             }

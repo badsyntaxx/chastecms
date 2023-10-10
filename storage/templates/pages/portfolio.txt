@@ -1,0 +1,29 @@
+<div class="portfolio-content">
+    <div class="row pad-ver-120 bkg-grey page-welcome">
+        <div class="wrapper">
+            <h1 class="heading-large text-blue space-bottom-30">More basic web design stuff for you to look at</h1>
+            <p class="text-large">The really interesting stuff is in the backend. You can <a href="/login">login</a> or if you're already logged in you can visit the <a href="/admin">admin</a> area.</p>
+        </div>
+    </div>
+    <div class="row examples text-left">
+        <div class="col example-box">
+            <img src="/views/images/demo/aja-jewelry.jpg" alt="Aja Jewelry">
+            <a href="/aja-jewelry" class="example-overlay">Aja Jewelry</a>
+        </div>
+        <div class="col example-box">
+            <img src="/views/images/demo/hawaiipbx.jpg" alt="Hawaii PBX">
+            <a href="/hawaii-pbx" class="example-overlay">Hawaii PBX</a>
+        </div>
+        <div class="col example-box">
+            <img src="/views/images/demo/tci.jpg" alt="TCI">
+            <a href="/tci" class="example-overlay">TCI</a>
+        </div>
+        <div class="col example-box">
+            <img src="/views/images/demo/web-port-scanner.jpg" alt="Web Port Scanner">
+            <a href="/web-port-scanner" class="example-overlay">Web Port Scanner</a>
+        </div>  
+    </div>
+    <div class="row pad-ver-120 have-questions bkg-blue text-white text-center">
+        <span>Ready for a powerful, professional website?</span> <a href="/contact" class="btn btn-alt">Contact us</a>
+    </div>
+</div>

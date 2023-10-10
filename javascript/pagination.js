@@ -8,67 +8,72 @@ var Pagination = new Object();
  *
  * This is the primary funciton for this object. It will set the properties and call all other functions.
  */
-Pagination.init = function(arr) {
-    Pagination.params = Pagination.makeParamObject(arr);
-
-    Pagination.drawPagination();
-    Pagination.drawTotalRecords();
-    Pagination.numberRows(Pagination.params.start);
+Pagination.init = function(view = null) {
+    Pagination.view = view;
+    Pagination.getPaginationParams();
+    Pagination.drawTable();
     Pagination.goToPage();
     Pagination.goPrev();
     Pagination.goNext();
     Pagination.limitPageRecords();
-    Pagination.filterBy();
-    Pagination.filter();
     Pagination.sortRecords();
     Pagination.checkAll();
     Pagination.enableControls();
     Pagination.highlightRow();
 }
 
-/**
- * Make Parameter Object
- * 
- * Create a data object with all the pagination parameters. Includes the starting page, total records ect.
- */
-Pagination.makeParamObject = function(arr) {
-    var data = {};
-    $(arr).each(function(index, obj){
-        if (obj.value !== '') data[obj.name] = obj.value;
+Pagination.getPaginationParams = function() {
+    $.ajax({
+        url: '/admin/' + Pagination.view + '/setPaginationParams',
+        type: 'GET',
+        async: false, 
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                Pagination.params = {orderby: data.orderby, direction: data.direction, page: data.page, limit: data.limit};
+            } 
+        }
     });
-    return data;
+    return Pagination.params;
 }
 
 /**
- * Refresh Table
+ * Draw Table
  * 
  * This function is responsible for drawing a table of records in the list view. This function will also 
- * call drawPagination() and drawTotalRecords() and numberRows().
+ * call drawPagination() and getTotalRecords().
  */
-Pagination.refreshTable = function() {
-    $.post('/admin/' + Pagination.params.table + '/getTable', Pagination.params, function(response) {
-        if (isJson(response)) {
-            var json = JSON.parse(response);
-            Pagination.params.total_pages = json.total_pages;
-            Pagination.params.total_records = json.total_records;
+Pagination.drawTable = function() {
+    $.ajax({
+        url: '/admin/' + Pagination.view + '/drawTable',
+        type: 'POST',
+        data: Pagination.params,
+        beforeSend: function() {
+            $('.loading').show();
+        },
+        success: function(response, status, xhr) {
+            // $('body').prepend(response);
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                // Draw the table
+                $('.panel-content').html(data.table);
+                // Number each row
+                $('.data-row').each(function(index, item) {
+                    var start_num = data.start;
+                    var num = parseInt(index) + parseInt(start_num);
+                    num++;
+                    $(this).find('.number-col').text(num);               
+                });
 
-            $('.panel-content').html(json.list);
-
-            Pagination.numberRows(json.start);
-            Pagination.drawPagination();
-            Pagination.drawTotalRecords();
+                Pagination.drawPagination();
+                Pagination.getTotalRecords();
+            } 
+        },
+        complete: function() {
+            $('.loading').fadeOut(500);
         }
     });
-},
-
-Pagination.numberRows = function(start) {
-    $('.data-row').each(function(index, item) {
-        var start_num = start;
-        var num = parseInt(index) + parseInt(start_num);
-        num++;
-        $(this).find('.number-col').text(num);               
-    });
-},
+}
 
 /**
  * Draw Pagination
@@ -76,29 +81,32 @@ Pagination.numberRows = function(start) {
  * This function will create pagination links for the table list.
  */
 Pagination.drawPagination = function() {
-    // $('.pagination button').remove();
-    $('#pagination-select option').remove();
-
-    // Add previous button if page is not first page.
-    if (Pagination.params.page == 1) {
-        $('.pagination .btn-prev').attr('disabled', true);
-    } else {
-        $('.pagination .btn-prev').attr('disabled', false);
-    }
-    // Add page links with page numbers.
-    for (var i = 1; i <= Pagination.params.total_pages; i++) {
-        $('#pagination-select').append('<option value="' + i + '">' + i + '</option>');
-    }
-    // Add next button if page is not last page.
-    if (Pagination.params.page == Pagination.params.total_pages) {
-        $('.pagination .btn-next').attr('disabled', true);
-    } else {
-        $('.pagination .btn-next').attr('disabled', false);
-    }
-    // Highlight current page in pagination nav.
-    $('#pagination-select option').each(function() {
-        if ($(this).val() == Pagination.params.page) {
-            $('#pagination-select').val(Pagination.params.page);
+    $('.pagination').html('');
+    $.ajax({
+        url: '/admin/pagination/getPageTotal/' + Pagination.view,
+        type: 'POST',
+        data: Pagination.params,
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                // Add previous button if page is not first page.
+                if (Pagination.params.page != 1) {
+                    $('.pagination').prepend('<button type="button" class="btn-prev"><i class="fas fa-caret-left fa-fw"></i></button><hr class="divider">');
+                }
+                // Add page links with page numbers.
+                for (var i = 1; i <= response; i++) {
+                    $('.pagination').append('<button type="button" class="btn-page">' + i + '</button><hr class="divider">');
+                }
+                // Add next button if page is not last page.
+                if (Pagination.params.page != response) {
+                    $('.pagination').append('<button class="btn-next"><i class="fas fa-caret-right fa-fw"></i></button>');
+                }
+                // Highlight current page in pagination nav.
+                $('.pagination button').each(function() {
+                    if ($(this).text() == Pagination.params.page) {
+                        $(this).css({'box-shadow' : 'inset 0px 0px 3px 1px rgba(0, 0, 0, 0.1)', 'color' : '#aaa'});
+                    }
+                });
+            } 
         }
     });
 }
@@ -108,8 +116,17 @@ Pagination.drawPagination = function() {
  * 
  * This function will get the total number of records and display the total at the bottom of the list.
  */
-Pagination.drawTotalRecords = function() {
-    $('.total').text('Total: ' + Pagination.params.total_records);
+Pagination.getTotalRecords = function() {
+    $.ajax({
+        url: '/admin/pagination/getTotalRecordsNumber/' + Pagination.view,
+        type: 'POST',
+        data: Pagination.params,
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                $('.total').text('Total: ' + response);
+            } 
+        }
+    });
 }
 
 /**
@@ -118,9 +135,9 @@ Pagination.drawTotalRecords = function() {
  * This function will re-draw the table starting at the page that is selected in the pagination. 
  */
 Pagination.goToPage = function() {
-    $('#pagination-select').on('change', function() {
-        Pagination.params.page = $(this).val();
-        Pagination.refreshTable();
+    $('body').on('click', '.btn-page', function() {
+        Pagination.params.page = $(this).text();
+        Pagination.drawTable();
     });
 }
 
@@ -132,7 +149,7 @@ Pagination.goToPage = function() {
 Pagination.goPrev = function() {
     $('body').on('click', '.btn-prev', function() {
         Pagination.params.page = --Pagination.params.page;
-        Pagination.refreshTable();
+        Pagination.drawTable();
     });
 }
 
@@ -144,7 +161,7 @@ Pagination.goPrev = function() {
 Pagination.goNext = function() {
     $('body').on('click', '.btn-next', function() {
         Pagination.params.page = ++Pagination.params.page;
-        Pagination.refreshTable();
+        Pagination.drawTable();
     });
 }
 
@@ -155,65 +172,17 @@ Pagination.goNext = function() {
  */
 Pagination.limitPageRecords = function() {
     // Add selected prop to current page limit in select menu
-    $('.limit' + Pagination.params.record_limit).prop('selected', true);
+    $('.limit' + Pagination.params.limit).prop('selected', true);
 
     // Choose max records to show per page.
     $('.limit-per-page').on('change', function() {
         $('.limit-per-page option').each(function() {
             if ($(this).prop('selected') == true) {
+                Pagination.params.limit = $(this).text();
                 Pagination.params.page = 1;
-                Pagination.params.record_limit = $(this).text();
-                Pagination.refreshTable();
+                Pagination.drawTable();
             }
         });
-    });
-}
-
-/**
- * Filter Page Records
- * 
- * This function will filter what records are displayed in the table list.
- */
-Pagination.filterBy = function() {
-    var column = '';    
-
-    $('.filter-by').on('change', function() {
-        $('.filter-dropdown').css({'display' : 'none'});
-
-        if ($('option:selected', this).val()) {
-            column = $('option:selected', this).val();
-
-            Pagination.params.column = column;
-
-            $('#' + column).css({'display' : 'block'});
-        } else {
-            $('.filter-dropdown').css({'display' : 'none'});
-            Pagination.params.column = '';
-            Pagination.refreshTable();
-        }
-    });
-}
-
-/**
- * Filter Page Records
- * 
- * This function will filter what records are displayed in the table list.
- */
-Pagination.filter = function() {
-    var is = '';   
-
-    $('.filter').on('change', function() {
-        if ($('option:selected', this).val()) {
-            is = $('option:selected', this).val();
-
-            Pagination.params.is = is;
-            Pagination.params.page = 1;
-            
-            Pagination.refreshTable();
-        } else {
-            Pagination.params.is = '';
-            Pagination.refreshTable();
-        }
     });
 }
 
@@ -226,14 +195,14 @@ Pagination.sortRecords = function() {
     $('body').on('click', '.btn-sort', function() {
         // Set the order by the table header text.
         Pagination.params.orderby = $(this).text().toLowerCase().replace(/ /g, '_');
-        console.log(Pagination.params.orderby);
+
         // Determine the direction the table should sort by.
         if (Pagination.params.direction === 'asc') {
             Pagination.params.direction = 'desc';
         } else {
             Pagination.params.direction = 'asc';
         }
-        Pagination.refreshTable();
+        Pagination.drawTable();
     });
 }
 

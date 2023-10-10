@@ -4,6 +4,7 @@ class AnalyticsModel extends Model
 {
     public function insertAnalyticsCode($data)
     {
+        // INSERT INTO `analytics` (`code`) VALUES (?)
         $insert = $this->table('analytics')->insert($data)->execute();
         if ($insert) {
             if ($insert['status'] == 'success') {
@@ -16,7 +17,8 @@ class AnalyticsModel extends Model
 
     public function getAnalyticsCode()
     {
-        $select = $this->table('analytics')->select('code')->get('string');
+        // SELECT * FROM `analytics`
+        $select = $this->table('analytics')->select('*')->get();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -28,6 +30,7 @@ class AnalyticsModel extends Model
 
     public function updateAnalyticsCode($data)
     {
+        // UPDATE `analytics` SET `code` = ? WHERE `analytics_id` = ?
         $update = $this->table('analytics')->update($data)->where('analytics_id')->execute();
         if ($update) {
             if ($update['status'] == 'success') {

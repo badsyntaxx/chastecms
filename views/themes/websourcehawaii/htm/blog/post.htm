@@ -1,0 +1,18 @@
+<?= $header; ?>
+<main class="main blog-post-page">
+    <div class="wrapper">
+        <div class="row pad-top-60 pad-bottom-60">
+            <div class="row pad-bottom-15">
+                <span class="pull-left">By:<a href="/profile/<?= $author; ?>"> <?= $author; ?></a></span>
+                <span class="pull-right"><em><strong><?= $post_date; ?></strong></em></span>
+            </div>
+            <div class="custom-content"> 
+                <?= $body; ?> 
+            </div>
+            <div class="row pad-top-30">
+                <a href="/blog">Back</a>
+            </div> 
+        </div>
+    </div>
+</main>
+<?= $footer; ?>

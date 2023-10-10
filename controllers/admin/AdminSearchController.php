@@ -20,7 +20,7 @@ class AdminSearchController extends Controller
      * 
      * @param string $string      
      */
-    public function index()
+    public function init()
     {   
         return $this->load->view('common/search', null, 'admin');
     }

@@ -190,9 +190,10 @@
             },
             checkRequiredFields: function() {
                 var complete = true;
+                var error = false;
                 var inputs = $(settings.form).find(':input'); // Should return all input elements in that specific form.
 
-                $('[required]').each(function() {
+                $('.required').each(function() {
                     if ($(this).val() == '') {
                         complete = false;
                     }

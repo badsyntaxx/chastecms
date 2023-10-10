@@ -18,21 +18,9 @@ class AdminNavigationController extends Controller
      * Assuming that the NavigationController should be loaded in every controller 
      * this init method should run in every controller too.
      */
-    public function index()
+    public function init()
     {   
-        if ($this->logged_user) {
-            $menu = (int)$this->load->model('users')->getUserMenuSetting($this->logged_user['users_id']);
-        }
-
-        $menu_setting = '';
-        
-        if ($menu == 1) {
-            $menu_setting = 'menu-open';
-        }
-
-        $this->session->createSession('main_nav', $menu_setting, true);
-        
-        $view['nav_text_dashboard'] = $this->language->get('nav/nav_text_dashboard');
+        $view['nav_text_overview'] = $this->language->get('nav/nav_text_overview');
         $view['nav_text_users'] = $this->language->get('nav/nav_text_users');
         $view['nav_text_pages'] = $this->language->get('nav/nav_text_pages');
         $view['nav_text_sitemap'] = $this->language->get('nav/nav_text_sitemap');
@@ -42,7 +30,6 @@ class AdminNavigationController extends Controller
         $view['nav_text_robots'] = $this->language->get('nav/nav_text_robots');
         $view['nav_text_settings'] = $this->language->get('nav/nav_text_settings');
         $view['nav_text_logout'] = $this->language->get('nav/nav_text_logout');
-        $view['main_nav'] = $this->session->getSession('main_nav');
 
         return $this->load->view('common/nav', $view);
     }

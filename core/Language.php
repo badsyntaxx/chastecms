@@ -3,36 +3,33 @@
 /**
  * Language Core Class
  * 
- * This language library will be loaded in the application controller. So you can 
- * always use the language library in your controller classes.
+ * This language class will be loaded in the Gusto object. So you can 
+ * always use the language class in your controller classes.
  * @example $this->language->get('filename/key');
  */
 class Language
 {
     /**
-     * Get Language Setting
+     * Get the language settings from the settings table in the database.
      * 
-     * Get the language setting from the settings table and return it.
-     *
-     * @return string 
+     * @return string - The language setting.
      */
     public function getLanguageSetting()
     {
         $query = Database::getInstance()->mysqli->query('SELECT `value` FROM `settings` WHERE `name` = "language"');
         $lang = $query->fetch_object();  
+
         return $lang->value;
     }
 
     /**
-     * Return language keys
-     * 
-     * The language library includes the language files and returns keys from them. 
+     * The language class includes the language files and returns keys from them. 
      * The parameter passed to the get method should be a string with the filename 
      * and key seperated by a forward slash.
-     * @example $this->language->get('home/title');
+     * @example $this->language->get('file/key');
      * 
-     * @param string - $path - The path to the language file and key. file/key = home/title
-     * @return string
+     * @param string - $path - String including the file and key. @example home/title
+     * @return string - Text from the language file.
      */
     public function get($path)
     {
@@ -44,7 +41,7 @@ class Language
         if (is_file(LANGUAGE_DIR . '/' . $language . '/' . $file . '.php')) {
             include LANGUAGE_DIR . '/' . $language . '/' . $file . '.php';
         } else {
-            include LANGUAGE_DIR . '/' . $language . '/dashboard.php';
+            include LANGUAGE_DIR . '/' . $language . '/home.php';
         }
 
         if (isset($_[$key])) {

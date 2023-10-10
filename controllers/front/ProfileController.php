@@ -25,12 +25,12 @@ class ProfileController extends Controller
      * 
      * @param string $user
      */
-    public function index($username = '')
+    public function init($username = '')
     {      
         $profile = $this->load->model('users')->getUser('username', $username);
         $country = explode(', ', $profile['country']);
-        $la_days_ago = $this->helper->getDaysAgo($profile['last_active']);
-        $sd_days_ago = $this->helper->getDaysAgo($profile['signup_date']);
+        $la_days_ago = getDaysAgo($profile['last_active']);
+        $sd_days_ago = getDaysAgo($profile['signup_date']);
 
         $view['logged'] = $this->session->isLogged();
         $view['id'] = $profile['users_id'];
@@ -54,8 +54,8 @@ class ProfileController extends Controller
         $data['title'] = $profile['username'];
         $data['description'] = substr($profile['bio'], 0, -200);
 
-        $view['header'] = $this->load->controller('header')->index($data);
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();
 
         exit($this->load->view('profile/profile', $view));
     }

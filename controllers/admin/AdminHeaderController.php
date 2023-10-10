@@ -18,24 +18,17 @@ class AdminHeaderController extends Controller
      * Assuming that the HeaderController should be loaded in every controller 
      * this init method should run in every controller too.
      */
-    public function index()
+    public function init()
     {    
-        $url = isset($_GET['url']) ? $this->helper->splitUrl($_GET['url']) : null;
-
-        $view['title'] = 'Dashboard';
+        $url = isset($_GET['url']) ? splitUrl($_GET['url']) : null;
 
         if (isset($url[1])) {
             $view['title'] = $this->language->get($url[1] . '/title');
+        } else {
+            $view['title'] = 'Overview';
         }
 
-        $view['theme'] = '';
-
-        if ($this->logged_user) {
-            if ($this->logged_user['theme'] == 1) {
-                $view['theme'] = 'dark-theme';
-            }
-        }
-
+        $view['theme'] = $this->load->model('settings')->getSetting('theme');
         $view['logged'] = $this->logged_user;
         $view['theme_text'] = $this->language->get('header/theme_text');
         $view['view_text'] = $this->language->get('header/view_text');

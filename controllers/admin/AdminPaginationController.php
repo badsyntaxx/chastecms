@@ -7,11 +7,11 @@ class AdminPaginationController extends Controller
 {
     public function drawPagination($controls_type) 
     {
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
+        $view['header'] = $this->load->controller('admin/header')->init();
+        $view['footer'] = $this->load->controller('admin/footer')->init();
+        $view['search'] = $this->load->controller('admin/search')->init();
+        $view['nav'] = $this->load->controller('admin/navigation')->init();
+        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->init();
         $view['controls'] = $this->load->view($controls_type . '/controls');
 
         return $this->load->view('utilities/list', $view);

@@ -1,0 +1,29 @@
+<div class="hosting-content">
+    <div class="row pad-ver-120 bkg-grey page-welcome">
+        <div class="wrapper">
+            <h1 class="heading-large text-blue space-bottom-30">More basic web design stuff for you to look at</h1>
+            <p class="text-large">The really interesting stuff is in the backend. You can <a href="/login">login</a> or if you're already logged in you can visit the <a href="/admin">admin</a> area.</p>
+        </div>
+    </div>
+    <div class="row space-top-60 website-and-email">
+        <div class="wrapper">
+            <h2 class="heading-large">Website and email hosting</h2>
+            <p class="text-large">Very often when business owners have trouble with their websites, they end up in a time consuming back and forth with a host and a developer. Add to that a third host for email and you have yourself a lot to deal with. Lets eliminate that headache by keeping your host and website developer one in the same.</p>
+        </div>
+    </div>
+    <div class="row space-top-60 pad-ver-30 have-questions bkg-blue text-white text-center">
+        <span>Ready for simple, fast and easy web hosting?</span> <a href="/contact" class="btn btn-alt">Contact us</a>
+    </div>
+    <div class="row space-ver-60 local-benefits">
+        <div class="wrapper">
+            <div class="col dual">
+                <h3 class="heading-medium space-bottom-15">A local host for local business</h3>
+                <p>This service will benefit locals in particular. People using out of state hosting, know the fustration of trying to communicate with mainland vendors. The varying time zones can cause slow response times, and poor communication. Our team is based on the island of Oahu, so our response times are fast.</p>
+            </div>
+            <div class="col dual">
+                <h4 class="heading-medium space-bottom-15">A little aloha...</h4>
+                <p>We are very grateful to those that choose us as a host. That's why we offer reduced pricing on website creation for those who trust us to host their website. It is like choosing a home for your website after all, so why not choose one with a little aloha.</p>
+            </div>
+        </div>
+    </div>
+</div>

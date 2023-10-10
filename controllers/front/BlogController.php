@@ -25,7 +25,7 @@ class BlogController extends Controller
      * @param int $id   
      * @param string $title
      */
-    public function index($id = null, $title = null)
+    public function init($id = null, $title = null)
     {           
         $model = $this->load->model('blog');
         $page = $this->load->model('pages')->getPage('name', 'blog');
@@ -33,8 +33,8 @@ class BlogController extends Controller
         $data['title'] = $page['title'];
         $data['description'] = $page['description'];
 
-        $view['header'] = $this->load->controller('header')->index($data);
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();
 
         $this->load->model('pages')->updatePageStatistics('blog');
 
@@ -61,21 +61,19 @@ class BlogController extends Controller
         // $body = preg_replace('/<img[^>]+\>/i', '', $post['body']);
         // $body = preg_replace('/<p[^>]*>[\s|&nbsp;]*<\/p>/', '', $body);
 
-        if ($posts) {
-            foreach ($posts as $p) {
-                $view[] = [
-                    'blog_id' => $p['blog_id'],
-                    'author' => $p['username'],
-                    'title' => $p['title'],
-                    'body' => $p['body'],
-                    'preview_image' => $p['preview_image'],
-                    'post_date' => date('l, j M, Y', strtotime($p['post_date'])),
-                    'blog_link' => strtolower(str_replace(' ', '-', $p['title'])),
-                ];
-            }
+        foreach ($posts as $p) {
+            $view[] = [
+                'blog_id' => $p['blog_id'],
+                'author' => $p['username'],
+                'title' => $p['title'],
+                'body' => $p['body'],
+                'preview_image' => $p['preview_image'],
+                'post_date' => date('l, j M, Y', strtotime($p['post_date'])),
+                'blog_link' => strtolower(str_replace(' ', '-', $p['title'])),
+            ];
         }
 
-        $output = isset($view) ? $view : null;
+        $output = $view ? $view : null;
 
         $this->output->json($output);
     }

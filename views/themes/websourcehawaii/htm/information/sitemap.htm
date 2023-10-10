@@ -1,0 +1,21 @@
+<?= $header; ?>
+<main class="main sitemap-page">
+    <div class="row pad-ver-120 bkg-grey page-welcome">
+        <div class="wrapper">
+            <h1 class="heading-large text-blue space-bottom-30">Site Map</h1>
+            <p class="text-large">Feeling lost? Use the site map below to find where you want to be.</p>
+        </div>
+    </div>
+    <div class="row pad-top-60 pad-bottom-60 sitemap">
+        <div class="wrapper">
+            <div class="row">
+                <ul class="list-unstyled">
+                    <?php foreach ($pages as $p): ?>
+                    <li><a href="<?= $p['route']; ?>"><?= $p['route_name']; ?></a></li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+<?= $footer; ?>

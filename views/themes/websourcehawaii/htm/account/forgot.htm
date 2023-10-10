@@ -1,0 +1,48 @@
+<?= $header; ?>
+<main class="main forgot-page">
+    <div class="row pad-top-60 pad-bottom-60">
+        <div class="wrapper">
+            <div class="col user-form text-center">
+                <div class="row reset-form">
+                    <h1 class="pad-bottom-15 heading-large text-center">Request Password Reset</h1>
+                    <div class="alert-area"></div>
+                    <form id="send-form" class="row fancy-form">
+                        <div class="row fancy-row space-bottom-15 email">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" required id="email" class="row">
+                        </div>
+                        <div class="row">
+                            <button type="button" class="btn btn-default btn-send row"><i class="fas fa-paper-plane fa-fw"></i> Send Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+$('#send-form').validator({
+    formButton : '.btn-send',
+    checkEmailTaken : false
+});
+
+$('body').on('click', '.btn-send', function() {
+    $.ajax({
+        url: '/account/sendRecoveryMail',
+        type: 'post',
+        data: $('#send-form').serialize(),
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.alert-area').html('<div class="row alert ' + data.alert + '">' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button></div>');
+            }
+        },
+        complete: function() {
+            Common.btn.prop('disabled', false).html(Common.btnhtml);
+        }
+    });
+});
+
+</script>
+<?= $footer; ?>

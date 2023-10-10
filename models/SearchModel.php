@@ -11,7 +11,7 @@ class SearchModel extends Model
     public function searchUsers($data)
     {
         // SELECT * FROM `users` WHERE `username` LIKE "%billy%" OR `firstname` LIKE "%billy%" OR `lastname` LIKE "%billy%" OR `email` LIKE "%billy%"
-        $select = $this->table('users')->select('*')->whereLike('username', $data)->orWhereLike('firstname', $data)->orWhereLike('lastname', $data)->orWhereLike('email', $data)->get();
+        $select = $this->table('users')->select('*')->whereLike('username', $data)->orWhereLike('firstname', $data)->orWhereLike('lastname', $data)->orWhereLike('email', $data)->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 if (!empty($select['response'])) {
@@ -36,7 +36,7 @@ class SearchModel extends Model
     public function searchBlog($data)
     {
         // SELECT * FROM `blog` WHERE `title` LIKE "%test%" OR `author` LIKE "%test%"
-        $select = $this->table('blog')->select('*')->whereLike('title', $data)->orWhereLike('author', $data)->get();
+        $select = $this->table('blog')->select('*')->whereLike('title', $data)->orWhereLike('author', $data)->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 if (!empty($select['response'])) {
@@ -67,7 +67,7 @@ class SearchModel extends Model
     public function liveSearchUsers($data)
     {
         // SELECT * FROM `users` WHERE `username` LIKE "%test%"
-        $select = $this->table('users')->select('*')->whereLike('username', $data)->get();
+        $select = $this->table('users')->select('*')->whereLike('username', $data)->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -80,7 +80,7 @@ class SearchModel extends Model
     public function liveSearchBlogPosts($data)
     {
         // SELECT * FROM `blog` WHERE `title` LIKE "%test%"
-        $select = $this->table('blog')->select('*')->whereLike('title', $data)->get();
+        $select = $this->table('blog')->select('*')->whereLike('title', $data)->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -93,7 +93,7 @@ class SearchModel extends Model
     public function liveSearchPages($data)
     {
         // SELECT * FROM `pages` WHERE `name` LIKE "%test%"
-        $select = $this->table('pages')->select('*')->whereLike('name', $data)->get();
+        $select = $this->table('pages')->select('*')->whereLike('name', $data)->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];

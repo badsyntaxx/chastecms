@@ -1,0 +1,22 @@
+<div class="aja-content">
+    <div class="wrapper">
+        <div class="row space-ver-120 pad-bottom-120 client-example">
+            <div class="col col-40 pad-right-30">
+                <div class="row">
+                    <h1 class="space-bottom-15 heading-large text-blue">Aja</h1>
+                    <p class="row space-bottom-15">Aja has many meanings. In Africa Aja means high priestess. In Korea Aja aja can mean have strength or keep fighting.</p>
+                    <p class="row">The owner at Aja was in need of an eCommerce solution. She wanted to take online orders and payments and generate shipping labels. ECommerce websites require an extra layer of security, to keeps its customers happy and safe. We were able to provide them with all the necessary features they needed, and to get their shop up and running and making money fast.</p>
+                </div>
+                <div class="row space-top-60">
+                    <a href="/contact" class="btn btn-default">I need a great website</a>
+                </div>
+            </div>
+            <div class="col col-60 pad-left-30 text-center">
+                <div class="row space-bottom-30">
+                    <a href="http://shopajajewelry.com" class="btn btn-default" target="blank_">View this project</a>
+                </div>
+                <img src="/views/images/demo/aja-jewelry.png" alt="Aja Clothing Brand" class="row">
+            </div>
+        </div>
+    </div>
+</div>

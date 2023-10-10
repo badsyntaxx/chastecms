@@ -1,0 +1,56 @@
+<div class="site-maintenancae-content">
+    <div class="row pad-ver-120 bkg-grey page-welcome">
+        <div class="wrapper">
+            <h1 class="heading-large text-blue space-bottom-30">More basic web design stuff for you to look at</h1>
+            <p class="text-large">The really interesting stuff is in the backend. You can <a href="/login">login</a> or if you're already logged in you can visit the <a href="/admin">admin</a> area.</p>
+        </div>
+    </div>
+    <div class="row space-top-60 site-maintenance">
+        <div class="wrapper">
+            <div class="col dual">
+                <h2 class="heading-medium space-bottom-30 text-blue">Website Management</h2>
+                <strong class="text-xxl">Regardless of who originally built your site, I’m here to help.</strong>
+                <p class="row space-top-15">Are you frustrated from spending too much time trying to figure out how to manage your website? Did your web designer abandon you or lack the initiative to get things done? I’ve got you covered!</p>
+            </div>
+            <div class="col dual">
+                <h3 class="heading-medium space-bottom-30 text-blue">Updates Made Easy</h3>
+                <p class="space-bottom-30">Business owners reach out to me on a regular basis, seeking help with website management. By outsourcing routine maintenance tasks and updates to me, they save valuable time––time better spent on doing what they do best…running their business.</p>
+                <p><a href="/contact">Contact us today</a> to learn more about what I can do for you!</p>
+            </div>
+        </div>
+    </div>
+    <div class="row pad-ver-60 space-top-60 bkg-black text-white site-maintenance-services">
+        <div class="wrapper">
+            <div class="col triple">
+                <div class="col small-col">
+                    <i class="fas fa-chart-pie fa-fw"></i>
+                </div>
+                <div class="col big-col">
+                    <h4 class="heading-medium text-white space-bottom-30">Management</h4>
+                    <p>We can help you maintain any static HTML or CSS on your website. We can also help with updating content, images, galleries, changes to your design or layout, and even provide custom graphics.</p>
+                </div> 
+            </div>
+            <div class="col triple">
+                <div class="col small-col">
+                    <i class="fas fa-life-ring fa-fw"></i>
+                </div>
+                <div class="col big-col">
+                    <h5 class="heading-medium text-white space-bottom-30"> Support</h5>
+                    <p>Is your site built with a CMS (Content Managment System)? We can help maintain your updates, plugins, content, fix a hacked site, and so much more. We are here to answer your questions and support you into the future.</p>
+                </div>
+            </div>
+            <div class="col triple">
+                <div class="col small-col">
+                    <i class="fas fa-server fa-fw"></i>
+                </div>
+                <div class="col big-col">
+                    <h6 class="heading-medium text-white space-bottom-30"> Hosting</h6>
+                    <p>Are you lost when it comes to hosting? We provide local hosting services, so you dont have to deal with the time difference between you and a mainland host. We can also help you migrate your website to a new hosting service.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pad-ver-30 have-questions bkg-blue text-white text-center">
+        <span>Have more questions? Need additional web services?</span> <a href="/contact" class="btn btn-alt">Contact us</a>
+    </div>
+</div>

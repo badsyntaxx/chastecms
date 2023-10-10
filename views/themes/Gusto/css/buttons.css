@@ -1,0 +1,138 @@
+/**
+ * Buttons CSS
+ *
+ * These styles include all the buttons classes and id's for the site. 
+ * Basic button and input submit elements will be styled by default.
+ * you can create buttons by adding the class .btn to an element, 
+ * then adding a styling class like .btn-go or .btn-stop.
+*/
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+    font-weight: inherit;
+    -webkit-appearance: none;
+}
+
+button:disabled, button[disabled], a:disabled, a[disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+    font-family: 'Titillium Web';
+}
+
+.btn {
+    display: inline-block;
+    padding: 0 17px;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Titillium Web';
+    font-size: inherit;
+    font-weight: inherit;
+    text-align: center;
+    vertical-align: top;
+    line-height: 32px;
+    -webkit-appearance: none;
+    -webkit-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out
+}
+
+.btn-large {
+    padding: 0 30px;
+    line-height: 50px;
+    font-size: 24px;
+}
+
+.btn-small {
+    padding: 0 10px;
+    line-height: 21px;
+    font-size: 12px;
+}
+
+.btn:focus, .btn:active {
+    outline: none
+}
+
+.btn::-moz-focus-inner {
+    border: 0
+}
+
+.btn i {
+    font-size: 13px;
+}
+
+.btn-default, .btn-default:visited {
+    background-color: #3081d9;
+    border: 1px solid #2774c7;
+    box-shadow: inset 0 0 1px 0 #388ae2;
+    color: #ffffff
+}
+
+.btn-default:hover {
+    background-color: #b3b3b3;
+    color: #ffffff
+}
+
+.btn-default:active {
+    box-shadow: inset 0 0 0 1px #727272, inset 0 2px 7px #505050
+}
+
+.btn-go, .btn-go:visited {
+    background-color: #5eb24a;
+    border: 1px solid #4ea03b;
+    box-shadow: inset 0 0 1px 0 #a8ed97;
+    color: #ffffff
+}
+
+.btn-go:hover {
+    background-color: #58c83d;
+    color: #ffffff
+}
+
+.btn-go:active {
+    box-shadow: inset 0 0 0 1px #727272, inset 0 2px 7px #505050
+}
+
+.btn-stop, .btn-stop:visited {
+    background-color: #e75858;
+    border: 1px solid #d24747;
+    box-shadow: inset 0 0 1px 0 #feb3b3;
+    color: #ffffff
+}
+
+.btn-stop:hover {
+    background-color: #d33838;
+    color: #ffffff
+}
+
+.btn-stop:active {
+    box-shadow: inset 0 0 0 1px #727272, inset 0 2px 7px #505050
+}
+
+.btn-transparent, .btn-transparent:visited {
+    background-color: transparent;
+    color: #777;
+}
+
+.btn-transparent:hover {
+    background-color: transparent;
+    color: #777;
+}
+
+.btn-transparent:active {
+    box-shadow: inset 0 0 0 1px #727272, inset 0 2px 7px #505050
+}
+
+.btn-border {
+    border: 1px solid #ccc;
+}
+
+.btn.pull-right {
+    margin: 0 0 0 10px
+}
+
+.btn.pull-left {
+    margin: 0 10px 0 0
+}

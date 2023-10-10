@@ -20,14 +20,14 @@ class SearchController extends Controller
      * 
      * @param string $string      
      */
-    public function index($string = null)
+    public function init($string = null)
     {   
         $data['page'] = 'search';
         $data['title'] = 'Search: ' . $string;
         $data['description'] = '';
 
-        $view['header'] = $this->load->controller('header')->index($data);
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();
         $view['string'] = $string;
 
         if ($string) {

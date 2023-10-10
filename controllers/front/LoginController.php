@@ -15,10 +15,10 @@ class LoginController extends Controller
      * controller is loaded. 
      *
      * Routes
-     * - http://chaste/login
-     * - http://chaste/login/init
+     * - http://gusto/login
+     * - http://gusto/login/init
      */
-    public function index()
+    public function init()
     {       
         if ($this->session->isLogged()) $this->load->route('/home');
 
@@ -27,8 +27,8 @@ class LoginController extends Controller
         $data['title'] = $page['title'];
         $data['description'] = $page['description'];
 
-        $view['header'] = $this->load->controller('header')->index($data);
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();
         $view['content'] = $this->load->model('pages')->getPageContent('login');
         $view['sitename'] = $this->load->model('settings')->getSetting('sitename');
 
@@ -47,13 +47,10 @@ class LoginController extends Controller
     public function validate()
     {   
         // Test for bots using the bot test helper.
-        $this->helper->botTest($_POST['red_herring']);
+        botTest($_POST['red_herring']);
 
-        $route = $this->session->getCookie('desired_route');
-
-        $this->email = filter_var(trim(strtolower($_POST['email'])), FILTER_SANITIZE_EMAIL);
+        $this->email = $this->sanitize->email($_POST['email']);
         $this->password = $_POST['password'];
-        $this->route = $route ? '/' . $route : '/home';
         $this->user_model = $this->load->model('users');
         $this->user = $this->user_model->getUser('email', $this->email);
         $this->time = date('c');
@@ -69,11 +66,6 @@ class LoginController extends Controller
             $this->output->json($output, 'exit');
         }
 
-        if ($this->activationPending()) {
-            $output = ['alert' => 'error', 'message' => $this->language->get('login/activation_pending')];
-            $this->output->json($output, 'exit');
-        }
-
         // If the password is wrong, update some records to show the login attempt.
         if (!password_verify($this->password, $this->user['password'])) {
             $this->logAttempts();
@@ -85,15 +77,10 @@ class LoginController extends Controller
         $data['users_id'] = $this->user['users_id'];
 
         $this->user_model->updateUser($data, 'users_id');
-        $this->user_model->deleteLoginAttempts($this->ip);
-        $this->session->createSession('id', $this->user['key']);
-
-        if ($this->session->isLogged()) {
-            $output = ['alert' => 'success', 'route' => $this->route];
-        } else {
-            $output = ['alert' => 'error', 'message' => 'Dunno.'];
-        }
-
+        $this->user_model->deleteLoginAttempts($this->email);
+        $this->session->createSession('id', $this->user['users_id']);
+        
+        $output = ['alert' => 'success', 'message' => ''];
         $this->output->json($output, 'exit');
     }
 
@@ -109,7 +96,7 @@ class LoginController extends Controller
             $this->user_model->insertLoginAttempt($data);
         } else {
             $data['attempts'] = ++$attempts['attempts'];
-            $this->user_model->updateLoginAttempts($data);
+            $update = $this->user_model->updateLoginAttempts($data);
         }            
     }
 
@@ -117,8 +104,13 @@ class LoginController extends Controller
     {
         $attempts = $this->user_model->getLoginAttempts($this->ip);
         if ($attempts) {
-            if ($attempts['attempts'] > 10) {
-                return true;
+            if ($attempts['email'] == $this->email) {
+                if ($attempts['attempts'] > 10) {
+                    $data['email'] = $this->email;
+                    $data['group'] = 66;
+                    $this->user_model->updateUser($data, 'email');
+                    return true;
+                }
             }
         }
         return false;
@@ -126,15 +118,7 @@ class LoginController extends Controller
 
     private function userIsBanned() 
     {
-        if ($this->user['group'] == 0) {
-            return true;
-        }
-        return false;
-    }
-
-    private function activationPending() 
-    {
-        if ($this->user['group'] == 1) {
+        if ($this->user['group'] == 66) {
             return true;
         }
         return false;

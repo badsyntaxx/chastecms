@@ -22,8 +22,12 @@ class LogoutController extends Controller
      *
      * @param string
      */
-    public function index($action = null)
+    public function init($action = null)
     {   
+        if ($this->session->isLogged()) {
+            $this->logged_user = $this->load->model('users')->getUser('users_id', $this->session->id);
+        }
+
         $inactive = false;
 
         if ($this->logged_user['verify_logout'] == 0) {
@@ -44,8 +48,8 @@ class LogoutController extends Controller
             }
         }
 
-        $view['header'] = $this->load->controller('header')->index();
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init();
+        $view['footer'] = $this->load->controller('footer')->init();
         $view['inactive'] = $inactive;
 
         exit($this->load->view('account/logout', $view)); 

@@ -10,7 +10,7 @@ class SitemapModel extends Model
     public function getSitelinks()
     {
         // SELECT * FROM `sitemap` ORDER BY `sort_order` ASC
-        $select = $this->table('sitemap')->select('*')->orderBy('sort_order', 'asc')->get();
+        $select = $this->table('sitemap')->select('*')->orderBy('sort_order', 'asc')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? [] : $select['response'];
@@ -23,7 +23,7 @@ class SitemapModel extends Model
     public function getVisibleSitelinks()
     {
         // SELECT * FROM `sitemap` ORDER BY `link_order` ASC
-        $select = $this->table('sitemap')->select('*')->orderBy('sort_order', 'asc')->get();
+        $select = $this->table('sitemap')->select('*')->orderBy('sort_order', 'asc')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 if (!empty($select['response'])) {

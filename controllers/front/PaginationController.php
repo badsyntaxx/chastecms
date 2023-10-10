@@ -7,8 +7,8 @@ class PaginationController extends Controller
 {
     public function drawPagination() 
     {
-        $view['header'] = $this->load->controller('header')->index();
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init();
+        $view['footer'] = $this->load->controller('footer')->init();
 
         return $this->load->view('utilities/list', $view);
     }

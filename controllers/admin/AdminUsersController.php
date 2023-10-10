@@ -10,66 +10,51 @@ class AdminUsersController extends Controller
     /**
      * Init method
      *
-     * The index methods in controller classes will be called automatically when a 
+     * The init methods in controller classes will be called automatically when a 
      * controller is loaded. 
      *
      * Routes
      * - http://root/admin/users
-     * - http://root/admin/users/index
+     * - http://root/admin/users/init
      *
      * This method will load the users list table.
      */
-    public function index()
+    public function init($view = 'list')
     {
-        $data = $this->prepareTable();
+        if ($view == 'list') {
+            exit($this->load->controller('admin/pagination')->drawPagination('users'));
+        }
 
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['main_nav'] = $this->session->getSession('main_nav');
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
-        $view['controls'] = $this->load->view('users/controls');
-        $view['filters'] = $this->load->view('users/filters');
-        $view['list'] = $data['list'];
-        $view['table'] = $data['table'];
-        $view['orderby'] = $data['orderby'];
-        $view['direction'] = $data['direction'];
-        $view['page'] = $data['page'];
-        $view['start'] = $data['start'];
-        $view['record_limit'] = $data['record_limit'];
-        $view['total_pages'] = $data['total_pages'];
-        $view['total_records'] = $data['total_records'];
-
-        exit($this->load->view('utilities/list', $view));
+        $this->drawUser($view);
     }
 
-    public function prepareTable($table = 'users', $orderby = 'users_id', $direction = 'asc', $page = 1, $record_limit = 15, $column = null, $is = null)
+    public function setPaginationParams()
     {
-        $paginated = $this->load->model('pagination')->paginate($table, $orderby, $direction, $page, $record_limit, $column, $is);
+        $params = ['table' => 'users', 'orderby' => 'users_id', 'direction' => 'asc', 'page' => 1, 'limit' => 15];
+        $this->output->json($params);
+    }
 
-        $view['users'] = [];
+    public function drawTable()
+    {
+        $paginated = $this->load->model('pagination')->paginate('users', $_POST['orderby'], $_POST['direction'], $_POST['page'], $_POST['limit']);
 
         foreach ($paginated['records'] as $user) {
             switch ($user['group']) {
-                case '1':
-                    $group = 'Pre-Activation';
-                break;
                 case '2':
                     $group = 'Registered';
-                break;
+                    break;
                 case '3':
                     $group = 'Moderator';
-                break;
+                    break;
                 case '4':
                     $group = 'Admin';
-                break;
-                case '0':
+                    break;
+                case '66':
                     $group = 'Locked';
-                break;
+                    break;
                 default:
                     $group = 'Activation pending';
-                break;
+                    break;
             }
             
             $view['users'][] = [
@@ -86,57 +71,29 @@ class AdminUsersController extends Controller
         }
 
         $output = [
-            'list' => $this->load->view('users/list', $view),
-            'table' => $table,
-            'orderby' => $orderby,
-            'direction' => $direction,
-            'record_limit' => $record_limit,
-            'page' => $page,
-            'start' => $paginated['start'],
-            'total_pages' => $paginated['pages'],
-            'total_records' => $paginated['total']
-        ];
-
-        return $output;
-    }
-
-    public function getTable() 
-    {
-        $orderby = empty($_POST['orderby']) ? null : $_POST['orderby'];
-        $direction = empty($_POST['direction']) ? null : $_POST['direction'];
-        $page = empty($_POST['page']) ? null : $_POST['page'];
-        $record_limit = empty($_POST['record_limit']) ? null : $_POST['record_limit'];
-        $column = empty($_POST['column']) ? null : $_POST['column'];
-        $is = empty($_POST['is']) ? null : $_POST['is'];
-        $data = $this->prepareTable('users', $orderby, $direction, $page, $record_limit, $column, $is);
-        
-        $output = [
-            'list' => $data['list'], 
-            'page' => $data['page'], 
-            'start' => $data['start'],
-            'total_pages' => $data['total_pages'],
-            'total_records' => $data['total_records']
+            'table' => $this->load->view('users/list', $view), 
+            'start' => $paginated['start']
         ];
 
         $this->output->json($output, 'exit');
     }
 
-    public function user($id)
-    {       
-        $user = $this->load->model('users')->getUser('users_id', $id);
-        if (!$user) $this->load->route('/users/list');
+    private function drawUser($username)
+    {
+        $user = $this->load->model('users')->getUser('username', $username);
+        if (!$user) $this->load->route('/admin/users/list');
 
-        $is_online = $this->userOnline($user['users_id']);
-        $la_days_ago = $this->helper->getDaysAgo($user['last_active']);
-        $sd_days_ago = $this->helper->getDaysAgo($user['signup_date']);
+        $is_online = $this->userOnline($user['username']);
+        $la_days_ago = getDaysAgo($user['last_active']);
+        $sd_days_ago = getDaysAgo($user['signup_date']);
         $today = date('c');
+        $settings_model = $this->load->model('settings');
 
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['main_nav'] = $this->session->getSession('main_nav');
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
+        $view['header'] = $this->load->controller('admin/header')->init();
+        $view['footer'] = $this->load->controller('admin/footer')->init();
+        $view['search'] = $this->load->controller('admin/search')->init();
+        $view['nav'] = $this->load->controller('admin/navigation')->init();
+        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->init();
 
         if ($user['users_id'] == $this->session->id) {
             $view['self'] = true;
@@ -144,13 +101,13 @@ class AdminUsersController extends Controller
             $view['self'] = null;
         }
 
-        if ($id) {
+        if ($username) {
             $view['users_id'] = $user['users_id'];
             if ($user['group'] == 1) { $view['group'] = 'Activation pending'; }
             if ($user['group'] == 2) { $view['group'] = 'Registered'; }
             if ($user['group'] == 3) { $view['group'] = 'Moderator'; }
             if ($user['group'] == 4) { $view['group'] = 'Administrator'; }
-            if ($user['group'] == 0) { $view['group'] = 'Locked'; }
+            if ($user['group'] == 66) { $view['group'] = 'Locked'; }
             $view['firstname'] = $user['firstname'];
             $view['lastname'] = $user['lastname'];
             $view['username'] = $user['username'];
@@ -184,6 +141,7 @@ class AdminUsersController extends Controller
     public function edit()
     {
         $model = $this->load->model('users');
+        $admin = $model->getUser('users_id', $this->logged_user['users_id']);
         $group = $_POST['group'];
 
         foreach ($_POST['ids'] as $id) {
@@ -191,7 +149,7 @@ class AdminUsersController extends Controller
 
             if ($user) {
                 switch ($group) {
-                    case '0':
+                    case '66':
                         $group_text = 'Locked';
                         break;
                     case '1':
@@ -217,13 +175,16 @@ class AdminUsersController extends Controller
                 $output['group'] = $group;
 
                 if ($model->updateUser($data, 'users_id')) {
+                    if ($group != '66') {
+                        $model->deleteLoginAttempts($user['email']);
+                    }
                     $output['alert'] = 'success';
                     $output['message'] = $this->language->get('users/user_updated');
-                    $this->log('Admin "' . $this->logged_user['firstname'] . ' ' . $this->logged_user['lastname'] .  '" set user "' . $user['firstname'] . ' ' . $user['lastname'] . '" to "' . $group_text . '".');
+                    $this->gusto->log('Admin "' . $this->logged_user['username'] . '" set user "' . $user['username'] . '" to "' . $group_text . '".');
                 } else {
                     $output['alert'] = 'error';
                     $output['message'] = 'User not updated.';
-                    $this->log('Admin "' . $this->logged_user['firstname'] . ' ' . $this->logged_user['lastname'] .  '" was unable to update user "' . $user['firstname'] . ' ' . $user['lastname'] . '". Check error logs.');
+                    $this->gusto->log('Admin "' . $this->logged_user['username'] . '" was unable to update user "' . $user['username'] . '". Check error logs.');
                 }
             }
         }
@@ -242,10 +203,10 @@ class AdminUsersController extends Controller
             if ($user && $user['group'] != 4) {
                 if ($model->deleteUser($id)) {
                     $output = ['alert' => 'success', 'message' => $this->language->get('users/users_deleted')];
-                    $this->log('Admin "' . $this->logged_user['username'] . '" deleted user "' . $user['username'] . '".');
+                    $this->gusto->log('Admin "' . $this->logged_user['username'] . '" deleted user "' . $user['username'] . '".');
                 } else {
                     $output = ['alert' => 'error', 'message' => 'User delete failed.'];
-                    $this->log('Admin "' . $this->logged_user['username'] . '" was unable to delete user "' . $user['username'] . '". Check error logs.');
+                    $this->gusto->log('Admin "' . $this->logged_user['username'] . '" was unable to delete user "' . $user['username'] . '". Check error logs.');
                 }
             }   
         }

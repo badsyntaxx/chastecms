@@ -19,11 +19,11 @@ class AdminBreadcrumbController extends Controller
      * This init method will create an array using the url. This method will also
      * create a breadcrumb view. 
      */
-    public function index()
+    public function init()
     {
         $view['breadcrumbs'] = [];
 
-        $links = isset($_GET['url']) ? $this->helper->splitUrl($_GET['url']) : null;
+        $links = isset($_GET['url']) ? splitUrl($_GET['url']) : null;
 
         if ($links) {
             $paths = [];

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title><?= $title; ?></title>
+    <meta charset="UTF-8">
+    <meta name="description" content="<?= $description; ?>">
+    <meta name="viewport" content="width=device-width initial-scale=1" http-equiv="X-UA-Compatible">
+    <link type="text/css" rel="stylesheet" href="/views/themes/<?= $theme; ?>/css/stylesheet.css?version<?= mt_rand(1, 99999) ?>" media="all">
+    <script type="text/javascript" src="/javascript/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="/javascript/gusto.js"></script>
+    <script type="text/javascript" src="/javascript/settings.js"></script>
+    <script type="text/javascript" src="/javascript/fform.js"></script>
+    <script type="text/javascript" src="/javascript/validator.js"></script>
+    <script type="text/javascript" src="/javascript/pagination.js"></script>
+    <script type="text/javascript" src="/javascript/dropzone.js"></script>
+    <script type="text/javascript" src="/javascript/slick.js"></script>
+    <?php if ($logged): ?>
+    <script type="text/javascript" src="/javascript/activity-checker.js"></script>
+    <?php endif ?>
+    <?php if ($analytics): ?>
+    <?= $analytics; ?>
+    <?php endif ?>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.slideshow p > img').unwrap();
+        $('.slideshow').slick({
+            autoplay: true,
+            autoplaySpeed: 2000,
+            fade: false,
+            speed: 1000,
+            dots: false,
+        });
+    });
+    </script>
+</head>
+<body class="row">
+    <header class="row header">
+        <a href="/home" class="logo"><?= $sitename; ?> <span><?= VERSION; ?></span></a>
+        <nav class="nav pull-right">
+            <?php if ($logged): ?>
+            <ul class="nav-account">
+                <li class="dropdown-button"><a href="#" class="nav-link account" onclick="return false;">My Account <i class="fas fa-caret-down fa-fw"></i></a>
+                    <ul class="dropdown-menu list-unstyled">
+                        <li><a href="/account" class="nav-link account">Account</a></li>
+                        <li><a href="/messages/inbox" class="nav-link messages">Messages</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <?php else: ?>
+            <ul class="main-nav list-unstyled">
+                <li><a href="/login" class="nav-link login">Login</a></li>
+                <li><a href="/signup" class="nav-link signup">Signup</a></li>
+            </ul>
+            <?php endif ?>
+        </nav>
+        <div class="search">
+            <input type="search" name="string" placeholder="Search" id="search-term">
+            <button type="button" class="btn btn-default"><i class="fas fa-search fa-fw"></i></button>
+        </div>
+        <nav class="nav pull-right">
+            <ul class="nav-main">
+                <?php foreach ($links as $link): ?>
+                <?php if ($link['children']): ?>
+                <li class="dropdown-button">
+                    <a href="#" class="nav-link <?= $link['class']; ?>" onclick="return false;"><?= $link['name']; ?> <i class="fas fa-caret-down fa-fw"></i></a>
+                    <ul class="dropdown-menu list-unstyled">
+                    <?php foreach ($links as $sub_link): ?>
+                    <?php if ($sub_link['parent'] == $link['id']): ?>
+                        <li><a href="<?= $sub_link['route']; ?>" class="nav-link <?= $sub_link['class'] ;?>"><?= $sub_link['name']; ?></a></li>                              
+                    <?php endif ?>                        
+                    <?php endforeach ?>
+                    </ul>
+                </li>
+                <?php endif ?>
+                <?php if ($link['top'] && !$link['children']): ?>
+                <li><a href="<?= $link['route']; ?>" class="nav-link <?= $link['class']; ?>"><?= $link['name']; ?></a></li>
+                <?php endif ?>
+                <?php endforeach ?>
+            </ul>
+        </nav>
+        <button type="button" class="menu-button"><i class="fa fa-bars"></i></button>
+    </header>

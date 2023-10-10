@@ -1,0 +1,23 @@
+<div class="adhira-content">
+    <div class="wrapper">
+        <div class="row space-ver-120 pad-bottom-120 client-example">
+            <div class="col col-40 pad-right-30">
+                <div class="row">
+                    <h1 class="space-bottom-15 heading-large text-blue">Adhira</h1>
+                    <p class="row space-bottom-15">Adhira - (<em>verb</em>) a sacred word meaning lightning, to light up, ignite, or set on fire.</p>
+                    <p class="row space-bottom-15">Adhira is a bohemian fashion website and boutique.</p> 
+                    <p class="row">The owner at Adhira was in need of an eCommerce solution. She wanted to take online orders and payments and generate shipping labels. ECommerce websites require an extra layer of security, to keeps its customers happy and safe. We were able to provide them with all the necessary features they needed, and to get their shop up and running and making money fast.</p>
+                </div>
+                <div class="row space-top-60">
+                    <a href="/contact" class="btn btn-default">I need a great website</a>
+                </div>
+            </div>
+            <div class="col col-60 pad-left-30 text-center">
+                <div class="row space-bottom-30">
+                    <a href="http://shopadhira.com" class="btn btn-default" target="blank_">View this project</a>
+                </div>
+                <img src="/views/images/demo/adhira.png" alt="Adhira Clothing Brand" class="row">
+            </div>
+        </div>
+    </div>
+</div>

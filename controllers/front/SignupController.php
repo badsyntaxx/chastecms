@@ -45,10 +45,10 @@ class SignupController extends Controller
      * controller is loaded. 
      *
      * Routes
-     * - http://chaste/signup
-     * - http://chaste/signup/init
+     * - http://gusto/signup
+     * - http://gusto/signup/init
      */
-    public function index()
+    public function init()
     {      
         if ($this->session->isLogged()) $this->load->route('/home');
 
@@ -57,8 +57,8 @@ class SignupController extends Controller
         $data['title'] = $page['title'];
         $data['description'] = $page['description'];
 
-        $view['header'] = $this->load->controller('header')->index($data);
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();
         $view['sitename'] = $this->load->model('settings')->getSetting('sitename');
 
         $this->load->model('pages')->updatePageStatistics('signup');
@@ -76,7 +76,7 @@ class SignupController extends Controller
     public function validate()
     {   
         // Test for bots using the bot test helper.
-        $this->helper->botTest($_POST['red_herring']);
+        botTest($_POST['red_herring']);
 
         // Load the user model class.
         $this->user_model = $this->load->model('users');
@@ -85,7 +85,7 @@ class SignupController extends Controller
         $this->validateEmail();
         $this->validatePassword();
         $this->registerUser();
-        $this->log('A new user "' . $this->username . '" registered an account.');
+        $this->gusto->log('A new user "' . $this->username . '" registered an account.');
     }
 
     /**
@@ -170,7 +170,7 @@ class SignupController extends Controller
         $confirm = $_POST['confirm'];
 
         if ($this->load->model('settings')->getSetting('strong_pw')) {
-            $pw_strong = $this->helper->isPasswordStrong($password);
+            $pw_strong = isPasswordStrong($password);
             if (!$pw_strong) {
                 $output = ['alert' => 'error', 'message' => $this->language->get('signup/pw_weak')];
                 $this->output->json($output, 'exit');
@@ -221,13 +221,14 @@ class SignupController extends Controller
      */
     private function sendActivationMail()
     {
+        $sitename = $this->load->model('settings')->getSetting('sitename');
         $link = HOST . '/account/activate/' . $this->key;
 
         $mail['to'] = $this->email;
         $mail['from'] = '';
         $mail['subject'] = 'Activate Your Account';
         $mail['message'] = $link;
-        $mail['body'] = str_replace('{{link}}', $link, $this->helper->getTemplate('email/activate'));
+        $mail['body'] = str_replace('{{link}}', $link, $this->mail->getTemplate('activate'));
 
         // Send the contact mail and exit with failure or success message.
         if ($this->mail->sendMail($mail)) {

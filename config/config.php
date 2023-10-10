@@ -2,7 +2,7 @@
 
 // Directories
 define('ROOT_DIR', str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']));
-define('HOST', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://' . $_SERVER['HTTP_HOST'] : 'http://' . $_SERVER['HTTP_HOST']);
+define('HOST', isset($_SERVER['HTTPS']) ? 'https://' . $_SERVER['HTTP_HOST'] : 'http://' . $_SERVER['HTTP_HOST']);
 define('CONTROLLERS_DIR', ROOT_DIR . '/controllers');
 define('CORES_DIR', ROOT_DIR . '/core');
 define('LANGUAGE_DIR', ROOT_DIR . '/language');
@@ -21,3 +21,9 @@ ini_set('display_errors', 'On');
 
 // Prevent site from being loaded by iframes.
 header('X-Frame-Options: SAMEORIGIN'); // DENY or SAMEORIGIN
+
+// Database
+define('HOSTNAME', 'localhost');
+define('DATABASE', 'techutks_websourcehawaii');
+define('USERNAME', 'chase');
+define('PASSWORD', 'Th1sP@ssw0rdF0rDB');

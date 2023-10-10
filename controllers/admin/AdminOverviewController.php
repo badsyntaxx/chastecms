@@ -18,7 +18,7 @@ class AdminOverviewController extends Controller
      * The OverviewController class is the default controller for the application. 
      * This means that invalid routes will default to this init method.
      */
-    public function index()
+    public function init()
     {   
         $users = $this->getUserInfo();
         $pages = $this->getPagesInfo();
@@ -67,11 +67,11 @@ class AdminOverviewController extends Controller
             }
         } 
 
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
+        $view['header'] = $this->load->controller('admin/header')->init();
+        $view['footer'] = $this->load->controller('admin/footer')->init();
+        $view['search'] = $this->load->controller('admin/search')->init();
+        $view['nav'] = $this->load->controller('admin/navigation')->init();
+        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->init();
 
         exit($this->load->view('common/home', $view));
     }
@@ -131,15 +131,15 @@ class AdminOverviewController extends Controller
 
         $data['total_posts'] = $total_posts ? $total_posts : 0;
         $data['blog_views'] = $total_views ? $total_views : 0;
-        $data['mv_blog_title'] = $most_viewed['title'];
-        $data['mv_title'] = $most_viewed['title'];
-        $data['mv_title'] = str_replace(' ', '_', $most_viewed['title']);
-        $data['mv_id'] = $most_viewed['blog_id'];
-        $data['mv_blog_route'] = '/admin/blog/' . $most_viewed['blog_id'] . '/edit/'; 
-        $data['lp_title'] = $last_post['title'];         
-        $data['lp_id'] = $last_post['blog_id'];
-        $data['le_title'] = $last_edit['title'];
-        $data['le_id'] = $last_edit['blog_id'];
+        $data['mv_blog_title'] = $most_viewed ? $most_viewed['title'] : '';
+        $data['mv_title'] = $most_viewed ? $most_viewed['title'] : '';
+        $data['mv_title'] = $most_viewed ? str_replace(' ', '_', $most_viewed['title']) : '';
+        $data['mv_id'] = $most_viewed ? $most_viewed['blog_id'] : '';
+        $data['mv_blog_route'] = $most_viewed ? '/admin/blog/' . $most_viewed['blog_id'] . '/edit/' : ''; 
+        $data['lp_title'] = $last_post ? $last_post['title'] : '';         
+        $data['lp_id'] = $last_post ? $last_post['blog_id'] : '';
+        $data['le_title'] = $last_post ? $last_edit['title'] : '';
+        $data['le_id'] = $last_post ? $last_edit['blog_id'] : '';
 
         return $data;
     }

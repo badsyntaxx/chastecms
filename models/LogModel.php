@@ -8,8 +8,9 @@
 class LogModel extends Model
 {
     /**
-     * Insert a new log record into the database.
+     * Insert log into database
      *
+     * Insert a new log record into the database.
      * @param array $post      
      * @return bool   
      */
@@ -17,6 +18,7 @@ class LogModel extends Model
     {
         $data['time'] = date('c');
         $data['event'] = $string;
+        // INSERT INTO `log` (`id`, `time`, `event`) VALUES (?, ?, ?)
         $insert = $this->table('log')->insert($data)->execute();
         if ($insert) {
             if ($insert['status'] == 'success') {
@@ -27,16 +29,10 @@ class LogModel extends Model
         }
     }
 
-    /**
-     * Get all log records.
-     *
-     * @param string $column
-     * @param mixed $is
-     * @return mixed
-     */
     public function getLogs()
     {
-        $select = $this->table('log')->select('*')->orderby('log_id', 'desc')->get();
+        // SELECT * FROM `log` ORDER BY `id` DESC
+        $select = $this->table('log')->select('*')->orderby('log_id', 'desc')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? [] : $select['response'];
@@ -46,13 +42,9 @@ class LogModel extends Model
         }
     }
 
-    /**
-     * Delete all log records.
-     *
-     * @return bool
-     */
     public function clearLog()
     {
+        // TRUNCATE TABLE `log`
         if ($this->truncate('log')) {
             return true;
         } else {
@@ -60,14 +52,10 @@ class LogModel extends Model
         }
     }
 
-    /**
-     * Get all error records.
-     *
-     * @return mixed
-     */
     public function getErrors()
     {
-        $select = $this->table('errors')->select('*')->orderby('errors_id', 'desc')->get();
+        // SELECT * FROM `errors` ORDER BY `id` DESC
+        $select = $this->table('errors')->select('*')->orderby('errors_id', 'desc')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? [] : $select['response'];
@@ -77,13 +65,9 @@ class LogModel extends Model
         }
     }
 
-    /**
-     * Delete all error records.
-     *
-     * @return void
-     */
     public function clearErrors()
     {
+        // TRUNCATE TABLE `errors`
         if ($this->truncate('errors')) {
             return true;
         } else {

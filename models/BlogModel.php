@@ -9,12 +9,8 @@ class BlogModel extends Model
 {
     public function getPosts($limit)
     {
-        $select = $this->table('blog')
-        ->select('blog_id, author, title, body, preview_image, post_date, username')
-        ->innerJoin('users', 'author', 'users_id')
-        ->orderBy('author', 'asc')
-        ->limit(3)
-        ->get();
+        // SELECT * FROM `blog` ORDER BY `id` DESC LIMIT 10
+        $select = $this->table('blog')->select('blog_id, author, title, body, preview_image, post_date, username')->innerJoin('users', 'author', 'users_id')->orderBy('author', 'asc')->limit(3)->getAll();
         if ($select && $select['status'] == 'success') {
             return empty($select['response']) ? false : $select['response'];
         } else {
@@ -24,6 +20,7 @@ class BlogModel extends Model
 
     public function getPost($param, $data)
     {
+        // 'SELECT `blog_id`, `post_date`, `body`, `username` FROM `blog` INNER JOIN `users` ON blog.author = users.users_id WHERE `blog_id` = "1" LIMIT 1'
         $select = $this->table('blog')->select('blog_id, post_date, body, username')->innerJoin('users', 'author', 'users_id')->where($param, $data)->limit(1)->get();
         if ($select && $select['status'] == 'success') {
             return empty($select['response']) ? false : $select['response'];
@@ -35,7 +32,7 @@ class BlogModel extends Model
     public function updateBlogStatistics($id)
     {
         // SELECT `views` FROM `blog` WHERE `id` = "1"
-        $select = $this->table('blog')->select('views')->where('blog_id', $id)->limit(1)->get('string');
+        $select = $this->table('blog')->select('views')->where('blog_id', $id)->limit(1)->getOne();
         if ($select) {
             if ($select['status'] == 'success') {
                 $views = $select['response'];
@@ -103,7 +100,7 @@ class BlogModel extends Model
     public function getTotalPostsNumber()
     {
         // SELECT * FROM `blog`
-        $select = $this->table('blog')->select('*')->count()->get('string');
+        $select = $this->table('blog')->select('*')->getTotal();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -116,7 +113,7 @@ class BlogModel extends Model
     public function getViewsNumber()
     {
         // SELECT `views` FROM `blog`
-        $select = $this->table('blog')->select('views')->get();
+        $select = $this->table('blog')->select('views')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 if (!empty($select['response'])) {
@@ -137,7 +134,7 @@ class BlogModel extends Model
     public function getMostViewed()
     {
         // SELECT * FROM `blog` WHERE `views` = (SELECT max(views) FROM `blog`)
-        $select = $this->table('blog')->select('*')->highest('views')->limit(1)->get();
+        $select = $this->table('blog')->select('*')->whereHighest('views')->get();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];

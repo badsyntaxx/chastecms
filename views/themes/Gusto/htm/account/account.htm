@@ -1,0 +1,332 @@
+<?= $header; ?>
+<main class="main account-page">
+    <div class="row pad-top-60 pad-bottom-60">
+        <div class="wrapper">
+            <div class="account">
+                <h1 class="heading-small pull-left">Account Settings</h1> 
+                <div class="account-page-links">
+                    <a href="/profile/<?= $username; ?>" class="account-page-link"><i class="fas fa-user fa-fw"></i> Profile</a>
+                    <a href="/messages/inbox" class="account-page-link"><i class="fas fa-envelope fa-fw"></i> Messages</a> 
+                </div>
+                <hr class="row space-bottom-15">
+                <div class="account-left-panel">
+                    <div class="row">
+                        <div class="avatar">
+                            <img src="/views/images/uploads/account/<?= $avatar; ?>" alt="Account Avatar" class="row">
+                            <form action="/account/uploadAvatar" class="dropzone needsclick dz-clickable" id="dropzone"></form>
+                        </div>
+                    </div>
+                </div>
+                <div class="account-right-panel">
+                    <div class="alert-area row"></div>
+                    <form action="" method="post" id="account-form" class="row">
+                        <div class="row space-bottom-15">
+                            <div class="label-col">
+                                <label for="username">Username:</label>
+                            </div>
+                            <div class="input-col">
+                                <div class="row username">
+                                    <input type="text" name="username" placeholder="Username" value="<?= $username; ?>" id="username" class="row">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15">
+                            <div class="label-col">
+                                <label for="firstname">Name:</label>
+                            </div>
+                            <div class="input-col">
+                                <div class="row firstname">
+                                    <input type="text" name="firstname" value="<?= $firstname; ?>" id="firstname" class="row">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15">
+                            <div class="label-col">
+                                <label for="lastname">Surname:</label>
+                            </div>
+                            <div class="input-col">
+                                <div class="row lastname">
+                                    <input type="text" name="lastname" value="<?= $lastname; ?>" id="lastname" class="row">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15">
+                            <div class="label-col">
+                                <label for="email">Email:</label>
+                            </div>
+                            <div class="input-col">
+                                <div class="row email">
+                                    <input type="email" name="email" placeholder="Email" value="<?= $email; ?>" id="email" class="row">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15 pad-bottom-30">
+                            <div class="label-col">
+                                <label for="website">Website:</label>
+                            </div>
+                            <div class="input-col">
+                                <div class="row website">
+                                    <input type="text" name="website" value="<?= $website; ?>" id="website" class="row">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15 pad-bottom-30">
+                            <div class="label-col">
+                                <label for="birthday">Date of Birth:</label>
+                            </div>
+                            <div class="input-col">
+                                <div class="row birthday">
+                                    <select name="day">
+                                        <option value="">Day</option>
+                                        <?php for ($i = 1; $i < 32; $i++): ?>
+                                        <option value="<?= $i; ?>" id="day-<?= $i; ?>"><?= $i; ?></option>
+                                        <?php endfor ?>
+                                    </select>
+                                    <select name="month">
+                                        <option value="">Month</option>
+                                        <option value="01" id="January">January</option>
+                                        <option value="02" id="February">February</option>
+                                        <option value="03" id="March">March</option>
+                                        <option value="04" id="April">April</option>
+                                        <option value="05" id="May">May</option>
+                                        <option value="06" id="June">June</option>
+                                        <option value="07" id="July">July</option>
+                                        <option value="08" id="August">August</option>
+                                        <option value="09" id="September">September</option>
+                                        <option value="10" id="October">October</option>
+                                        <option value="11" id="November">November</option>
+                                        <option value="12" id="December">December</option>
+                                    </select>
+                                    <select name="year">
+                                        <option value="">Year</option>
+                                        <?php for ($i = 2017; $i > 1901; $i--): ?>
+                                        <option value="<?= $i; ?>" id="year-<?= $i; ?>"><?= $i; ?></option>
+                                        <?php endfor ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15 pad-bottom-30">
+                            <div class="label-col">
+                                <label for="country">Country:</label>
+                            </div>
+                            <div class="input-col">
+                                <div class="row country">
+                                    <select name="country">
+                                        <option value="">Select</option>
+                                        <?php foreach ($countries as $country): ?>
+                                        <option value="<?= $country['code']; ?>, <?= $country['name']; ?>" id="<?= $country['code']; ?>"><?= $country['name']; ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15">
+                            <div class="label-col">
+                                <label for="privacy">Confirm Logouts:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="checkbox" name="logout_setting" value="1" id="verify-logout">
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15">
+                            <div class="label-col">
+                                <label for="privacy">Private Account:</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="checkbox" name="privacy" value="" title="Private profiles cannot be viewed by the public." id="privacy">
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15 pad-bottom-30">
+                            <div class="label-col">
+                                <label>Gender:</label>
+                            </div>
+                            <div class="input-col">
+                                <div class="row">
+                                    <input type="radio" name="gender" value="Male" id="male" class="radio-control">  
+                                    <label for="gender" class="gender-label">Male</label>
+                                    <input type="radio" name="gender" value="Female" id="female" class="radio-control">
+                                    <label for="gender" class="gender-label">Female</label>
+                                    <input type="radio" name="gender" value="Other" id="other" class="radio-control">  
+                                    <label for="gender" class="gender-label">Other</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15">
+                            <div class="label-col">
+                                <label for="password">Password:</label>
+                            </div>
+                            <div class="input-col">
+                                <div class="row password">
+                                    <input type="password" name="password" placeholder="New password" id="password" class="row">
+                                    <div class="show-pw"><i class="fas fa-eye fa-fw"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15 pad-bottom-30">
+                            <div class="label-col">
+                                <div class="row">
+                                    <label for="confirm">Confirm Password:</label>
+                                </div>
+                            </div>
+                            <div class="input-col">
+                                <div class="row confirm">
+                                    <input type="password" name="confirm" placeholder="Repeat your password" id="confirm" class="row">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15">
+                            <div class="label-col">
+                                <div class="row">
+                                    <label for="bio">Bio:</label>
+                                </div>
+                            </div>
+                            <div class="input-col">
+                                <div class="row textarea-row">
+                                    <textarea type="text" name="bio" class="row" id="bio"><?= $bio; ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row space-bottom-15 pad-top-60">
+                            <div class="row">
+                                <a href="/account" class="btn btn-stop pull-right"><i class="fas fa-ban fa-fw"></i> Cancel</a>
+                                <button type="button" class="btn btn-go btn-save pull-right"><i class="fas fa-save fa-fw"></i> Save</button>
+                            </div>
+                        </div>
+                        <input type="text" name="red_herring" class="red-herring">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+var data = {};
+var current_username = '';
+var current_email = '';
+
+$.ajax({
+    url: '/account/getAccountData',
+    type: 'GET',
+    success: function(response, status, xhr) {
+        if ($.trim(response)) {
+            data = JSON.parse(response);
+            current_username = data.username;
+            current_email = data.email;
+            
+            $('#day-' + data.day).prop('selected', true);
+            $('#' + data.month).prop('selected', true);
+            $('#year-' + data.year).prop('selected', true);
+            $('#' + data.country_code).prop('selected', true);
+
+            if (data.logout_setting == 1) $('#verify-logout').prop('checked', true);
+            if (data.privacy == 1) $('#privacy').prop('checked', true);
+            if (data.gender == 'Male') $('#male').prop('checked', true);
+            if (data.gender == 'Female') $('#female').prop('checked', true);
+            if (data.gender == 'Other') $('#other').prop('checked', true);
+        }
+    },
+    complete: function() {
+        
+    }
+});
+
+$('#account-form').validator({
+    formButton : '.btn-save',
+    checkUsernameTaken : false,
+    checkEmailTaken : false
+});
+
+Dropzone.options.dropzone = {
+    paramName: 'avatar', // The name that will be used to transfer the file
+    maxFilesize: 1, // MB
+    maxFiles: 1,
+    acceptedFiles: '.jpg, .png, .gif',
+    dictDefaultMessage: 'Change',
+    success: function(file, response) {
+        $('body').prepend(response);
+        data = JSON.parse(response);
+        $('.alert').remove();
+        $('.loading').remove();
+        $('.alert-area').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-continue"><i class="fas fa-times fa-fw"></i></button>');
+    },
+    error: function(file, response) {
+        data = JSON.parse(response);
+        $('.alert').remove();
+        $('.loading').fadeOut(700);
+        $('.alert-area').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-continue"><i class="fas fa-times fa-fw"></i></button>');
+    }
+};
+
+$('body').on('click', '.btn-save', function() {
+    $.ajax({
+        url: '/account/validate',
+        type: 'POST',
+        data: $('form').serialize(),
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                data = JSON.parse(response);
+                $('.alert-area').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+                if (data.pw_changed) {
+                    setTimeout(function () { 
+                        window.location.replace('home');
+                    }, 5000);
+                }
+            }
+        },
+        complete: function() {
+            Common.btn.prop('disabled', false).html(Common.btnhtml);
+            $('html, body').animate({
+                scrollTop: 0
+            }, 500);
+        }
+    });
+});
+
+$('body').on('click', '.btn-send', function() {   
+    $.ajax({
+        url: '/account/send',
+        type: 'POST',
+        data: $('#activation-form').serialize(),
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                $('.user-form').html(response);
+            }
+        },
+        complete: function() {
+            Common.btn.prop('disabled', false).html(Common.btnhtml);
+        }
+    });
+});
+
+$('#username').on('keyup change', function() {
+    var username = $.trim($('#username').val().toUpperCase().replace(/\s+/g, ''));
+    current_username = current_username.toUpperCase();
+    $.post('/account/checkUsername', $('#account-form').serialize()).done(function(response) { 
+        if (username != current_username) {
+            if (username.length > 0 && username == response) {
+                $('.username .alert-inline').remove();
+                $('#username').css({'border':'1px solid #f15454'});
+                $('.username').append('<div class="alert-inline"><div class="alert-inline-arrow"></div>Username taken.</div>');
+            }
+        }
+    });
+});
+
+$('#email').on('keyup change', function() { 
+    var email = $.trim($('#email').val().toLowerCase().replace(/\s+/g, ''));
+    current_email = current_email.toLowerCase();
+    $.post('/account/checkEmail', $('#account-form').serialize()).done(function(response) {
+        if (email != current_email) {
+            if (email.length > 5 && email == response) {
+                $('.email .alert-inline').remove();
+                $('#email').css({'border':'1px solid #f15454'});
+                $('.email').append('<div class="alert-inline"><div class="alert-inline-arrow"></div>Email taken.</div>');
+            }
+        }
+    });
+});
+
+</script>
+<?= $footer; ?>

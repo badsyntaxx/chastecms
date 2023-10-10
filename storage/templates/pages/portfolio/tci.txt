@@ -1,0 +1,22 @@
+<div class="tci-content">
+    <div class="wrapper">
+        <div class="row space-ver-120 pad-bottom-120 client-example">
+            <div class="col col-40 pad-right-30">
+                <div class="row">
+                    <h1 class="space-bottom-15 heading-large text-blue">Tech Connection Inc</h1>
+                    <p class="row space-bottom-15">Over a decade of designing and building networks has taught the techs over at TCI to be meticulous in planning designs for the future all while focusing on their goal of a simple network. Few contractors can match their structured cabling and wireless systems because they focus directly on designing and evolving their blueprint for the perfect LAN.</p>
+                    <p class="row">The folks down at TCI are smart and wanted some customized functionality in their website. They wanted a web application, to do some calculations and help them, and their clients better prepare for projects. We wrote a bit of code and made them an app that could collect data for new projects and streamlined their process.</p>
+                </div>
+                <div class="row space-top-60">
+                    <a href="/contact" class="btn btn-default">I need a great website</a>
+                </div>
+            </div>
+            <div class="col col-60 pad-left-30 text-center">
+                <div class="row space-bottom-30">
+                    <a href="http://tcihawaii.com" class="btn btn-default" target="blank_">View this project</a>
+                </div>
+                <img src="/views/images/demo/tci.png" alt="Tech Connection Inc" class="row">
+            </div>
+        </div>
+    </div>
+</div>

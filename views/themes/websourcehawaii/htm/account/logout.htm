@@ -1,0 +1,31 @@
+<?= $header; ?>
+<main class="main logout-page">
+    <div class="row">
+        <div class="wrapper">
+            <div class="col user-form text-center">
+                <?php if ($inactive): ?>
+                <div class="row pad-bottom-60 text-center">
+                    <div class="row">
+                        <div class="alert info"><i class="fas fa-exclamation-circle fa-fw"></i><strong>Attention!</strong> You were logged out do to inactivity. <button type="button" class="alert-redirect"><i class="fas fa-times fa-fw"></i></button></div>
+                    </div>
+                </div>
+                <?php else: ?>
+                <div class="row pad-bottom-60 text-center">
+                    <div class="row">
+                        <div class="alert info row"><strong>Attention!</strong> Are you sure you want to log out?</div>
+                    </div>
+                    <div class="row pad-top-15">
+                        <div class="col col dual">
+                            <a href="/home" class="btn btn-stop pull-left"><i class="fas fa-ban fa-fw"></i> No</a>
+                        </div>
+                        <div class="col col dual">
+                            <a href="/logout/confirm" class="btn btn-go pull-right"><i class="fas fa-thumbs-up fa-fw"></i> Yes</a>
+                        </div>
+                    </div>
+                </div>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+</main>
+<?= $footer; ?>

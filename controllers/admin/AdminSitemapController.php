@@ -22,50 +22,36 @@ class AdminSitemapController extends Controller
      * This method will access other methods in the class to do a few tasks 
      * related to the sitemap and display the sitemap view.
      */
-    public function index()
+    public function init($view = 'list')
     {
-        $data = $this->prepareTable();
-
-        $view['header'] = $this->load->controller('admin/header')->index();
-        $view['footer'] = $this->load->controller('admin/footer')->index();
-        $view['search'] = $this->load->controller('admin/search')->index();
-        $view['nav'] = $this->load->controller('admin/navigation')->index();
-        $view['main_nav'] = $this->session->getSession('main_nav');
-        $view['breadcrumb'] = $this->load->controller('admin/breadcrumb')->index();
-        $view['controls'] = $this->load->view('sitemap/controls');
-        $view['filters'] = $this->load->view('sitemap/filters');
-        $view['list'] = $data['list'];
-        $view['table'] = $data['table'];
-        $view['orderby'] = $data['orderby'];
-        $view['direction'] = $data['direction'];
-        $view['page'] = $data['page'];
-        $view['start'] = $data['start'];
-        $view['record_limit'] = $data['record_limit'];
-        $view['total_pages'] = $data['total_pages'];
-        $view['total_records'] = $data['total_records'];
-
-        exit($this->load->view('utilities/list', $view));
+        exit($this->load->controller('admin/pagination')->drawPagination('sitemap'));
     }
 
-    public function prepareTable($table = 'sitemap', $orderby = 'sitemap_id', $direction = 'asc', $page = 1, $record_limit = 15, $column = null, $is = null)
+    public function setPaginationParams()
     {
-        $paginated = $this->load->model('pagination')->paginate($table, $orderby, $direction, $page, $record_limit, $column, $is);
+        $params = ['table' => 'pages', 'orderby' => 'sitemap_id', 'direction' => 'asc', 'page' => 1, 'limit' => 15];
+        $this->output->json($params);
+    }
+
+    public function drawTable() 
+    {
+        $paginated = $this->load->model('pagination')->paginate('sitemap', $_POST['orderby'], $_POST['direction'], $_POST['page'], $_POST['limit']);
+        $pages = $paginated['records'];
 
         $view['pages'] = [];
-
-        foreach ($paginated['records'] as $p) {
-            if ($p['visibility'] == 0) {
+        foreach ($pages as $page) {
+            if ($page['visibility'] == 0) {
                 $visibility = 'Visible';
-            } elseif ($p['visibility'] == 1) {
+            } elseif ($page['visibility'] == 1) {
                 $visibility = 'Hidden';
             }
 
             $view['pages'][] = [
-                'sitemap_id' => $p['sitemap_id'],
-                'name' => $p['name'],
-                'route_name' => $p['route_name'],
-                'route' => $p['route'],
-                'sort_order' => $p['sort_order'],
+                'sitemap_id' => $page['sitemap_id'],
+                'name' => $page['name'],
+                'route_name' => $page['route_name'],
+                'route' => $page['route'],
+                'sort_order' => $page['sort_order'],
                 'visibility' => $visibility,
             ];
         }
@@ -73,45 +59,7 @@ class AdminSitemapController extends Controller
         $view['sitemap_xml'] = $this->checkSitemapXMLExists();
         $view['sitemap_records'] = $this->checkSitemapRecordsExist();
 
-        $output = [
-            'list' => $this->load->view('sitemap/list', $view),
-            'table' => $table,
-            'orderby' => $orderby,
-            'direction' => $direction,
-            'record_limit' => $record_limit,
-            'page' => $page,
-            'start' => $paginated['start'],
-            'total_pages' => $paginated['pages'],
-            'total_records' => $paginated['total']
-        ];
-
-        return $output;
-    }
-
-    public function getTable() 
-    {
-        $orderby = empty($_POST['orderby']) ? null : $_POST['orderby'];
-        $direction = empty($_POST['direction']) ? null : $_POST['direction'];
-        $page = empty($_POST['page']) ? null : $_POST['page'];
-        $record_limit = empty($_POST['record_limit']) ? null : $_POST['record_limit'];
-        $column = empty($_POST['column']) ? null : $_POST['column'];
-
-        if (isset($_POST['is'])) {
-            $is = empty($_POST['is']) && $_POST['is'] != 0 ? null : $_POST['is'];
-        } else {
-            $is = null;
-        }
-        
-        $data = $this->prepareTable('sitemap', $orderby, $direction, $page, $record_limit, $column, $is);
-
-        $output = [
-            'list' => $data['list'], 
-            'page' => $data['page'], 
-            'start' => $data['start'],
-            'total_pages' => $data['total_pages'],
-            'total_records' => $data['total_records']
-        ];
-
+        $output = ['table' => $this->load->view('sitemap/list', $view), 'start' => $paginated['start']];
         $this->output->json($output, 'exit');
     }
 
@@ -120,9 +68,8 @@ class AdminSitemapController extends Controller
         $this->erase(); 
         $this->insertSitemapRecords();
         $this->generateSitemapXML();
-        $this->log('Admin "' . $this->logged_user['username'] . '" reset the sitemap.');
-        $output = ['alert' => 'success', 'message' => 'Sitemap refreshed.'];
-        $this->output->json($output, 'exit');
+        $this->gusto->log('Admin "' . $this->logged_user['username'] . '" reset the sitemap.');
+        $this->load->route('/admin/sitemap/list');
     }
 
     private function erase()
@@ -158,7 +105,7 @@ class AdminSitemapController extends Controller
 
                 }
             }
-            $this->log('Admin "' . $this->logged_user['username'] . '" set the sitemap link "' . $sitelink['name'] . '" to "' . $visibility_text . '".');
+            $this->gusto->log('Admin "' . $this->logged_user['username'] . '" set the sitemap link "' . $sitelink['name'] . '" to "' . $visibility_text . '".');
         }
 
         $this->generateSitemapXML();
@@ -175,7 +122,7 @@ class AdminSitemapController extends Controller
             $this->load->model('sitemap')->updateSitemap('name', $data);
         }
 
-        $this->log('Admin "' . $this->logged_user['username'] . '" adjusted the order of links in the sitemap.');
+        $this->gusto->log('Admin "' . $this->logged_user['username'] . '" adjusted the order of links in the sitemap.');
 
         $this->generateSitemapXML();
 
@@ -195,12 +142,9 @@ class AdminSitemapController extends Controller
             $data['name'] = $p['name'];
             $data['route_name'] = $this->generateRouteName($p['name']);
             $data['route'] = $route['route'];
-            $data['sort_order'] = ++$num;
+            $data['sort_order'] += $num;
             if (!$sitemap_model->getSiteLink('name', $p['name'])) {
-                if (!$sitemap_model->insertSiteLink($data)) {
-                    $output = ['alert' => 'error', 'message' => 'Unable to insert site link'];
-                    $this->output->json($output, 'exit'); 
-                }
+                $sitemap_model->insertSiteLink($data);
             }
         }
     }

@@ -1,0 +1,84 @@
+<div class="contact-content">
+    <div class="row pad-ver-120 bkg-grey page-welcome">
+        <div class="wrapper">
+            <h1 class="heading-large text-blue space-bottom-30">This contact page works! Send me a message if you're interested in hiring me.</h1>
+            <p class="text-large">The map points to my old neck of the woods in Hawaii, but I don't live there anymore :(</p>
+        </div>
+    </div>
+    <div class="row space-ver-60 contact-us">
+        <div class="wrapper">
+            <div class="col dual">
+                <h2 class="heading-medium space-bottom-30">Please fill out the form to contact me</h2>
+                <div class="row bkg-grey contact-form">
+                    <div class="alert-area"></div>
+                    <form id="contact-form" class="row">
+                        <div class="row space-bottom-30 name">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" placeholder="First Last" class="row required" required>
+                        </div>
+                        <div class="row space-bottom-30 email">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" placeholder="person@email.com" class="row required" required>
+                        </div>
+                        <div class="row space-bottom-30 phone">
+                            <label for="phone">Phone</label>
+                            <input type="text" type="phone" id="phone" placeholder="808 123 4567" class="row required" required>
+                        </div>
+                        <div class="row space-bottom-30">
+                            <label for="message">Comments / Questions</label>
+                            <textarea name="message" id="message" class="row required" required></textarea>
+                        </div>
+                        <div class="row space-bottom-15">
+                            <button type="button" class="btn btn-default btn-contact pull-right" disabled><i class="fas fa-paper-plane fa-fw"></i> Send</button>
+                        </div>
+                        <input type="text" name="red_herring" class="red-herring">
+                    </form>
+                </div>
+            </div>
+            <div class="col dual">
+                <div class="row">
+                    <h3 class="heading-medium space-bottom-30">Contact Details</h3>
+                    <p class="row space-bottom-15">Call (808) 738-2560 or fill out the form to contact me via email.</p>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3717.107588945143!2d-157.86349858506264!3d21.30676468584843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7c006e0b353fe89f%3A0x7e3b2ba282c6704!2s201+Merchant+St%2C+Honolulu%2C+HI+96813!5e0!3m2!1sen!2sus!4v1536046497217" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+                <div class="row space-top-30">
+                    <h4 class="heading-medium space-bottom-15">Connect with us</h4>
+                    <a class="social-link space-right-small" href="https://www.facebook.com/" target="blank_"><i class="fab fa-facebook fa-fw"></i></a>
+                    <a class="social-link space-right-small" href="https://plus.google.com/" rel="publisher" target="blank_"><i class="fab fa-google-plus-square fa-fw"></i></a>
+                    <a class="social-link space-right-small" href="https://instagram.com/" target="blank_"><i class="fab fa-instagram fa-fw"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pad-ver-60 bkg-black text-white web-designer">
+        <div class="wrapper">
+            <strong class="row space-bottom-15 text-medium">Honolulu Freelance Web Design</strong>
+            <p>Whether you are a business owner or design firm looking for a freelance website designer, I'm the pro you need! I'm located in Honolulu, HI and serve businesses across the entire USA.</p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+$('.contact-form').validator({
+    checkEmailTaken : false,
+    formButton : '.btn-contact'
+});
+
+$('.contact-form').on('click', '.btn-contact', function() {
+    $.ajax({
+        url: '/contact/validate',
+        type: 'POST',
+        data: $('input, textarea').serialize(),
+        success: function(response, status, xhr) {
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.alert-area').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+            }
+        }, 
+        complete: function() {
+            Common.btn.prop('disabled', false).html(Common.btnhtml);      
+        }
+    });
+});
+
+</script>

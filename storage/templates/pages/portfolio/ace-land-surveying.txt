@@ -1,0 +1,22 @@
+<div class="ace-land-survey-content">
+    <div class="wrapper">
+        <div class="row space-ver-120 pad-bottom-120 client-example">
+            <div class="col col-40 pad-right-30">
+                <div class="row">
+                    <h1 class="space-bottom-15 heading-large text-blue">Ace Land Surveying</h1>
+                    <p class="row space-bottom-15">Ace Land Surveying LLC is a locally owned and operated small business with bright and highly motivated professionals. As a surveying and mapping company they cover a wide range of services for their clients. Ace is involved with all the major phases of development covering all the islands within the State of Hawaii, Guam, American Samoa, and the Pacific region.</p>
+                    <p class="row">Ace Land Surveying already had a website made by someone else. It was made at a time when flash was very popular, so the entire website was made using flash. This meant it worked very poorly or not at all on modern smart phones and tablets. They wanted to keep their website design just the way it was while changing the way it was built to work on modern devices.</p>
+                </div>
+                <div class="row space-top-60">
+                    <a href="/contact" class="btn btn-default">I need a great website</a>
+                </div>
+            </div>
+            <div class="col col-60 pad-left-30 text-center">
+                <div class="row space-bottom-30">
+                    <a href="http://acelandsurvey.com" class="btn btn-default" target="blank_">View this project</a>
+                </div>
+                <img src="/views/images/demo/ace-land-surveying.png" alt="Ace Land Surveying" class="row">
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,39 +7,39 @@
             <form id="contact-form" class="row">
                 <div class="row space-bottom-15 name">
                     <label for="name">Name</label>
-                    <input type="text" name="name" id="name" class="row" required>
+                    <input type="text" name="name" id="name" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 firstname">
                     <label for="firstname">First Name</label>
-                    <input type="text" name="firstname" id="firstname" class="row" required>
+                    <input type="text" name="firstname" id="firstname" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 lastname">
                     <label for="lastname">Last Name</label>
-                    <input type="text" name="lastname" id="lastname" class="row" required>
+                    <input type="text" name="lastname" id="lastname" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 company">
                     <label for="company">Company</label>
-                    <input type="text" name="company" id="company" class="row" required>
+                    <input type="text" name="company" id="company" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 phone">
                     <label for="phone">Phone</label>
-                    <input type="text" name="phone" id="phone" class="row" required>
+                    <input type="text" name="phone" id="phone" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 fax">
                     <label for="fax">Fax</label>
-                    <input type="text" name="fax" id="fax" class="row" required>
+                    <input type="text" name="fax" id="fax" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 address">
                     <label for="address">Address</label>
-                    <input type="text" name="address" id="address" class="row" required>
+                    <input type="text" name="address" id="address" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 website">
                     <label for="website">Website</label>
-                    <input type="url" name="website" id="website" class="row" required>
+                    <input type="url" name="website" id="website" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 date">
                     <label for="date">Date</label>
-                    <input type="date" name="date" id="date" class="row" required>
+                    <input type="date" name="date" id="date" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 time">
                     <label for="time" class="row">Time</label>
@@ -73,15 +73,15 @@
                 </div>
                 <div class="row space-bottom-15 email">
                     <label for="email">Email</label>
-                    <input type="email" name="email" id="email" class="row" required>
+                    <input type="email" name="email" id="email" class="row required" required>
                 </div>
                 <div class="row space-bottom-15 subject">
                     <label for="subject">Subject</label>
-                    <input type="text" name="subject" id="subject" class="row" required>
+                    <input type="text" name="subject" id="subject" class="row required" required>
                 </div>
                 <div class="row space-bottom-15">
                     <label for="message">Message</label>
-                    <textarea name="message" id="message" class="row" required></textarea>
+                    <textarea name="message" id="message" class="row required" required></textarea>
                 </div>
                 <div class="row space-bottom-15">
                     <button type="button" class="btn btn-default btn-contact pull-right" disabled><i class="fas fa-paper-plane fa-fw"></i> Send</button>

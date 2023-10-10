@@ -5,8 +5,10 @@
  */
 class MessagesController extends Controller
 {
-    public function index()
+    public function init()
     {
+        $this->gusto->authenticate(1);
+
         exit($this->load->controller('list')->drawList());
     }
 

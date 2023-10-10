@@ -1,0 +1,234 @@
+<?= $header; ?>
+<main class="main home-page">
+    <?= $nav; ?>
+    <div class="workarea">
+        <div class="main-title">
+            <?= $breadcrumb; ?>
+            <?= $search; ?>
+        </div>
+        <div class="row pad-bottom-15 space-top-15">
+            <div class="col quad dash-container">
+                <div class="dash-container-title">USERS (<?= $total_users; ?>)</div>
+                <div class="dash-container-content">
+                    <div class="row"><span>Registered: <?= $registered; ?></span></div>
+                    <div class="row"><span>Moderators: <?= $mods; ?></span></div>
+                    <div class="row"><span>Administrators: <?= $admins; ?></span></div>
+                    <div class="row"><span>Banned: <?= $banned; ?></span></div>
+                    <div class="row"><span>Last: <a href="/admin/users/<?= $latest_reg; ?>"><?= $latest_reg; ?></a></span></div>
+                </div>
+                <div class="dash-container-footer"><a href="/admin/users" class="pull-right">View more</a></div>
+            </div>
+            <div class="col quad dash-container">
+                <div class="dash-container-title">PAGES (<?= $total_pages; ?>)</div>
+                <div class="dash-container-content">
+                    <div class="row"><span>Total Views: <?= $page_views; ?></span></div>
+                    <div class="row"><span>Most Viewed: <a href="/admin/pages/<?= $mv_page_name; ?>"><?= $mv_page_title; ?></a> (<?= $mv_page_views; ?>)</span></div>
+                    <div class="row"><span>Last Edited: <a href="/admin/pages/<?= $lpe_name; ?>"><?= $lpe_title; ?></a></span></div>
+                    <div class="row"><span>Last Made: <a href="/admin/pages/<?= $lpm_name; ?>"><?= $lpm_title; ?></a></span></div>
+                </div>  
+                <div class="dash-container-footer"><a href="/admin/pages/new" class="space-right-15">New page</a><a href="/admin/pages" class="pull-right">View more</a></div>
+            </div>
+            <div class="col quad dash-container">
+                <div class="dash-container-title">BLOG (<?= $total_posts; ?>)</div>
+                <div class="dash-container-content">
+                    <div class="row"><span>Total Views: <?= $blog_views; ?></span></div>
+                    <div class="row"><span>Most Viewed: <a href="<?= $mv_blog_route; ?>"><?= $mv_blog_title; ?></a></span></div>
+                    <div class="row"><span>Last Edited: <a href="/admin/blog/<?= $le_id; ?>/edit"><?= $le_title; ?></a></span></div>
+                    <div class="row"><span>Last Post: <a href="/admin/blog/<?= $lp_id; ?>/edit"><?= $lp_title; ?></a></span></div>
+                </div>
+                <div class="dash-container-footer"><a href="/admin/blog/new" class="space-right-15">New blog</a><a href="/admin/blog" class="pull-right">View more</a></div>
+            </div>
+            <div class="col quad dash-container">
+                <div class="dash-container-title">SETTINGS</div>
+                <div class="dash-container-content">
+                    <div class="row"><span>Site Name: <?= $sitename; ?></span></div>
+                    <div class="row"><span>Language: <?= $language; ?></span></div>
+                    <div class="row"><span>Theme: <?= $theme; ?></span></div>
+                    <div class="row"><span>Maintenance Mode: <?= $maintenance; ?></span></div>
+                </div>  
+                <div class="dash-container-footer"><a href="/admin/settings" class="pull-right">View more</a></div>
+            </div>
+        </div>
+        <hr class="row space-bottom-15 basic">
+        <div class="row pad-bottom-15">
+            <div class="log-title">Logs <i class="fas fa-caret-right fa-fw"></i></div>
+            <div class="col space-bottom-15 dash-btns pull-right">
+                <div class="right">
+                    <button type="button" class="btn btn-default btn-clear-logs pull-right"><i class="fas fa-eraser fa-fw"></i> Clear Logs</button>
+                </div>
+                <div class="left">
+                    <div class="log-response"></div>
+                </div>
+            </div>
+            <div class="log">
+                <div class="scrollarea">
+                    <table class="table pull-left log-table">
+                        <tr>
+                            <th class="number-col">#</th>
+                            <th>Time</th>
+                            <th>Event</th>
+                        </tr>
+                        <?php foreach ($logs as $log) : ?>
+                        <tr class="log-row">
+                            <td class="number-col"><?= $log['log_id']; ?></td>
+                            <td><?= $log['time']; ?></td>
+                            <td><?= $log['event']; ?></td>
+                        </tr>
+                        <?php endforeach ?>  
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row pad-bottom-15">
+            <div class="log-title">Errors <i class="fas fa-caret-right fa-fw"></i></div>
+            <div class="col space-bottom-15 dash-btns pull-right">
+                <div class="right">
+                    <button type="button" class="btn btn-default btn-clear-errors pull-right"><i class="fas fa-eraser fa-fw"></i> Clear Errors</button>
+                </div>
+                <div class="left">
+                    <div class="error-response"></div>
+                </div>
+            </div>
+            <div class="log">
+                <div class="scrollarea">
+                    <table class="table pull-left log-table">
+                        <tr>
+                            <th class="number-col">#</th>
+                            <th>Time</th>
+                            <th>Event</th>
+                        </tr>
+                        <?php foreach ($errors as $error) : ?>
+                        <tr class="error-row">
+                            <td class="number-col"><?= $error['errors_id']; ?></td>
+                            <td><?= $error['time']; ?></td>
+                            <td><?= $error['event']; ?></td>
+                        </tr>
+                        <?php endforeach ?>  
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="overflow:hidden;">
+            <div id="embed-api-auth-container"></div>
+            <div id="chart-container"></div>
+            <div id="view-selector-container"></div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+$('body').on('click', '.fa-caret-right', function() {
+    $(this).removeClass('fa-caret-right').addClass('fa-caret-down');
+    $(this).parent().siblings('.log').css({'height':'0', 'padding':'0', 'border':'none', 'border-top':'1px solid #ccc'});
+});
+
+$('body').on('click', '.fa-caret-down', function() {
+    $(this).removeClass('fa-caret-down').addClass('fa-caret-right');
+    $(this).parent().siblings('.log').removeAttr('style');
+});
+    
+$('body').on('click', '.btn-clear-logs', function() {
+    if (confirm('Are you sure you want to clear the logs?')) {
+        $.ajax({
+            url: '/admin/overview/clearLog',
+            type: 'GET',
+            success: function(response, status, xhr) {
+                if ($.trim(response)) {
+                    var data = JSON.parse(response);
+                    $('.loading').remove();
+                    $('.log-response').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+                    $('.log-row').html('');
+                } 
+            },
+            complete: function() {
+                Common.btn.prop('disabled', false).html(Common.btnhtml);
+            }
+        });
+    } else {
+        Common.btn.prop('disabled', false).html(Common.btnhtml);
+    }
+});
+
+$('body').on('click', '.btn-clear-errors', function() {
+    if (confirm('Are you sure you want to clear the errors?')) {
+        $.ajax({
+            url: '/admin/overview/clearErrors',
+            type: 'GET',
+            success: function(response, status, xhr) {
+                if ($.trim(response)) {
+                    var data = JSON.parse(response);
+                    $('.loading').remove();
+                    $('.error-response').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+                    $('.error-row').html('');
+                } 
+            },
+            complete: function() {
+                Common.btn.prop('disabled', false).html(Common.btnhtml);
+            }
+        });
+    } else {
+        Common.btn.prop('disabled', false).html(Common.btnhtml);
+    }
+});
+
+$('body').on('click', '.log-row', function() {
+    $('tr').removeAttr('style');
+    $('.log-row').removeClass('tr-highlight');
+    $(this).addClass('tr-highlight');
+});
+
+$('body').on('click', '.error-row', function() {
+    $('tr').removeAttr('style');
+    $('.error-row').removeClass('tr-highlight');
+    $(this).addClass('tr-highlight');
+});
+
+</script>
+<!-- <script type="text/javascript">
+
+(function(w,d,s,g,js,fs){
+    g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
+    js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
+    js.src='https://apis.google.com/js/platform.js';
+    fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
+}(window,document,'script'));
+
+gapi.analytics.ready(function() {
+
+  gapi.analytics.auth.authorize({
+    container: 'embed-api-auth-container',
+    clientid: '531932355418-0o0iv8ef73d6ctjgguu95lprackv4sr4.apps.googleusercontent.com'
+  });
+
+
+  var viewSelector = new gapi.analytics.ViewSelector({
+    container: 'view-selector-container'
+  });
+
+  // Render the view selector to the page.
+  viewSelector.execute();
+
+
+    var dataChart = new gapi.analytics.googleCharts.DataChart({
+        query: {
+            metrics: 'ga:sessions',
+            dimensions: 'ga:date',
+            'start-date': '30daysAgo',
+            'end-date': 'yesterday'
+        },
+        chart: {
+            container: 'chart-container',
+            type: 'LINE',
+            options: {
+                width: '100%'
+            }
+        }
+    });
+
+    viewSelector.on('change', function(ids) {
+        dataChart.set({query: {ids: ids}}).execute();
+    });
+
+});
+</script> -->
+<?= $footer; ?>

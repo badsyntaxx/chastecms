@@ -58,8 +58,11 @@ class AccountController extends Controller
      * This init method gets user data from the database using the user session.
      * This method will also prepare the data for the account view.
      */
-    public function index() 
-    {   
+    public function init() 
+    {  
+        // If the user is not logged in redirect them.
+        $this->gusto->authenticate(1);
+        
         if ($this->logged_user['group'] < 2) {
             $this->load->route('/account/activate');
         }
@@ -73,49 +76,45 @@ class AccountController extends Controller
         $data['title'] = $this->language->get('account/title');
         $data['description'] = $bio;
 
-        $view['header'] = $this->load->controller('header')->index($data);
-        $view['footer'] = $this->load->controller('footer')->index();        
-        $view['countries'] = $this->load->model('users')->getCountries();
-        
+        $view['header'] = $this->load->controller('header')->init($data);
+        $view['footer'] = $this->load->controller('footer')->init();        
+        $view['avatar'] = $this->logged_user['avatar'];
+        $view['username'] = $this->logged_user['username'];
         $view['firstname'] = $this->logged_user['firstname'];
         $view['lastname'] = $this->logged_user['lastname'];
-        $view['username'] = $this->logged_user['username'];
         $view['email'] = $this->logged_user['email'];
         $view['website'] = $this->logged_user['website'];
-
-        if ($this->logged_user['birthday']) {
-            $birthday = date('d-F-Y', strtotime($this->logged_user['birthday']));
-            $birthday = explode('-', $birthday);
-
-            $view['day'] = isset($birthday[0]) ? $birthday[0] : null;
-            $view['month'] = isset($birthday[1]) ? $birthday[1] : null;
-            $view['month_num'] = isset($birthday[1]) ? date('m', strtotime($birthday[1])) : null;
-            $view['year'] = isset($birthday[2]) ? $birthday[2] : null;
-        }
-
-        if ($this->logged_user['country']) {
-            $country = explode(', ', $this->logged_user['country']);
-            $view['country_code'] = isset($country[0]) ? $country[0] : null;
-            $view['country_name'] = isset($country[1]) ? $country[1] : null;
-        }
-
-        $view['gender'] = $this->logged_user['gender'];
-        $view['privacy'] = $this->logged_user['privacy'];
-        $view['avatar'] = $this->logged_user['avatar'];
+        $view['countries'] = $this->load->model('users')->getCountries();
         $view['bio'] = $this->logged_user['bio'];
-        $view['logout_setting'] = $this->logged_user['verify_logout'];
 
         exit($this->load->view('account/account', $view));
     }
 
-    public function getAccountData()
+    public function getAccountData() 
     {
-        $user = $this->load->model('users')->getUser('key', $this->session->id);
+        $this->gusto->authenticate(1);
 
-        $output['username'] = $user['username'];
-        $output['email'] = $user['email'];
+        if ($this->logged_user['birthday']) {
+            $birthday = date('d-F-Y', strtotime($this->logged_user['birthday']));
+            $birthday = explode('-', $birthday);
+        }
 
-        $this->output->json($output);
+        if ($this->logged_user['country']) {
+            $country = explode(', ', $this->logged_user['country']);
+        }
+
+        $view['username'] = $this->logged_user['username'];
+        $view['email'] = $this->logged_user['email'];
+        $view['day'] = isset($birthday[0]) ? $birthday[0] : null;
+        $view['month'] = isset($birthday[1]) ? $birthday[1] : null;
+        $view['month_num'] = isset($birthday[1]) ? date('m', strtotime($birthday[1])) : null;
+        $view['year'] = isset($birthday[2]) ? $birthday[2] : null;
+        $view['country_code'] = isset($country[0]) ? $country[0] : null;
+        $view['logout_setting'] = $this->logged_user['verify_logout'];
+        $view['privacy'] = $this->logged_user['privacy'];
+        $view['gender'] = $this->logged_user['gender'];
+
+        $this->output->json($view);
     }
     
     /**
@@ -129,6 +128,8 @@ class AccountController extends Controller
      */
     public function uploadAvatar()
     {
+        $this->gusto->authenticate(1);
+
         if (!empty($_FILES['avatar'])) {
 
             $upload_library = $this->load->library('Upload');
@@ -138,14 +139,11 @@ class AccountController extends Controller
             $upload_library->uploadImage($_FILES['avatar'], $directory);
 
             if ($upload_library->file_invalid) {
-                $output = ['alert' => 'error', 'message' => $this->language->get('upload/file_invalid')];
-                $this->output->json($output, 'exit');
+                exit($this->language->get('account/file_invalid'));
             }
+
             if ($upload_library->file_big) {
-                $search = ['{{filesize}}', '{{maxFilesize}}'];
-                $replace = [$upload_library->file_big['size'], $upload_library->file_big['max']];
-                $output = ['alert' => 'error', 'message' => str_replace($search, $replace, $this->language->get('upload/file_big'))];
-                $this->output->json($output, 'exit');
+                exit($this->language->get('account/file_big'));
             }
 
             if ($upload_library->upload_success) {
@@ -177,6 +175,9 @@ class AccountController extends Controller
      */
     public function validate() 
     {
+        // Dont bother validating anything if the user is not logged in.
+        $this->gusto->authenticate(1);
+
         $this->model = $this->load->model('users');
 
         $this->validateUsername();
@@ -339,12 +340,10 @@ class AccountController extends Controller
 
             $website = trim($_POST['website']);
 
-            if ($website != $this->logged_user['website']) {
-                if ($website != '') {
-                    if (preg_match('/^([A-Z0-9-]+\.)+[A-Z]{2,4}$/i', $website) == false) {
-                        $output = ['alert' => 'error', 'message' => $this->language->get('account/website_invalid')];
-                        $this->output->json($output, 'exit');
-                    }
+            if ($website != $this->logged_user['website'] && $website != '') {
+                if (preg_match('/^([A-Z0-9-]+\.)+[A-Z]{2,4}$/i', $website) == false) {
+                    $output = ['alert' => 'error', 'message' => $this->language->get('account/website_invalid')];
+                    $this->output->json($output, 'exit');
                 }
 
                 $data['website'] = $website;
@@ -463,7 +462,7 @@ class AccountController extends Controller
             $password_hash = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
 
             if ($this->load->model('settings')->getSetting('strong_pw')) {
-                $pw_strong = $this->helper->isPasswordStrong($password);
+                $pw_strong = isPasswordStrong($password);
                 if (!$pw_strong) {
                     $output = ['alert' => 'error', 'message' => $this->language->get('signup/pw_weak')];
                     $this->output->json($output, 'exit');
@@ -526,8 +525,8 @@ class AccountController extends Controller
             $this->load->route('/account');
         }
 
-        $view['header'] = $this->load->controller('header')->index();
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init();
+        $view['footer'] = $this->load->controller('footer')->init();
         $view['key'] = $key;
 
         if (!$user) {
@@ -554,6 +553,8 @@ class AccountController extends Controller
      */
     public function send()
     {
+        $this->gusto->authenticate(1);
+
         $user = $this->load->model('users')->getUser('email', $this->logged_user['email']);
         $mail_library = $this->load->library('mail');
         $link = HOST . '/account/activate/' . $user['key'];
@@ -562,7 +563,7 @@ class AccountController extends Controller
         $mail['from'] = '';
         $mail['subject'] = 'Activate Your Account';
         $mail['message'] = $link;
-        $mail['body'] = str_replace('{{link}}', $link, $this->helper->getTemplate('email/activate'));
+        $mail['body'] = str_replace('{{link}}', $link, $mail_library->getTemplate('activate'));
 
         // Send the contact mail and exit with failure or success message.
         if ($user) {
@@ -580,8 +581,8 @@ class AccountController extends Controller
 
     public function forgot()
     {
-        $view['header'] = $this->load->controller('header')->index();
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init();
+        $view['footer'] = $this->load->controller('footer')->init();
 
         exit($this->load->view('account/forgot', $view));
     }
@@ -597,7 +598,7 @@ class AccountController extends Controller
         $mail['from'] = '';
         $mail['subject'] = 'Reset Password';
         $mail['message'] = $link;
-        $mail['body'] = str_replace('{{link}}', $link, $this->helper->getTemplate('email/reset'));
+        $mail['body'] = str_replace('{{link}}', $link, $mail_library->getTemplate('reset'));
 
         if (!$this->validate->email($email)) {
             $output = ['alert' => 'error', 'message' => str_replace('{{email}}', $email, $this->language->get('account/email_invalid'))];
@@ -633,8 +634,8 @@ class AccountController extends Controller
             $this->load->route('/login');
         } 
         
-        $view['header'] = $this->load->controller('header')->index();
-        $view['footer'] = $this->load->controller('footer')->index();
+        $view['header'] = $this->load->controller('header')->init();
+        $view['footer'] = $this->load->controller('footer')->init();
         $view['users_id'] = $user['users_id'];
 
 
@@ -652,7 +653,7 @@ class AccountController extends Controller
             $confirm = $_POST['confirm'];
             
             if ($this->load->model('settings')->getSetting('strong_pw')) {
-                $pw_strong = $this->helper->isPasswordStrong($password);
+                $pw_strong = isPasswordStrong($password);
                 if (!$pw_strong) {
                     exit($this->language->get('signup/pw_weak'));
                 }
@@ -670,7 +671,7 @@ class AccountController extends Controller
             $data['users_id'] = $id;
 
             if ($model->updateUser($data, 'users_id')) {
-                $this->log('User (' . $user['username'] . ') sent an activation email to ' . $user['email'] . ').');
+                $this->gusto->log('User (' . $user['username'] . ') sent an activation email to ' . $user['email'] . ').');
                 $output = ['alert' => 'success', 'message' => $this->language->get('account/pw_changed')];
             }
         }

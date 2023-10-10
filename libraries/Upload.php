@@ -67,10 +67,10 @@ class Upload
      */
     public $upload_success = false;
 
-    public function uploadImage($source, $directory, $size = 1048576)
+    public function uploadImage($source, $directory)
     {
         $extensions = ['jpg', 'jpeg', 'png', 'gif'];
-        $max_size = $size;
+        $max_size = 1048576;
 
         $this->process($source);
         $this->validate($extensions, $max_size);
@@ -80,10 +80,10 @@ class Upload
         }
     }
 
-    public function uploadDoc($source, $directory, $size = 1048576)
+    public function uploadDoc($source, $directory)
     {
-        $extensions = ['txt', 'pdf', 'doc', 'docx', 'xls', 'xml'];
-        $max_size = $size;
+        $extensions = ['txt', 'pdf', 'doc', 'docx'];
+        $max_size = 1048576;
 
         $this->process($source);
         $this->validate($extensions, $max_size);
@@ -99,27 +99,10 @@ class Upload
             $this->file_invalid = true;
         } 
 
-        $size = $this->formatBytes($this->filesize);
-        $max = $this->formatBytes($max_size);
-
         if ($this->filesize > $max_size) {
-            $this->file_big = ['size' => $size, 'max' => $max];
+            $this->file_big = true;
         }
     }
-
-    public function formatBytes($bytes, $precision = 2) { 
-        $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
-    
-        $bytes = max($bytes, 0); 
-        $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
-        $pow = min($pow, count($units) - 1); 
-    
-        // Uncomment one of the following alternatives
-        // $bytes /= pow(1024, $pow);
-        $bytes /= (1 << (10 * $pow)); 
-    
-        return round($bytes, $precision) . ' ' . $units[$pow]; 
-    } 
 
     public function process($source)
     {

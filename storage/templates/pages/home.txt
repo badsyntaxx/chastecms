@@ -1,0 +1,119 @@
+<div class="home-content">  
+    <div class="row home-greeting">
+        <div class="wrapper">
+            <div class="row home-greeting-text">
+                <h1 class="pad-bottom-30 text-white">THIS IS NOT <br> A REAL BUSINESS</h1>
+                <p class="text-large">This is an demo site to show off my (Chase Asahina) skills. Check out the admin section by <a href="/login" style="text-decoration: underline; color: #fff;">logging in</a>. The admin section has a full CMS including the ability to create and edit pages, generate a sitemap, manage users, post blogs, and much more.</p>
+            </div>
+        </div>
+        <div class="row site-highlights text-center">
+            <a href="/web-design" class="col site-highlights-col text-large">
+                <i class="fas fa-desktop fa-fw"></i> <span>Website <br> Design</span>             
+            </a>
+            <a href="/portfolio" class="col site-highlights-col text-large">
+                <i class="fas fa-book-open fa-fw"></i> <span>Recent <br> designs</span>              
+            </a>
+            <a href="/site-maintenance" class="col site-highlights-col text-large">
+                <i class="fas fa-wrench fa-fw"></i> <span>Website <br> maintenance</span>               
+            </a>
+            <a href="/contact" class="col site-highlights-col text-large">
+                <i class="fas fa-rocket fa-fw"></i> <span>Get <br> started</span>           
+            </a>
+        </div>
+    </div>
+    <div class="row space-top-15 pad-ver-60 bkg-white exceptional-affordable">
+        <div class="wrapper">
+            <h2 class="row space-bottom-30 heading-xl"><em>The truth is I stopped working on this a very long time ago</h2>
+            <p class="text-large">This website was a learning project for me that I built back in 2017. It took inspiration from other frameworks like Codeigniter and Laravel. It's a PHP MVC with a full backend and content management system, sort of like Wordpress or Drupal... yes, I made my own Wordpress. However, it is abandoned so some things may not be working.
+            </p>
+        </div>
+    </div>
+    <div class="row bkg-white text-center">
+        <div class="wrapper">
+            <hr class="row basic">
+        </div>
+    </div>
+    <div class="row pad-top-30 pad-bottom-60 home-services bkg-white">
+        <div class="row pad-top-60 pad-bottom-15">
+            <div class="wrapper">
+                <div class="col triple home-service">
+                    <div class="service-bubble">
+                        <i class="fab fa-php"></i>
+                    </div>
+                    <h3>PHP</h3>
+                    <span>Don't hate on PHP</span>
+                    <p>I started with PHP as my first language and have since moved on to new and better things, but PHP still holds a special place in my heart. We all remember our first, don't we? These days, I have jumped on the JS framework bandwagon, and my technology of choice is Sveltekit.</p>
+                </div>
+                <div class="col triple home-service">
+                    <div class="service-bubble">
+                        <i class="fab fa-js-square"></i>
+                    </div>
+                    <h3>Javascript</h3>
+                    <span>Remember jQuery</span>
+                    <p>Although I haven't used it in years, jQuery was a significant player when I initially delved into coding, long before I made this CMS. Even when I started on this project, it was already on the decline. Although I prefer vanilla JS these days, I did use jQuery on this project.</p>
+                </div>
+                <div class="col triple home-service">
+                    <div class="service-bubble">
+                        <i class="fab fa-css3"></i>
+                    </div>
+                    <h3>CSS</h3>
+                    <span>Vanilla to Tailwind</span>
+                    <p>Back in the day, I learned plain old CSS, and I'm grateful for that foundation. The lack of a CSS framework doesn't pose a challenge for me; centering that div is a piece of cake. However, I've come to realize just how swift and efficient I can be with a framework like Tailwind.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row bkg-white text-center">
+        <div class="wrapper">
+            <hr class="row basic">
+        </div>
+    </div>
+    <div class="row space-top-15 pad-ver-60 text-center bkg-white experience">
+        <div class="wrapper">
+            <h4 class="heading-large space-bottom-60 text-center">Experienced, effective web design</h4>  
+            <div class="col big-col">
+                <p class="text-large">Over 10 years of experience helping people, build a professional online presence, to help them grow their business and get their name out there.</p>
+            </div>
+            <div class="col small-col space-top-15">
+                <a href="/portfolio" class="btn btn-default">View Portfolio</a>
+            </div>
+        </div>
+    </div>
+    <div class="row examples text-left">
+        <div class="col example-box">
+            <img src="/views/images/demo/aja-jewelry.jpg" alt="Aja Jewelry">
+            <a href="/aja-jewelry" class="example-overlay">Aja Jewelry</a>
+        </div>
+        <div class="col example-box">
+            <img src="/views/images/demo/hawaiipbx.jpg" alt="Hawaii PBX">
+            <a href="/hawaii-pbx" class="example-overlay">Hawaii PBX</a>
+        </div>
+        <div class="col example-box">
+            <img src="/views/images/demo/tci.jpg" alt="TCI">
+            <a href="/tci" class="example-overlay">TCI</a>
+        </div>
+        <div class="col example-box">
+            <img src="/views/images/demo/web-port-scanner.jpg" alt="Web Port Scanner">
+            <a href="/web-port-scanner" class="example-overlay">Web Port Scanner</a>
+        </div>   
+    </div>
+    <div class="row space-top-30 pad-ver-60 text-center get-started">
+        <div class="wrapper">
+            <h5 class="heading-large space-bottom-30">READY TO GET STARTED?</h5>
+            <hr class="mini">
+            <p class="row space-top-60 space-bottom-30 text-large">With over 10 years of experience under my belt, I know how to get things done!</p>
+            <a href="/contact" class="btn btn-default">Get Started</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+$('.header').addClass('home');
+$('.logo, .nav').addClass('home');
+$('.menu-button').addClass('home');
+
+setTimeout(function() {
+    $('.home-greeting').addClass('animate');
+}, 500);
+
+</script>

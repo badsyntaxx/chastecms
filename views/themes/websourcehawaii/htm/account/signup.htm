@@ -1,0 +1,68 @@
+<?= $header; ?>
+<main class="main register-page">
+    <div class="row pad-top-15 pad-bottom-15">
+        <div class="wrapper">
+            <div class="col user-form text-center">
+                <div class="row signup-form">
+                    <div class="alert-area"></div>
+                    <form id="signup-form" class="row fancy-form">
+                        <h1 class="pad-bottom-15 heading-large text-center">Join <?= $sitename; ?></h1>
+                        <div class="row fancy-row space-bottom-15 username">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" required id="username" class="row required">
+                        </div>
+                        <div class="row fancy-row space-bottom-15 email">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" required id="email" class="row required">
+                        </div>
+                        <div class="row fancy-row space-bottom-15 password">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" required id="password" class="row required">
+                            <div class="show-pw"><i class="fas fa-eye fa-fw" title="Show password"></i></div>
+                        </div>
+                        <div class="row fancy-row space-bottom-15 confirm">
+                            <label for="confirm">Repeat Password</label>
+                            <input type="password" name="confirm" required id="confirm" class="row required">
+                        </div>
+                        <div class="row space-bottom-15">
+                            <button type="button" class="btn btn-default btn-go btn-signup disabled row"><i class="fas fa-pencil-alt fa-fw"></i> Signup</button>
+                        </div>
+                        <p class="text-small text-left">By signing up with <?= $sitename; ?>, you are agreeing to our <a href="/information/terms">terms of service</a> and <a href="/information/privacy">privacy policy</a>.</p>
+                        <hr class="row space-top-15 space-bottom-30">
+                        <div class="row space-bottom-15 text-center">
+                            <p class="row space-bottom-15">Already have an account?</p>
+                            <a href="/login" class="btn btn-default row"><i class="fas fa-sign-in-alt fa-fw"></i> Login</a>
+                        </div>
+                        <input type="text" name="red_herring" class="red-herring">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+
+$('#signup-form').validator({
+    formButton : '.btn-signup'
+});
+
+$('body').on('click', '.btn-signup', function() {
+    $.ajax({
+        url: '/signup/validate',
+        type: 'post',
+        data: $('#signup-form').serialize(),
+        success: function(response, status, xhr) {
+            console.log(response);
+            if ($.trim(response)) {
+                var data = JSON.parse(response);
+                $('.alert-area').html('<div class="alert ' + data.alert + '"><strong>' + data.alert + '!</strong> ' + data.message + ' <button type="button" class="alert-close"><i class="fas fa-times fa-fw"></i></button>');
+            }
+        },
+        complete: function() {
+            Common.btn.prop('disabled', false).html(Common.btnhtml);
+        }
+    });
+});
+
+</script>
+<?= $footer; ?>

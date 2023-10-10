@@ -25,14 +25,10 @@ function checkTime() {
         url: '/settings/getInactivityLimit',
         type: 'GET',
         success: function(response, status, xhr) {
-            if ($.trim(response)) {
-                var data = JSON.parse(response);
-                if (data !== 0) {
-                    idle_time = idle_time + 1;
-                    if (idle_time > data) { // 2 minutes
-                        window.location.replace('/logout/inactive');
-                    }   
-                }
+            var data = jQuery.parseJSON(response);
+            idle_time = idle_time + 1;
+            if (idle_time > data) { // 2 minutes
+                window.location.replace('/logout/inactive');
             }
         }
     });

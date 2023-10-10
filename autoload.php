@@ -102,9 +102,3 @@ function iterate($source)
 
     return $classes;
 }
-
-// Autoload.
-spl_autoload_register('autoloadCores');
-spl_autoload_register('autoloadControllers');
-spl_autoload_register('autoloadModels');
-spl_autoload_register('autoloadLibraries');

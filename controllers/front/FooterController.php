@@ -18,7 +18,7 @@ class FooterController extends Controller
      * Assuming that the FooterController should be loaded in every controller 
      * this init method should run in every controller too.
      */
-    public function index()
+    public function init()
     {     
         $view['links'] = $this->navigation();
 
@@ -47,7 +47,6 @@ class FooterController extends Controller
             $link = [
                 'navigation_id' => $link['navigation_id'],
                 'name' => $link['name'],
-                'nav_name' => $link['nav_name'],
                 'class' => $class,
                 'route' => $link['route'],
                 'sort_order' => $link['sort_order'],

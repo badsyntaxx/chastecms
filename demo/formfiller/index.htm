@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Form Filler</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- This is to prevent an annoying 404 error when browsers cant find a favicon -->
+    <script type="text/javascript" src="FormFiller.js"></script>
+    <style>
+        * {
+        box-sizing: border-box
+    }
+
+    body {
+        padding: 100px 0;
+        background-color: #f8f8f8;
+        color: rgba(51, 51, 51, .8);
+        text-align: center;
+        font-family: Arial
+    }
+
+    main {
+        width: 700px;
+        margin: auto
+    }
+
+    form {
+        width: 100%;
+        text-align: left
+    }
+
+    strong {
+        float: left;
+        width: 100%
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        margin-bottom: 15px
+    }
+
+    input {
+        margin-bottom: 15px
+    }
+
+    input[type=checkbox],
+    input[type=radio] {
+        width: auto
+    }
+
+    input[type=radio] {
+        margin-right: 15px
+    }
+
+    label {
+        font-size: 12px;
+        font-weight: 700
+    }
+
+    label[for=bio],
+    label[for=month] {
+        float: left;
+        width: 100%
+    }
+
+    hr {
+        float: left;
+        width: 100%;
+        margin: 35px 0 45px 0
+    }
+
+    pre {
+        display: inline;
+        text-align: left;
+        background-color: #272822;
+        color: #fff
+    }
+
+    code {
+        padding: 2px 3px 3px 3px
+    }
+
+    .string {
+        color: #CE9178
+    }
+
+    .var {
+        color: #9CDCFE
+    }
+
+    .const {
+        color: #569cd6
+    }
+
+    .func {
+        color: #DCDCAA
+    }
+
+    .type {
+        color: #16825D;
+    }
+
+    .bkg {
+        background-color: #272822
+    }
+
+    strong {
+        text-align: left;
+        font-size: 28px;
+        line-height: 28px;
+        margin-bottom: 25px
+    }
+
+    div {
+        float: left;
+        width: 100%
+    }
+
+    div>div {
+        width: 49%;
+        margin-right: 2%
+    }
+
+    div>div:nth-child(2) {
+        margin: 0
+    }
+
+    p {
+        line-height: 21px;
+        text-align: left
+    }
+    </style>
+</head>
+<body>
+    <main>
+        <strong style="float: left;">Form Filler</strong>
+        <p>It can be tedious writing different bits of code to manipulate the DOM and fill in forms programmatically. 
+            Things like checking a checkbox or selecting an option in a dropdown list. 
+            This plain, vanilla javascript plugin takes JSON data and uses it to fill out any form field.</p>
+            <a href="formfiller.zip">Download</a>
+        <hr>
+        <!-- FORM 1 -->
+        <form id="form1">
+            <strong>Example 1: Fill form using json setting</strong>
+            <p>This example uses the <code class="bkg"><span class="var">json:</span></code> setting to acquire form data. You may notice the JSON keys
+                <code class="bkg"><span class="var">foo:</span> <span class="string">'foo'</span></code> and <code class="bkg"><span class="var">bar:</span></code>
+                <code class="bkg"><span class="string">'bar'</span></code>, because they do not have a matching input element. These 
+                <em>leftovers</em> will be included in the <code class="bkg"><span class="var">response</span></code>.</p>
+            <div>
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name">
+                </div>
+                <div>
+                    <label for="species">Species:</label>
+                    <select name="species">
+                        <option value="" hidden>Choose</option>
+                        <option value="Man">Man</option>
+                        <option value="Elf">Elf</option>
+                        <option value="Dwarf">Dwarf</option>
+                        <option value="Hobbit">Hobbit</option>
+                        <option value="Orc">Orc</option>
+                        <option value="Ent">Ent</option>
+                        <option value="Troll">Troll</option>
+                        <option value="Goblin">Goblin</option>
+                        <option value="Maiar">Maiar</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="have_leaf">Have any hobbits leaf?:</label>
+                <input type="checkbox" name="have_leaf">
+            </div>
+            <label for="gender">Gender:</label>
+            <label>Male<input type="radio" name="gender" value="Male"></label>
+            <label>Female<input type="radio" name="gender" value="Female"></label>
+            <label>Wormself<input type="radio" name="gender" value="Wormself"></label>
+            <label for="bio">Bio:</label>
+            <textarea name="bio"></textarea>
+        </form>
+        <pre style="display:block;float:left;width:100%;padding:0 20px;">
+            <code>
+<span class="const">new</span> <span class="type">FormFiller</span>({
+    <span class="var">form:</span> <span class="string">'#form1'</span>,
+    <span class="var">json:</span> {
+        <span class="var">foo:</span> <span class="string">'foo'</span>,
+        <span class="var">bar:</span> <span class="string">'bar'</span>,
+        <span class="var">name:</span> <span class="string">'Bilbo'</span>,
+        <span class="var">have_leaf:</span> <span class="const">true</span>,
+        <span class="var">species:</span> <span class="string">'Hobbit'</span>,
+        <span class="var">gender:</span> <span class="string">'Male'</span>,
+        <span class="var">bio:</span> <span class="string">'I smoke the hobbits leaf'</span>
+    }
+}).<span class="func">then</span>(<span class="const">function</span>(<span class="var">response</span>) {
+    <span class="var">console</span>.<span class="func">log</span>(<span class="var">response</span>);
+}).<span class="func">catch</span>(<span class="const">function</span>(<span class="var">error</span>) {
+    <span class="var">console</span>.<span class="func">log</span>(<span class="var">error</span>);
+});
+            </code>
+        </pre>
+        <hr>
+        <!-- FORM 2 -->
+        <form id="form2">
+            <strong>Example 2: Fill form using url setting</strong> 
+            <p>This example uses the <code class="bkg"><span class="var">url:</span></code> setting to acquire form data. 
+                The <code class="bkg"><span class="var">url:</span></code> setting does a GET request to acquire form data. 
+                Notice that the <code class="bkg"><span class="string">'formfiller.php'</span></code> script does not have 
+                all of the data required to fill every form field. The <code class="bkg"><span class="string">response</span></code> 
+                will show you the fields left <em>unfilled</em>.</p>
+            <div>
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name">
+                </div>
+                <div>
+                    <label for="species">Species:</label>
+                    <select name="species">
+                        <option value="" hidden>Choose</option>
+                        <option value="Man">Man</option>
+                        <option value="Elf">Elf</option>
+                        <option value="Dwarf">Dwarf</option>
+                        <option value="Hobbit">Hobbit</option>
+                        <option value="Orc">Orc</option>
+                        <option value="Ent">Ent</option>
+                        <option value="Troll">Troll</option>
+                        <option value="Goblin">Goblin</option>
+                        <option value="Maiar">Maiar</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="have_leaf">Have any hobbits leaf?:</label>
+                <input type="checkbox" name="have_leaf">
+            </div>
+            <label>Male <input type="radio" name="gender" value="Male"></label>
+            <label>Female <input type="radio" name="gender" value="Female"></label>
+            <label>Wormself <input type="radio" name="gender" value="Wormself"></label>
+            <label for="bio">Bio:</label>
+            <textarea name="bio"></textarea>
+        </form>
+        <pre style="display:block;float:left;width:100%;padding:0 20px;">
+            <code>
+<span class="const">new</span> <span class="type">FormFiller</span>({
+    <span class="var">form:</span> <span class="string">'#form2'</span>,
+    <span class="var">url:</span> <span class="string">'formfiller.php'</span>
+}).<span class="func">then</span>(<span class="const">function</span>(<span class="var">response</span>) {
+    <span class="var">console</span>.<span class="func">log</span>(<span class="var">response</span>);
+}).<span class="func">catch</span>(<span class="const">function</span>(<span class="var">error</span>) {
+    <span class="var">console</span>.<span class="func">log</span>(<span class="var">error</span>);
+});
+            </code>
+        </pre>
+        <hr>
+        <!-- FORM 3 -->
+        <form id="form3">
+            <strong>Example 3: Fill form data with Both</strong> 
+            <p>This example uses both the <code class="bkg"><span class="var">url:</span></code> and <code class="bkg"><span class="var">json:</span></code>
+                settings to acquire form data. If the same key exists in both JSON objects, the property from the <code class="bkg"><span class="var">json:</span></code>
+                setting is used, overriding data that comes from the <code class="bkg"><span class="var">url:</span></code> setting. 
+                Here we override the <code class="bkg"><span class="var">name:</span></code>, <code class="bkg"><span class="var">have_leaf:</span></code> and 
+                <code class="bkg"><span class="var">gender:</span></code> property. Note that setting a checkbox value to <code class="bkg"><span class="const">false</span></code>
+                will leave the checkbox unchecked.</p>
+            <div>
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name">
+                </div>
+                <div>
+                    <label for="species">Species:</label>
+                    <select name="species">
+                        <option value="" hidden>Choose</option>
+                        <option value="Man">Man</option>
+                        <option value="Elf">Elf</option>
+                        <option value="Dwarf">Dwarf</option>
+                        <option value="Hobbit">Hobbit</option>
+                        <option value="Orc">Orc</option>
+                        <option value="Ent">Ent</option>
+                        <option value="Troll">Troll</option>
+                        <option value="Goblin">Goblin</option>
+                        <option value="Maiar">Maiar</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="have_leaf">Have any hobbits leaf?:</label>
+                <input type="checkbox" name="have_leaf">
+            </div>
+            <label>Male <input type="radio" name="gender" value="Male"></label>
+            <label>Female <input type="radio" name="gender" value="Female"></label>
+            <label>Wormself <input type="radio" name="gender" value="Wormself"></label>
+            <label for="bio">Bio:</label>
+            <textarea name="bio"></textarea>
+        </form>
+        <pre style="display:block;float:left;width:100%;padding:0 20px;">
+            <code>
+<span class="const">new</span> <span class="type">FormFiller</span>({
+    <span class="var">form:</span> <span class="string">'#form3'</span>,
+    <span class="var">url:</span> <span class="string">'formfiller.php'</span>
+    <span class="var">json:</span> {
+        <span class="var">name:</span> <span class="string">'Grima Wormtongue'</span>,
+        <span class="var">have_leaf:</span> <span class="const">false</span>,
+        <span class="var">species:</span> <span class="string">'Wormself'</span>,
+        <span class="var">bio:</span> <span class="string">'I enjoy being pale'</span>
+    }
+}).<span class="func">then</span>(<span class="const">function</span>(<span class="var">response</span>) {
+    <span class="var">console</span>.<span class="func">log</span>(<span class="var">response</span>);
+}).<span class="func">catch</span>(<span class="const">function</span>(<span class="var">error</span>) {
+    <span class="var">console</span>.<span class="func">log</span>(<span class="var">error</span>);
+});
+            </code>
+        </pre>
+        <hr>
+        <!-- FORM 4 -->
+        <form id="form4">
+            <strong>Example 4: formfiller while ignoring some data</strong> 
+            <p>This example uses the <code class="bkg"><span class="var">ignore:</span></code> setting. 
+                The <code class="bkg"><span class="var">ignore:</span></code> setting is an array of input names you would like to leave blank. 
+                Here we ignore the <code class="bkg"><span class="string">'name'</span></code>, <code class="bkg"><span class="string">'have_leaf'</span></code>, 
+                and <code class="bkg"><span class="string">'gender'</span></code> inputs. Take note that the <code class="bkg"><span class="var">ignore:</span></code> 
+                setting can be used to leave a checkbox unchecked.</p>
+            <div>
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name">
+                </div>
+                <div>
+                    <label for="species">Species:</label>
+                    <select name="species">
+                        <option value="" hidden>Choose</option>
+                        <option value="Man">Man</option>
+                        <option value="Elf">Elf</option>
+                        <option value="Dwarf">Dwarf</option>
+                        <option value="Hobbit">Hobbit</option>
+                        <option value="Orc">Orc</option>
+                        <option value="Ent">Ent</option>
+                        <option value="Troll">Troll</option>
+                        <option value="Goblin">Goblin</option>
+                        <option value="Maiar">Maiar</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label for="have_leaf">Have any hobbits leaf?:</label>
+                <input type="checkbox" name="have_leaf">
+            </div>
+            <label>Male <input type="radio" name="gender" value="Male"></label>
+            <label>Female <input type="radio" name="gender" value="Female"></label>
+            <label>Wormself <input type="radio" name="gender" value="Wormself"></label>
+            <label for="bio">Bio:</label>
+            <textarea name="bio"></textarea>
+        </form>
+        <pre style="display:block;float:left;width:100%;padding:0 20px;">
+            <code>
+<span class="const">new</span> <span class="type">FormFiller</span>({
+    <span class="var">form:</span> <span class="string">'#form4'</span>,
+    <span class="var">url:</span>  <span class="string">'formfiller.php'</span>
+    <span class="var">json:</span> {
+        <span class="var">species:</span> <span class="string">'Maiar'</span>
+        <span class="var">bio:</span> <span class="string">'I<span class="purple">\'</span>ve had too much hobbits leaf.'</span>
+    },
+    <span class="var">ignore:</span> [
+        <span class="string">'name'</span>,
+        <span class="string">'have_leaf'</span>,
+        <span class="string">'gender'</span>
+    ]
+}).<span class="func">then</span>(<span class="const">function</span>(<span class="string">response</span>) {
+    <span class="var">console</span>.<span class="func">log</span>(<span class="string">response</span>);
+});
+            </code>
+        </pre>
+    </main>
+</body>  
+
+<script type="text/javascript">   
+
+    /* 
+     * This example uses the json: setting to acquire form data. You may notice the JSON keys foo: 'foo' and bar:'bar', 
+     * because they do not have a matching input element. These leftovers will be included in the response.
+     */
+    new FormFiller({
+        form: '#form1',
+        json: {
+            foo: 'foo',
+            bar: 'bar',
+            name: 'Bilbo Baggins',
+            have_leaf: true,
+            species: 'Hobbit',
+            gender: 'Male',
+            bio: 'I smoke the hobbits leaf'
+        }
+    }).then(function(response) {
+        console.log(response);
+    }).catch(function(error) {
+        console.log(error);
+    });
+
+    /* 
+     * This example uses the url: setting to acquire form data. The url: setting does a GET request to acquire form data. 
+     * Notice that the 'formfiller.php' script does not have all of the data required to fill every form field. 
+     * The response will show you the fields left unfilled. 
+     */
+    new FormFiller({
+        form: '#form2',
+        url: 'formfiller.php'
+    }).then(function(response) {
+        console.log(response);
+    }).catch(function(error) {
+        console.log(error);
+    });
+
+    /*
+     * This example uses both the url: and json: settings to acquire form data. If the same key exists in both JSON objects, 
+     * the property from the json: setting is used, overriding data that comes from the url: setting. Here we override the name:, 
+     * have_leaf: and gender: property. Note that setting a checkbox value to false will leave the checkbox unchecked. 
+     */
+    new FormFiller({
+        form: '#form3',
+        url: 'formfiller.php',
+        json: {
+            name: 'Grima Wormtongue',
+            have_leaf: false,
+            gender: 'Wormself',
+            species: 'Man',
+            bio: 'I enjoy being pale'
+        }
+    }).then(function(response) {
+        console.log(response);
+    }).catch(function(error) {
+        console.log(error);
+    });
+
+    /* 
+     * This example uses the ignore: setting. The ignore: setting is an array of input names you would like to leave blank. 
+     * Here we ignore the 'name', have_leaf, and 'gender' inputs. Take note that the ignore: setting can be used to leave a checkbox unchecked.
+     */
+    new FormFiller({
+        form: '#form4',
+        url: 'formfiller.php',
+        json: {
+            species: 'Maiar',
+            bio: 'I\'ve had too much hobbits leaf.'
+        },
+        ignore: [
+            'name',
+            'have_leaf',
+            'gender'
+        ]
+    }).then(function(response) {
+        console.log(response);
+    }).catch(function(error) {
+        console.log(error);
+    });
+
+</script>
+</html>

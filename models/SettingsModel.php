@@ -10,7 +10,7 @@ class SettingsModel extends Model
     public function getSetting($data)
     {
         // SELECT `value` FROM `settings` WHERE `name` = "sitename"
-        $select = $this->table('settings')->select('value')->where('name', $data)->limit(1)->get('string');
+        $select = $this->table('settings')->select('value')->where('name', $data)->limit(1)->getOne();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -36,7 +36,7 @@ class SettingsModel extends Model
     public function getMailSettings()
     {
         // SELECT * FROM `mail`
-        $select = $this->table('mail')->select('*')->limit(1)->get();
+        $select = $this->table('mail')->select('*')->get();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];
@@ -62,7 +62,20 @@ class SettingsModel extends Model
     public function getLanguages()
     {
         // // SELECT * FROM `language`
-        $select = $this->table('language')->select('*')->get();
+        $select = $this->table('language')->select('*')->getAll();
+        if ($select) {
+            if ($select['status'] == 'success') {
+                return empty($select['response']) ? false : $select['response'];
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public function getAnalyticsCode()
+    {
+        // SELECT * FROM `analytics`
+        $select = $this->table('analytics')->select('code')->limit(1)->getOne();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? false : $select['response'];

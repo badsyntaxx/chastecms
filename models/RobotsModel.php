@@ -10,7 +10,7 @@ class RobotsModel extends Model
     public function getRobots()
     {
         // SELECT * FROM `routes`
-        $select = $this->table('robots')->select('*')->get();
+        $select = $this->table('robots')->select('*')->getAll();
         if ($select) {
             if ($select['status'] == 'success') {
                 return empty($select['response']) ? [] : $select['response'];
